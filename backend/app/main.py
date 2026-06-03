@@ -9,6 +9,8 @@ from app.core.logging import setup_logging
 from app.db.session import get_session, init_db
 from app.middleware.rate_limit_middleware import AnalyzeRateLimitMiddleware
 from app.schemas.api import AnalyzeRequest, AnalysisDetailResponse, HealthResponse
+from app.schemas.dashboard import DashboardResponse
+from app.services.dashboard_service import DashboardService, SUPPORTED_CATEGORIES
 from app.services.ingest_service import IngestService
 
 setup_logging()
@@ -38,6 +40,7 @@ app.add_middleware(
 app.add_middleware(AnalyzeRateLimitMiddleware)
 
 _ingest = IngestService()
+_dashboard = DashboardService()
 
 
 @app.get("/health", response_model=HealthResponse)
@@ -62,3 +65,13 @@ def get_analysis(analysis_id: str, session: Session = Depends(get_session)):
     if not result:
         raise HTTPException(status_code=404, detail="Analysis not found")
     return result
+
+
+@app.get("/v1/dashboard/articles", response_model=DashboardResponse)
+def get_dashboard_articles(category: str = "breaking"):
+    if category not in SUPPORTED_CATEGORIES:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Unsupported category '{category}'. Supported: {sorted(SUPPORTED_CATEGORIES)}",
+        )
+    return _dashboard.get_top_articles(category)

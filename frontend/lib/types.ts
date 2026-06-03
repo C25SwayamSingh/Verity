@@ -82,3 +82,35 @@ export interface RateLimitError {
   message: string;
   retry_after_seconds: number;
 }
+
+export type DashboardCategory =
+  | "breaking"
+  | "domestic_us"
+  | "foreign_world"
+  | "markets_stocks"
+  | "tech_ai";
+
+export interface DashboardArticle {
+  id: string;
+  headline: string;
+  source: string;
+  category: string;
+  published_at: string;
+  neutral_summary: string;
+  importance_score: number;
+  credibility_score: number;
+  relevance_score: number;
+  freshness_score: number;
+  source_diversity_score: number;
+  final_score: number;
+  framing_label: string;
+  key_claims: string[];
+  support_summary: string;
+  contradiction_warnings: string[];
+  why_selected: string;
+}
+
+export interface DashboardResponse {
+  category: string;
+  articles: DashboardArticle[];
+}

@@ -1,0 +1,636 @@
+[
+  {
+    "id": "dash_brk_001",
+    "headline": "Federal Reserve Signals Pause in Rate Hikes After Inflation Eases",
+    "source": "Associated Press",
+    "category": "breaking",
+    "published_at": "2026-06-03T14:00:00Z",
+    "neutral_summary": "The Federal Reserve indicated it may hold interest rates steady following data showing consumer price inflation slowed in recent months. Officials cited improving supply chains and moderating wage growth as contributing factors.",
+    "importance_score": 0.92,
+    "credibility_score": 0.94,
+    "relevance_score": 0.90,
+    "freshness_score": 0.98,
+    "source_diversity_score": 0.82,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "Fed signaled a potential pause in rate increases",
+      "Inflation data showed a measurable decline from prior month"
+    ],
+    "support_summary": "Multiple financial outlets corroborate the rate-pause signal; Fed minutes confirm policymaker discussion.",
+    "contradiction_warnings": [],
+    "why_selected": "High editorial credibility, immediate market relevance, and confirmed multi-source corroboration."
+  },
+  {
+    "id": "dash_brk_002",
+    "headline": "Major Earthquake Strikes Pacific Coast; Tsunami Warning Issued",
+    "source": "Reuters",
+    "category": "breaking",
+    "published_at": "2026-06-03T09:15:00Z",
+    "neutral_summary": "A 7.4-magnitude earthquake struck off the Pacific Coast. Authorities issued a tsunami warning for coastal areas and urged residents to move to higher ground. Emergency services were mobilized.",
+    "importance_score": 0.98,
+    "credibility_score": 0.90,
+    "relevance_score": 0.85,
+    "freshness_score": 0.99,
+    "source_diversity_score": 0.78,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "7.4-magnitude earthquake reported off Pacific Coast",
+      "Tsunami warning issued for coastal zones"
+    ],
+    "support_summary": "USGS seismic data and NOAA tsunami center independently confirmed the event.",
+    "contradiction_warnings": [],
+    "why_selected": "Verified by federal agencies; highest importance for public safety."
+  },
+  {
+    "id": "dash_brk_003",
+    "headline": "Congressional Vote on Budget Resolution Delayed by Procedural Dispute",
+    "source": "NPR",
+    "category": "breaking",
+    "published_at": "2026-06-03T11:45:00Z",
+    "neutral_summary": "A planned House vote on the federal budget resolution was delayed after a procedural objection raised by members of one party. The resolution covers discretionary spending levels for the next fiscal year.",
+    "importance_score": 0.78,
+    "credibility_score": 0.88,
+    "relevance_score": 0.80,
+    "freshness_score": 0.96,
+    "source_diversity_score": 0.70,
+    "framing_label": "mixed_framing",
+    "key_claims": [
+      "Budget vote postponed due to procedural objection",
+      "Delay affects fiscal-year spending resolution timeline"
+    ],
+    "support_summary": "C-SPAN and congressional record confirm procedural delay; multiple wire services report the same.",
+    "contradiction_warnings": ["Some outlets characterize the delay as a deliberate obstruction rather than standard procedure."],
+    "why_selected": "Confirmed procedural fact with bipartisan source coverage; moderate importance for domestic governance."
+  },
+  {
+    "id": "dash_brk_004",
+    "headline": "WHO Declares New Public Health Advisory Over Emerging Respiratory Illness",
+    "source": "BBC",
+    "category": "breaking",
+    "published_at": "2026-06-03T07:30:00Z",
+    "neutral_summary": "The World Health Organization issued a public health advisory regarding a new respiratory illness detected in three countries. The advisory calls for enhanced surveillance and urges travelers to follow standard hygiene precautions.",
+    "importance_score": 0.88,
+    "credibility_score": 0.92,
+    "relevance_score": 0.82,
+    "freshness_score": 0.97,
+    "source_diversity_score": 0.85,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "WHO issued advisory for respiratory illness in three countries",
+      "Travelers advised to follow hygiene precautions"
+    ],
+    "support_summary": "WHO official statement available; Reuters and AFP independently verified the advisory.",
+    "contradiction_warnings": [],
+    "why_selected": "Directly sourced from intergovernmental authority; high credibility and global relevance."
+  },
+  {
+    "id": "dash_brk_005",
+    "headline": "Air Traffic Control System Experiences Nationwide Outage for Two Hours",
+    "source": "Wall Street Journal",
+    "category": "breaking",
+    "published_at": "2026-06-03T06:00:00Z",
+    "neutral_summary": "A software fault in the Federal Aviation Administration's air traffic management system caused a two-hour outage, leading to ground stops at several major airports. The FAA confirmed full restoration by mid-morning.",
+    "importance_score": 0.85,
+    "credibility_score": 0.89,
+    "relevance_score": 0.78,
+    "freshness_score": 0.92,
+    "source_diversity_score": 0.76,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "FAA software fault caused nationwide two-hour ground stop",
+      "Full system restoration confirmed by FAA"
+    ],
+    "support_summary": "FAA press release and FlightAware data corroborate the scope and timing of the outage.",
+    "contradiction_warnings": [],
+    "why_selected": "Government-confirmed event; broad impact on domestic travel."
+  },
+  {
+    "id": "dash_brk_006",
+    "headline": "Tech Giant Announces Surprise CEO Change Effective Immediately",
+    "source": "Financial Times",
+    "category": "breaking",
+    "published_at": "2026-06-02T22:00:00Z",
+    "neutral_summary": "A major technology company announced the immediate departure of its chief executive and the appointment of an internal replacement. The company did not disclose reasons for the change. Shares fell in after-hours trading.",
+    "importance_score": 0.80,
+    "credibility_score": 0.86,
+    "relevance_score": 0.75,
+    "freshness_score": 0.78,
+    "source_diversity_score": 0.72,
+    "framing_label": "mixed_framing",
+    "key_claims": [
+      "CEO departure announced effective immediately",
+      "Stock price declined in after-hours trading"
+    ],
+    "support_summary": "SEC filing and company press release confirm leadership change; share price movement verified by market data.",
+    "contradiction_warnings": ["Reason for departure disputed between company statement and anonymous sources cited by several outlets."],
+    "why_selected": "SEC-verified corporate event; notable market impact."
+  },
+
+  {
+    "id": "dash_dom_001",
+    "headline": "Senate Passes Bipartisan Infrastructure Maintenance Bill",
+    "source": "New York Times",
+    "category": "domestic_us",
+    "published_at": "2026-06-03T13:00:00Z",
+    "neutral_summary": "The U.S. Senate passed a bipartisan bill allocating funds for bridge repairs, road resurfacing, and broadband expansion in rural areas. The bill now moves to the House. Supporters from both parties cited long-term economic benefits.",
+    "importance_score": 0.88,
+    "credibility_score": 0.92,
+    "relevance_score": 0.86,
+    "freshness_score": 0.97,
+    "source_diversity_score": 0.84,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "Senate passed infrastructure maintenance bill with bipartisan support",
+      "Bill covers bridges, roads, and rural broadband"
+    ],
+    "support_summary": "Senate roll call vote publicly available; multiple outlets including AP and Reuters confirm passage.",
+    "contradiction_warnings": [],
+    "why_selected": "Legislatively verified; broad geographic impact and bipartisan source balance."
+  },
+  {
+    "id": "dash_dom_002",
+    "headline": "Supreme Court Agrees to Hear Case on State Digital Privacy Laws",
+    "source": "Washington Post",
+    "category": "domestic_us",
+    "published_at": "2026-06-03T10:30:00Z",
+    "neutral_summary": "The Supreme Court agreed to hear a case examining whether state-level digital privacy regulations conflict with federal law. The ruling could affect how technology companies handle user data across state lines.",
+    "importance_score": 0.90,
+    "credibility_score": 0.95,
+    "relevance_score": 0.88,
+    "freshness_score": 0.96,
+    "source_diversity_score": 0.88,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "Supreme Court granted certiorari in digital privacy case",
+      "Outcome may set federal precedent over state data laws"
+    ],
+    "support_summary": "SCOTUS docket confirms cert grant; legal analysis consistent across SCOTUSblog, Reuters, and AP.",
+    "contradiction_warnings": [],
+    "why_selected": "Highest-credibility source with official docket confirmation; long-term policy significance."
+  },
+  {
+    "id": "dash_dom_003",
+    "headline": "White House Proposes New Rules on AI Use in Federal Agencies",
+    "source": "Politico",
+    "category": "domestic_us",
+    "published_at": "2026-06-02T16:00:00Z",
+    "neutral_summary": "The White House Office of Management and Budget proposed new guidelines governing how federal agencies may deploy artificial intelligence systems. The rules require human oversight for high-impact decisions and mandate transparency reporting.",
+    "importance_score": 0.84,
+    "credibility_score": 0.88,
+    "relevance_score": 0.82,
+    "freshness_score": 0.80,
+    "source_diversity_score": 0.78,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "OMB proposed AI governance rules for federal agencies",
+      "Rules require human oversight for high-impact AI decisions"
+    ],
+    "support_summary": "OMB memo publicly released; Politico, The Hill, and Federal News Network all confirm core details.",
+    "contradiction_warnings": [],
+    "why_selected": "Policy document directly verifiable; significant for federal operations and tech sector."
+  },
+  {
+    "id": "dash_dom_004",
+    "headline": "U.S. Unemployment Claims Fall to Six-Month Low",
+    "source": "Reuters",
+    "category": "domestic_us",
+    "published_at": "2026-06-03T08:30:00Z",
+    "neutral_summary": "Initial jobless claims dropped to their lowest level in six months according to the Labor Department's weekly report. Economists attributed the decline to seasonal hiring in construction and hospitality sectors.",
+    "importance_score": 0.80,
+    "credibility_score": 0.94,
+    "relevance_score": 0.84,
+    "freshness_score": 0.98,
+    "source_diversity_score": 0.80,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "Jobless claims fell to a six-month low",
+      "Seasonal hiring in construction and hospitality cited as driver"
+    ],
+    "support_summary": "Department of Labor weekly report directly sourced; economists' commentary corroborated by Bloomberg and AP.",
+    "contradiction_warnings": [],
+    "why_selected": "Government data release; strong credibility and economic significance."
+  },
+  {
+    "id": "dash_dom_005",
+    "headline": "Congress Opens Hearings on Social Media Algorithmic Transparency",
+    "source": "NPR",
+    "category": "domestic_us",
+    "published_at": "2026-06-01T14:00:00Z",
+    "neutral_summary": "A Senate subcommittee began hearings on whether major social media platforms should be required to disclose how their recommendation algorithms amplify or suppress content. Executives from three platforms are scheduled to testify.",
+    "importance_score": 0.78,
+    "credibility_score": 0.86,
+    "relevance_score": 0.80,
+    "freshness_score": 0.72,
+    "source_diversity_score": 0.76,
+    "framing_label": "mixed_framing",
+    "key_claims": [
+      "Senate subcommittee opened algorithmic transparency hearings",
+      "Platform executives subpoenaed to testify"
+    ],
+    "support_summary": "Senate hearing schedule publicly posted; multiple outlets confirmed subpoenas issued.",
+    "contradiction_warnings": ["Industry-aligned sources dispute characterization of algorithms as 'suppressive.'"],
+    "why_selected": "Confirmed legislative proceeding; relevant to ongoing tech regulation debate."
+  },
+  {
+    "id": "dash_dom_006",
+    "headline": "Federal Housing Agency Reports Home Prices Stabilizing Nationally",
+    "source": "Associated Press",
+    "category": "domestic_us",
+    "published_at": "2026-06-02T09:00:00Z",
+    "neutral_summary": "The Federal Housing Finance Agency reported that national home prices showed minimal change for the second consecutive month, suggesting the market may be reaching equilibrium after years of rapid appreciation.",
+    "importance_score": 0.75,
+    "credibility_score": 0.90,
+    "relevance_score": 0.78,
+    "freshness_score": 0.82,
+    "source_diversity_score": 0.74,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "FHFA data shows home prices stable for second consecutive month",
+      "Market interpreted as approaching equilibrium"
+    ],
+    "support_summary": "FHFA index report directly cited; Case-Shiller data broadly consistent.",
+    "contradiction_warnings": [],
+    "why_selected": "Government index release with consistent cross-source confirmation."
+  },
+
+  {
+    "id": "dash_fwd_001",
+    "headline": "NATO Members Agree to Increase Defense Spending Targets",
+    "source": "BBC",
+    "category": "foreign_world",
+    "published_at": "2026-06-03T15:00:00Z",
+    "neutral_summary": "NATO member nations reached a new agreement to raise collective defense spending targets at a summit in Brussels. The agreement sets a higher GDP percentage benchmark for military expenditure, with a phased implementation timeline.",
+    "importance_score": 0.91,
+    "credibility_score": 0.93,
+    "relevance_score": 0.89,
+    "freshness_score": 0.98,
+    "source_diversity_score": 0.86,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "NATO summit produced new defense spending targets",
+      "Higher GDP percentage benchmark adopted with phased timeline"
+    ],
+    "support_summary": "NATO communiqué published; BBC, Reuters, AP, and Deutsche Welle report consistently.",
+    "contradiction_warnings": [],
+    "why_selected": "Multilateral document directly available; high editorial consensus across international outlets."
+  },
+  {
+    "id": "dash_fwd_002",
+    "headline": "United Nations Reports Humanitarian Crisis Worsening in Conflict Zone",
+    "source": "Reuters",
+    "category": "foreign_world",
+    "published_at": "2026-06-03T11:00:00Z",
+    "neutral_summary": "The United Nations Office for the Coordination of Humanitarian Affairs reported a deterioration in conditions in a major conflict zone, citing shortages of food, medicine, and safe water. Aid deliveries were halted due to security concerns.",
+    "importance_score": 0.93,
+    "credibility_score": 0.91,
+    "relevance_score": 0.87,
+    "freshness_score": 0.97,
+    "source_diversity_score": 0.84,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "UNOCHA reported worsening humanitarian conditions",
+      "Aid deliveries suspended over security threats"
+    ],
+    "support_summary": "UN situation report independently corroborated by MSF and ICRC field updates.",
+    "contradiction_warnings": [],
+    "why_selected": "UN-sourced data with NGO field corroboration; significant humanitarian impact."
+  },
+  {
+    "id": "dash_fwd_003",
+    "headline": "China and European Union Resume Trade Dialogue After Year-Long Pause",
+    "source": "Financial Times",
+    "category": "foreign_world",
+    "published_at": "2026-06-02T18:00:00Z",
+    "neutral_summary": "China and the European Union resumed formal trade discussions after a 14-month suspension stemming from disagreements over tariffs and market access. Both parties described the resumption as constructive without announcing specific outcomes.",
+    "importance_score": 0.86,
+    "credibility_score": 0.90,
+    "relevance_score": 0.84,
+    "freshness_score": 0.82,
+    "source_diversity_score": 0.80,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "China-EU trade talks resumed after 14-month pause",
+      "No specific agreements announced from initial session"
+    ],
+    "support_summary": "EU trade commission and Chinese foreign ministry both confirmed the resumed dialogue.",
+    "contradiction_warnings": [],
+    "why_selected": "Dual-government confirmation; significant global trade implications."
+  },
+  {
+    "id": "dash_fwd_004",
+    "headline": "Record Monsoon Flooding Displaces Hundreds of Thousands in South Asia",
+    "source": "The Guardian",
+    "category": "foreign_world",
+    "published_at": "2026-06-03T08:00:00Z",
+    "neutral_summary": "Exceptionally heavy monsoon rains caused widespread flooding across parts of South Asia, displacing an estimated 400,000 people. Government disaster management agencies declared emergency status in multiple provinces.",
+    "importance_score": 0.89,
+    "credibility_score": 0.88,
+    "relevance_score": 0.83,
+    "freshness_score": 0.96,
+    "source_diversity_score": 0.82,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "Monsoon flooding displaced approximately 400,000 people",
+      "Emergency declared in multiple provinces"
+    ],
+    "support_summary": "National disaster management authority figures verified by Red Cross situation report.",
+    "contradiction_warnings": [],
+    "why_selected": "Cross-confirmed displacement figures; immediate humanitarian significance."
+  },
+  {
+    "id": "dash_fwd_005",
+    "headline": "G7 Nations Propose New Framework for Critical Mineral Supply Chains",
+    "source": "Associated Press",
+    "category": "foreign_world",
+    "published_at": "2026-06-01T20:00:00Z",
+    "neutral_summary": "G7 members proposed a coordinated framework to diversify supply chains for critical minerals including lithium, cobalt, and rare earth elements. The proposal aims to reduce dependence on single-country suppliers for materials used in clean energy technology.",
+    "importance_score": 0.84,
+    "credibility_score": 0.89,
+    "relevance_score": 0.81,
+    "freshness_score": 0.74,
+    "source_diversity_score": 0.83,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "G7 proposed critical mineral supply chain diversification framework",
+      "Target minerals include lithium, cobalt, and rare earths"
+    ],
+    "support_summary": "G7 presidency statement and AP confirmed core proposal details; multiple trade outlets aligned.",
+    "contradiction_warnings": [],
+    "why_selected": "G7 document-sourced; long-term strategic importance for clean energy and geopolitics."
+  },
+  {
+    "id": "dash_fwd_006",
+    "headline": "European Parliament Votes to Strengthen Border Management Policies",
+    "source": "Euronews",
+    "category": "foreign_world",
+    "published_at": "2026-06-02T12:30:00Z",
+    "neutral_summary": "The European Parliament passed a package of updated border management rules by a majority vote. The measures expand the mandate of the EU border agency and introduce new processing standards for asylum seekers.",
+    "importance_score": 0.80,
+    "credibility_score": 0.87,
+    "relevance_score": 0.78,
+    "freshness_score": 0.84,
+    "source_diversity_score": 0.76,
+    "framing_label": "mixed_framing",
+    "key_claims": [
+      "EU Parliament passed border management reform package",
+      "Asylum processing standards updated under new rules"
+    ],
+    "support_summary": "European Parliament vote record published; Reuters and DW report consistently on passage.",
+    "contradiction_warnings": ["Human rights organizations dispute whether new standards meet international asylum obligations."],
+    "why_selected": "Verified parliamentary vote; significant policy impact across member states."
+  },
+
+  {
+    "id": "dash_mkt_001",
+    "headline": "S&P 500 Closes at Record High Driven by Technology Earnings",
+    "source": "Wall Street Journal",
+    "category": "markets_stocks",
+    "published_at": "2026-06-03T16:30:00Z",
+    "neutral_summary": "The S&P 500 reached a new all-time closing high as several large technology companies reported quarterly earnings that exceeded analyst consensus estimates. Trading volume was above the 30-day average.",
+    "importance_score": 0.88,
+    "credibility_score": 0.93,
+    "relevance_score": 0.90,
+    "freshness_score": 0.99,
+    "source_diversity_score": 0.82,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "S&P 500 reached a record closing level",
+      "Technology sector earnings beat analyst estimates"
+    ],
+    "support_summary": "Exchange closing data publicly available; Bloomberg and Reuters confirm the record close.",
+    "contradiction_warnings": [],
+    "why_selected": "Market data directly verifiable; high investor relevance and timeliness."
+  },
+  {
+    "id": "dash_mkt_002",
+    "headline": "Federal Reserve Minutes Reveal Divided Views on Further Rate Cuts",
+    "source": "Bloomberg",
+    "category": "markets_stocks",
+    "published_at": "2026-06-03T14:00:00Z",
+    "neutral_summary": "Minutes from the most recent Federal Reserve policy meeting disclosed disagreement among committee members about the pace and extent of future interest rate reductions. Some officials favored caution given persistent services inflation.",
+    "importance_score": 0.90,
+    "credibility_score": 0.95,
+    "relevance_score": 0.92,
+    "freshness_score": 0.97,
+    "source_diversity_score": 0.86,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "Fed minutes show internal disagreement on rate cut pace",
+      "Services inflation cited as reason for caution"
+    ],
+    "support_summary": "Federal Reserve minutes are public documents; Bloomberg, FT, and WSJ all report consistent findings.",
+    "contradiction_warnings": [],
+    "why_selected": "Primary government document; highest credibility for interest rate outlook."
+  },
+  {
+    "id": "dash_mkt_003",
+    "headline": "Oil Prices Drop as OPEC+ Signals Production Increase",
+    "source": "Reuters",
+    "category": "markets_stocks",
+    "published_at": "2026-06-03T10:00:00Z",
+    "neutral_summary": "Crude oil prices fell after OPEC+ members signaled agreement on a gradual production increase beginning next quarter. Brent crude dropped approximately 3% on the announcement, reflecting expectations of higher global supply.",
+    "importance_score": 0.85,
+    "credibility_score": 0.91,
+    "relevance_score": 0.87,
+    "freshness_score": 0.96,
+    "source_diversity_score": 0.84,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "OPEC+ agreed to gradual production increase next quarter",
+      "Brent crude fell approximately 3% on the news"
+    ],
+    "support_summary": "OPEC+ communiqué confirmed by Reuters and Bloomberg; price movement verified by commodity exchange data.",
+    "contradiction_warnings": [],
+    "why_selected": "Direct commodity market data corroboration; broad economic impact."
+  },
+  {
+    "id": "dash_mkt_004",
+    "headline": "U.S. Treasury Yield Curve Steepens as Long-Term Rates Rise",
+    "source": "Financial Times",
+    "category": "markets_stocks",
+    "published_at": "2026-06-03T09:30:00Z",
+    "neutral_summary": "Long-term U.S. Treasury yields rose while short-term yields held steady, steepening the yield curve. Analysts attributed the move to improved economic growth expectations and reduced near-term recession probability assessments.",
+    "importance_score": 0.82,
+    "credibility_score": 0.92,
+    "relevance_score": 0.85,
+    "freshness_score": 0.97,
+    "source_diversity_score": 0.80,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "Treasury yield curve steepened as long-term rates rose",
+      "Move attributed to improved growth outlook"
+    ],
+    "support_summary": "Treasury yield data from FRED and market terminals; FT and WSJ analysis consistent.",
+    "contradiction_warnings": [],
+    "why_selected": "Directly observable market data; important signal for credit and mortgage markets."
+  },
+  {
+    "id": "dash_mkt_005",
+    "headline": "Retail Sales Report Shows Consumers Spending Less on Discretionary Items",
+    "source": "Associated Press",
+    "category": "markets_stocks",
+    "published_at": "2026-06-02T08:30:00Z",
+    "neutral_summary": "The Commerce Department's monthly retail sales report showed a decline in spending on discretionary categories such as electronics and apparel, while spending on groceries and healthcare remained stable.",
+    "importance_score": 0.78,
+    "credibility_score": 0.92,
+    "relevance_score": 0.80,
+    "freshness_score": 0.83,
+    "source_diversity_score": 0.78,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "Discretionary retail spending declined month-over-month",
+      "Groceries and healthcare spending held steady"
+    ],
+    "support_summary": "Commerce Department retail data publicly available; multiple economic wire services report consistent findings.",
+    "contradiction_warnings": [],
+    "why_selected": "Government data release; reliable consumer spending signal."
+  },
+  {
+    "id": "dash_mkt_006",
+    "headline": "Cryptocurrency Market Sees Sharp Volatility Following Regulatory Proposal",
+    "source": "CoinDesk",
+    "category": "markets_stocks",
+    "published_at": "2026-06-02T20:00:00Z",
+    "neutral_summary": "Digital asset prices experienced significant swings after a regulatory agency released a proposal requiring cryptocurrency exchanges to register as securities dealers. The proposal's scope and implementation timeline remain subject to public comment.",
+    "importance_score": 0.76,
+    "credibility_score": 0.82,
+    "relevance_score": 0.78,
+    "freshness_score": 0.84,
+    "source_diversity_score": 0.70,
+    "framing_label": "mixed_framing",
+    "key_claims": [
+      "Regulatory proposal targets crypto exchange registration as securities dealers",
+      "Digital asset prices fell sharply on the announcement"
+    ],
+    "support_summary": "Regulatory proposal text publicly released; Bloomberg and Reuters confirm market price movement.",
+    "contradiction_warnings": ["Industry associations dispute regulatory jurisdiction over crypto assets described in the proposal."],
+    "why_selected": "Verifiable regulatory document with confirmed market reaction; noted lower source diversity for this topic."
+  },
+
+  {
+    "id": "dash_tai_001",
+    "headline": "OpenAI Releases Updated Safety Evaluation Framework for Large Language Models",
+    "source": "TechCrunch",
+    "category": "tech_ai",
+    "published_at": "2026-06-03T13:30:00Z",
+    "neutral_summary": "OpenAI published a revised framework for evaluating safety properties of large language models before deployment. The framework introduces new benchmarks for measuring deception risk, instruction-following robustness, and alignment with human values.",
+    "importance_score": 0.87,
+    "credibility_score": 0.88,
+    "relevance_score": 0.90,
+    "freshness_score": 0.98,
+    "source_diversity_score": 0.80,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "OpenAI published revised LLM safety evaluation framework",
+      "New benchmarks include deception risk and alignment measurement"
+    ],
+    "support_summary": "OpenAI technical report publicly released; The Verge and Ars Technica confirm core framework details.",
+    "contradiction_warnings": [],
+    "why_selected": "Primary source document available; directly relevant to ongoing AI safety discourse."
+  },
+  {
+    "id": "dash_tai_002",
+    "headline": "EU AI Act Enters Enforcement Phase for High-Risk Applications",
+    "source": "Reuters",
+    "category": "tech_ai",
+    "published_at": "2026-06-03T09:00:00Z",
+    "neutral_summary": "The European Union's Artificial Intelligence Act began its enforcement phase for high-risk AI applications including those used in employment screening, credit assessment, and critical infrastructure management. Non-compliance can result in fines up to 6% of global revenue.",
+    "importance_score": 0.92,
+    "credibility_score": 0.94,
+    "relevance_score": 0.91,
+    "freshness_score": 0.97,
+    "source_diversity_score": 0.88,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "EU AI Act enforcement began for high-risk AI categories",
+      "Fines of up to 6% of global revenue apply for non-compliance"
+    ],
+    "support_summary": "EU Official Journal and European Commission press release confirm enforcement timeline; consistent across Reuters, FT, and Politico Europe.",
+    "contradiction_warnings": [],
+    "why_selected": "Official regulatory enforcement date confirmed; highest credibility and cross-border impact."
+  },
+  {
+    "id": "dash_tai_003",
+    "headline": "Major Semiconductor Manufacturer Reports Record Chip Orders for AI Data Centers",
+    "source": "Bloomberg",
+    "category": "tech_ai",
+    "published_at": "2026-06-03T07:45:00Z",
+    "neutral_summary": "A leading semiconductor company reported record forward orders for AI inference chips, driven primarily by hyperscale data center operators. The company raised its annual revenue guidance citing sustained AI infrastructure investment.",
+    "importance_score": 0.85,
+    "credibility_score": 0.91,
+    "relevance_score": 0.88,
+    "freshness_score": 0.96,
+    "source_diversity_score": 0.82,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "Record chip orders reported for AI data center applications",
+      "Company raised full-year revenue guidance"
+    ],
+    "support_summary": "Company earnings call transcript and SEC filing corroborate forward order figures; Bloomberg and WSJ consistent.",
+    "contradiction_warnings": [],
+    "why_selected": "SEC-verifiable financial disclosure; direct indicator of AI infrastructure investment trends."
+  },
+  {
+    "id": "dash_tai_004",
+    "headline": "MIT Study Finds AI-Generated Text Detectors Have High False Positive Rate",
+    "source": "Ars Technica",
+    "category": "tech_ai",
+    "published_at": "2026-06-02T15:00:00Z",
+    "neutral_summary": "A peer-reviewed study from MIT found that commercially available AI-text detection tools incorrectly flagged human-written content as AI-generated at rates between 15% and 31% in controlled tests. Researchers cautioned against relying on such tools for high-stakes decisions.",
+    "importance_score": 0.80,
+    "credibility_score": 0.90,
+    "relevance_score": 0.85,
+    "freshness_score": 0.82,
+    "source_diversity_score": 0.78,
+    "framing_label": "mostly_neutral",
+    "key_claims": [
+      "AI-text detectors showed 15-31% false positive rates in MIT study",
+      "Researchers advised against use for high-stakes decisions"
+    ],
+    "support_summary": "Peer-reviewed paper publicly available; findings covered consistently by Ars Technica, The Verge, and academic press.",
+    "contradiction_warnings": [],
+    "why_selected": "Peer-reviewed empirical finding; practical relevance to education and content moderation."
+  },
+  {
+    "id": "dash_tai_005",
+    "headline": "Google DeepMind Publishes Benchmark Results for Next-Generation Reasoning Model",
+    "source": "The Verge",
+    "category": "tech_ai",
+    "published_at": "2026-06-01T18:00:00Z",
+    "neutral_summary": "Google DeepMind released benchmark performance results for a new reasoning-focused AI model, reporting improvements on mathematical problem-solving and multi-step logic tasks compared to previous versions. Independent third-party evaluations are pending.",
+    "importance_score": 0.83,
+    "credibility_score": 0.86,
+    "relevance_score": 0.87,
+    "freshness_score": 0.76,
+    "source_diversity_score": 0.76,
+    "framing_label": "mixed_framing",
+    "key_claims": [
+      "DeepMind reported benchmark improvements in math and reasoning",
+      "Third-party independent evaluation not yet completed"
+    ],
+    "support_summary": "Technical report released by DeepMind; benchmark methodology described but awaits independent replication.",
+    "contradiction_warnings": ["Some AI researchers note self-reported benchmarks may reflect favorable test selection."],
+    "why_selected": "Primary technical document available; strong relevance to AI capability progression; noted caveat on self-reported benchmarks."
+  },
+  {
+    "id": "dash_tai_006",
+    "headline": "Robotics Startup Demos Autonomous Warehouse System Operating Without Human Intervention",
+    "source": "Wired",
+    "category": "tech_ai",
+    "published_at": "2026-06-01T10:00:00Z",
+    "neutral_summary": "A robotics startup demonstrated a fully autonomous warehouse management system capable of receiving, sorting, and dispatching packages without human operators during a live event. The company stated commercial deployment is planned for late 2026.",
+    "importance_score": 0.74,
+    "credibility_score": 0.80,
+    "relevance_score": 0.78,
+    "freshness_score": 0.70,
+    "source_diversity_score": 0.68,
+    "framing_label": "mixed_framing",
+    "key_claims": [
+      "Startup demonstrated autonomous warehouse system at live event",
+      "Commercial deployment targeted for late 2026"
+    ],
+    "support_summary": "Live demonstration observed by journalists; company statement on deployment timeline unverified by third parties.",
+    "contradiction_warnings": ["Controlled demonstration conditions may not reflect real-world operational complexity."],
+    "why_selected": "Direct media observation of working system; noted lower source diversity for early-stage company."
+  }
+]

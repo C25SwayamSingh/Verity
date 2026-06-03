@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — The Giver
 
-> Checkpoint for Cursor agents. Last updated: 2026-06-03. Phase 1 is complete and all tests are green.
+> Checkpoint for Cursor agents. Last updated: 2026-06-03. Phase 1 complete + Phase 2 scaffold (Reliable News Dashboard) added. All 20 backend tests green; frontend builds clean.
 
 ---
 
@@ -12,17 +12,34 @@ Language is deliberately non-verdictive ("low corroboration", "notable framing")
 
 ---
 
-## 2. Current Phase 1 status
+## 2. Current phase status
 
 **Phase 1 (Core Checker MVP) — COMPLETE. All tests green.**
-
 - Backend: FastAPI + SQLite, deterministic heuristics with optional OpenAI enhancement.
 - Frontend: Next.js 15 App Router, Tailwind CSS.
 - No auth, billing, or live data sources.
 
+**Phase 2 (Reliable News Dashboard scaffold) — IN PROGRESS (fixture-only scaffold complete).**
+- `GET /v1/dashboard/articles?category=<cat>` endpoint live.
+- Fixture-ranked top-5 articles per category.
+- Dashboard UI at `/dashboard` with category dropdown.
+- No live news APIs, no auth, no drilldown yet.
+
 ---
 
-## 3. Completed features
+## 3. Phase 2 — Dashboard scoring formula
+
+```
+final_score = 0.35 × importance_score
+            + 0.30 × credibility_score
+            + 0.20 × relevance_score
+            + 0.10 × freshness_score
+            + 0.05 × source_diversity_score
+```
+
+All component scores are 0–1. Computed dynamically in `DashboardService`; stored as `final_score` in the response. Fixture data lives in `backend/app/providers/fixtures/dashboard_articles.json` (30 articles, 6 per category).
+
+## 4. Completed features (Phase 1 + Phase 2 scaffold)
 
 - Paste text → structured integrity analysis
 - Content-type selection (`article`, `transcript`, `pasted_text`)
@@ -46,6 +63,7 @@ Language is deliberately non-verdictive ("low corroboration", "notable framing")
 | `GET` | `/health` | Health check → `{"status":"ok"}` |
 | `POST` | `/v1/analyze` | Run analysis. Body: `AnalyzeRequest`. Returns `AnalysisDetailResponse`. Rate-limited by IP. |
 | `GET` | `/v1/analysis/{analysis_id}` | Fetch previously stored analysis by UUID. Returns 404 if not found. |
+| `GET` | `/v1/dashboard/articles?category=<cat>` | Returns top 5 fixture-ranked articles for a supported category. Returns 422 for unsupported categories (including `other`). |
 
 **Request schema (`AnalyzeRequest`)**
 ```
@@ -66,11 +84,13 @@ analysis_id, summary, key_takeaways[], claims[], framing, neutral_rewrite, eligi
 **Pages** (`frontend/app/`)
 - `/` (`page.tsx`) — text input form, category selector, analyze button
 - `/results/[id]` — renders stored analysis fetched from `GET /v1/analysis/{id}`
-- `layout.tsx` — root layout with global styles
+- `/dashboard` (`dashboard/page.tsx`) — Reliable News Dashboard; category dropdown + top-5 article cards
+- `layout.tsx` — root layout with nav links (Core Checker / Dashboard)
 
 **Components** (`frontend/components/`)
 - `ArticleInput.tsx` — textarea + content-type + category dropdowns
 - `ClaimCard.tsx` — single claim with type badge, corroboration status, sources
+- `DashboardArticleCard.tsx` — ranked article card with scores, framing label, claims, warnings
 - `ErrorState.tsx` — error display
 - `FramingPanel.tsx` — framing indicators list + overall label
 - `LoadingState.tsx` — loading spinner
@@ -79,8 +99,8 @@ analysis_id, summary, key_takeaways[], claims[], framing, neutral_rewrite, eligi
 - `SourceAlignmentPanel.tsx` — supporting / contradicting source cards
 
 **Lib** (`frontend/lib/`)
-- `api.ts` — typed fetch wrappers for backend
-- `types.ts` — TypeScript mirrors of backend schemas
+- `api.ts` — typed fetch wrappers for backend (includes `getDashboardArticles`)
+- `types.ts` — TypeScript mirrors of backend schemas (includes `DashboardArticle`, `DashboardResponse`)
 - `color.ts` — corroboration/framing color utilities
 
 ---
@@ -191,6 +211,7 @@ pytest -q
 #   tests/test_claims.py               — claim extraction/typing
 #   tests/test_rate_limit.py           — rate limiter logic
 #   tests/test_scoring.py              — scoring utilities
+#   tests/test_dashboard.py            — dashboard endpoint, scoring formula, sorting
 ```
 
 No frontend test suite exists yet.
@@ -212,10 +233,11 @@ No frontend test suite exists yet.
 
 ## 14. Next planned phase
 
-**Phase 2 — Reliable News Dashboard** (not built):
-- Curated list of reliably reported news stories with credibility signals
-- Live or scheduled source ingestion (replace fixtures)
-- Likely requires auth, a real source provider, and a separate dashboard page
+**Phase 2 — Reliable News Dashboard** (scaffold built; not fully complete):
+- Scaffold: fixture-ranked top-5 articles per category, dashboard UI at `/dashboard`. ✓
+- Remaining: Replace `dashboard_articles.json` fixtures with a live/scheduled source provider (NewsAPI, GDELT, Guardian, etc.)
+- Remaining: Article detail drilldown page
+- Remaining: Persistence/caching layer for fetched articles
 
 Other future work (not scoped): Creator/Influencer Dashboard, batch video analysis, browser extension, billing, mobile app.
 

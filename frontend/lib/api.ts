@@ -1,4 +1,10 @@
-import type { AnalyzeRequest, AnalyzeResponse, RateLimitError } from "./types";
+import type {
+  AnalyzeRequest,
+  AnalyzeResponse,
+  DashboardCategory,
+  DashboardResponse,
+  RateLimitError,
+} from "./types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
@@ -46,6 +52,24 @@ export async function getAnalysis(analysisId: string): Promise<AnalyzeResponse> 
   });
   if (!res.ok) {
     throw new ApiError("Analysis not found", res.status);
+  }
+  return res.json();
+}
+
+export async function getDashboardArticles(
+  category: DashboardCategory,
+): Promise<DashboardResponse> {
+  const res = await fetch(
+    `${API_URL}/v1/dashboard/articles?category=${encodeURIComponent(category)}`,
+    { cache: "no-store" },
+  );
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError(
+      (body as { detail?: string }).detail ?? "Failed to load dashboard",
+      res.status,
+      body,
+    );
   }
   return res.json();
 }
