@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — The Giver
 
-> Checkpoint for Cursor agents. Last updated: 2026-06-03. Phase 1 complete + Phase 2 scaffold (Reliable News Dashboard) added. All 20 backend tests green; frontend builds clean.
+> Checkpoint for Cursor agents. Last updated: 2026-06-03. Phase 1 complete. Phase 2 scaffold + live RSS provider complete. 41 backend tests green; frontend builds clean.
 
 ---
 
@@ -163,7 +163,7 @@ When `False`:
 **Files** (`backend/app/providers/`)
 - `dashboard_base.py` — `DashboardNewsProvider` ABC; single method `fetch(category) -> list[dict]`
 - `dashboard_fixtures_provider.py` — loads `dashboard_articles.json`; default provider
-- `dashboard_live_provider.py` — placeholder; `fetch()` raises `NotImplementedError`; ready for real API implementation
+- `dashboard_live_provider.py` — live RSS implementation (BBC, NPR, Reuters, TechCrunch); raises `DashboardProviderError` on failure
 - `dashboard_registry.py` — `get_dashboard_provider(settings)` factory; maps env var to provider class
 
 **Flow**: `main.py` → `DashboardService()` → `get_dashboard_provider(settings)` → returns provider → `service.get_top_articles()` calls `provider.fetch(category)`. If the provider raises `DashboardProviderError` or `NotImplementedError`, the service logs a warning and falls back to `DashboardFixturesProvider`.
@@ -183,7 +183,7 @@ When `False`:
 | `RATE_LIMIT_ANALYZE_REQUESTS` | backend | `5` | Per IP per window |
 | `RATE_LIMIT_ANALYZE_WINDOW_SECONDS` | backend | `3600` | |
 | `CORS_ORIGINS` | backend | `http://localhost:3000` | Comma-separated list |
-| `DASHBOARD_NEWS_PROVIDER` | backend | `fixtures` | `fixtures` or `live` (placeholder) |
+| `DASHBOARD_NEWS_PROVIDER` | backend | `fixtures` | `fixtures` (JSON) or `live` (RSS, no API key) |
 | `NEXT_PUBLIC_API_URL` | frontend | `http://localhost:8000` | Backend base URL |
 
 Backend reads from `backend/.env` (copy from `backend/.env.example`).  
@@ -229,7 +229,7 @@ pytest -q
 #   tests/test_claims.py               — claim extraction/typing
 #   tests/test_rate_limit.py           — rate limiter logic
 #   tests/test_scoring.py              — scoring utilities
-#   tests/test_dashboard.py            — dashboard endpoint, scoring formula, sorting
+#   tests/test_dashboard.py            — dashboard endpoint, scoring formula, sorting, provider architecture (41 total)
 ```
 
 No frontend test suite exists yet.
@@ -251,9 +251,10 @@ No frontend test suite exists yet.
 
 ## 14. Next planned phase
 
-**Phase 2 — Reliable News Dashboard** (scaffold + provider architecture built; live data not connected):
+**Phase 2 — Reliable News Dashboard** (scaffold + live RSS provider complete; refinement remaining):
 - Scaffold: fixture-ranked top-5 articles per category, dashboard UI at `/dashboard`. ✓
-- Provider architecture: ABC + fixtures + live placeholder + registry + env var. ✓
+- Provider architecture: ABC + fixtures + live RSS provider + registry + env var. ✓
+- Live provider: BBC News, NPR, BBC World, Reuters Business, TechCrunch RSS (no API key). ✓
 - Remaining: Improve live provider score estimation (importance, relevance, source diversity are fixed defaults)
 - Remaining: Article detail drilldown page
 - Remaining: Persistence/caching layer for fetched articles
@@ -264,7 +265,7 @@ Other future work (not scoped): Creator/Influencer Dashboard, batch video analys
 
 ## 15. Open decisions
 
-- **Source provider**: Which live news API to integrate for Phase 2 (NewsAPI, GDELT, Guardian, etc.) — not decided.
+- **Source provider upgrade**: Live provider currently uses free public RSS. Replacing with a structured news API (NewsAPI, Guardian, GDELT) would improve article metadata and score quality.
 - **Auth strategy**: Session vs. JWT; whether Phase 2 requires login or stays public.
 - **Rate limiter scaling**: Replace in-memory limiter with Redis before any multi-worker deployment.
 - **Live provider score quality**: `importance_score`, `relevance_score`, `source_diversity_score` are fixed defaults in the live provider. Real scoring requires NLP or a paid signals API.
