@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     rate_limit_analyze_requests: int = 5
     rate_limit_analyze_window_seconds: int = 3600
     cors_origins: str = "http://localhost:3000"
+    dashboard_news_provider: str = "fixtures"
 
     @property
     def cors_origin_list(self) -> list[str]:

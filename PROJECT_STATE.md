@@ -19,10 +19,12 @@ Language is deliberately non-verdictive ("low corroboration", "notable framing")
 - Frontend: Next.js 15 App Router, Tailwind CSS.
 - No auth, billing, or live data sources.
 
-**Phase 2 (Reliable News Dashboard scaffold) — IN PROGRESS (fixture-only scaffold complete).**
+**Phase 2 (Reliable News Dashboard scaffold) — IN PROGRESS (fixture-only scaffold + provider architecture complete).**
 - `GET /v1/dashboard/articles?category=<cat>` endpoint live.
 - Fixture-ranked top-5 articles per category.
 - Dashboard UI at `/dashboard` with category dropdown.
+- Provider interface (`DashboardNewsProvider` ABC) separates data sourcing from scoring.
+- `DASHBOARD_NEWS_PROVIDER=fixtures` (default) or `live` (placeholder; falls back to fixtures).
 - No live news APIs, no auth, no drilldown yet.
 
 ---
@@ -155,6 +157,18 @@ When `False`:
 
 ---
 
+## 8b. Dashboard provider architecture
+
+**Files** (`backend/app/providers/`)
+- `dashboard_base.py` — `DashboardNewsProvider` ABC; single method `fetch(category) -> list[dict]`
+- `dashboard_fixtures_provider.py` — loads `dashboard_articles.json`; default provider
+- `dashboard_live_provider.py` — placeholder; `fetch()` raises `NotImplementedError`; ready for real API implementation
+- `dashboard_registry.py` — `get_dashboard_provider(settings)` factory; maps env var to provider class
+
+**Flow**: `main.py` → `DashboardService()` → `get_dashboard_provider(settings)` → returns provider → `service.get_top_articles()` calls `provider.fetch(category)`. If the provider raises `NotImplementedError`, the service logs a warning and falls back to `DashboardFixturesProvider`.
+
+**To swap to live**: implement `DashboardLiveProvider.fetch()` and set `DASHBOARD_NEWS_PROVIDER=live`. No endpoint, schema, scoring, or frontend changes required.
+
 ## 9. Environment variables
 
 | Variable | Service | Default | Notes |
@@ -166,6 +180,7 @@ When `False`:
 | `RATE_LIMIT_ANALYZE_REQUESTS` | backend | `5` | Per IP per window |
 | `RATE_LIMIT_ANALYZE_WINDOW_SECONDS` | backend | `3600` | |
 | `CORS_ORIGINS` | backend | `http://localhost:3000` | Comma-separated list |
+| `DASHBOARD_NEWS_PROVIDER` | backend | `fixtures` | `fixtures` or `live` (placeholder) |
 | `NEXT_PUBLIC_API_URL` | frontend | `http://localhost:8000` | Backend base URL |
 
 Backend reads from `backend/.env` (copy from `backend/.env.example`).  
@@ -233,9 +248,10 @@ No frontend test suite exists yet.
 
 ## 14. Next planned phase
 
-**Phase 2 — Reliable News Dashboard** (scaffold built; not fully complete):
+**Phase 2 — Reliable News Dashboard** (scaffold + provider architecture built; live data not connected):
 - Scaffold: fixture-ranked top-5 articles per category, dashboard UI at `/dashboard`. ✓
-- Remaining: Replace `dashboard_articles.json` fixtures with a live/scheduled source provider (NewsAPI, GDELT, Guardian, etc.)
+- Provider architecture: ABC + fixtures + live placeholder + registry + env var. ✓
+- Remaining: Implement `DashboardLiveProvider.fetch()` with a real news API
 - Remaining: Article detail drilldown page
 - Remaining: Persistence/caching layer for fetched articles
 
@@ -248,6 +264,7 @@ Other future work (not scoped): Creator/Influencer Dashboard, batch video analys
 - **Source provider**: Which live news API to integrate for Phase 2 (NewsAPI, GDELT, Guardian, etc.) — not decided.
 - **Auth strategy**: Session vs. JWT; whether Phase 2 requires login or stays public.
 - **Rate limiter scaling**: Replace in-memory limiter with Redis before any multi-worker deployment.
+- **Live news API choice**: `DashboardLiveProvider` is ready to implement — which API to use (NewsAPI, GDELT, Guardian, etc.) is not decided.
 - **Frontend tests**: No test suite exists; Vitest + React Testing Library vs. Playwright E2E not chosen.
 - **OpenAI model pinning**: `gpt-4o-mini` is the default; no fallback model if it is deprecated.
 - **DB migrations**: SQLite + SQLModel with no Alembic setup; schema changes require manual migration.

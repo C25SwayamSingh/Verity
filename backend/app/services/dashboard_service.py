@@ -1,10 +1,14 @@
-import json
-from pathlib import Path
+import logging
+from typing import Optional
 
+from app.core.config import get_settings
+from app.providers.dashboard_base import DashboardNewsProvider
+from app.providers.dashboard_fixtures_provider import DashboardFixturesProvider
+from app.providers.dashboard_registry import get_dashboard_provider
 from app.schemas.dashboard import DashboardArticle, DashboardResponse
 from app.schemas.domain import UserCategory
 
-_FIXTURE_PATH = Path(__file__).parent.parent / "providers" / "fixtures" / "dashboard_articles.json"
+logger = logging.getLogger(__name__)
 
 SUPPORTED_CATEGORIES = {c.value for c in UserCategory if c != UserCategory.other}
 
@@ -25,10 +29,9 @@ def _compute_final_score(article: dict) -> float:
 
 
 class DashboardService:
-    def __init__(self) -> None:
-        with _FIXTURE_PATH.open(encoding="utf-8") as f:
-            raw: list[dict] = json.load(f)
-        self._articles: list[dict] = raw
+    def __init__(self, provider: Optional[DashboardNewsProvider] = None) -> None:
+        self._provider = provider if provider is not None else get_dashboard_provider(get_settings())
+        self._fallback = DashboardFixturesProvider()
 
     def get_top_articles(self, category: str, limit: int = 5) -> DashboardResponse:
         if category not in SUPPORTED_CATEGORIES:
@@ -37,13 +40,16 @@ class DashboardService:
                 f"Supported: {sorted(SUPPORTED_CATEGORIES)}"
             )
 
-        candidates = [a for a in self._articles if a["category"] == category]
-        scored = sorted(
-            candidates,
-            key=lambda a: _compute_final_score(a),
-            reverse=True,
-        )
+        try:
+            candidates = self._provider.fetch(category)
+        except NotImplementedError as exc:
+            logger.warning(
+                "Dashboard provider raised NotImplementedError (%s); falling back to fixtures.",
+                exc,
+            )
+            candidates = self._fallback.fetch(category)
 
+        scored = sorted(candidates, key=_compute_final_score, reverse=True)
         articles = [
             DashboardArticle(
                 **{k: v for k, v in a.items()},
@@ -51,5 +57,4 @@ class DashboardService:
             )
             for a in scored[:limit]
         ]
-
         return DashboardResponse(category=category, articles=articles)
