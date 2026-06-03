@@ -1,0 +1,24 @@
+node_modules/
+.next/
+dist/
+build/
+coverage/
+**/__pycache__/
+*.pyc
+.env
+.env.local
+*.sqlite
+*.db
+uploads/
+videos/
+tmp/
+.cache/
+.DS_Store
+The Giver Vault/
+obsidian/
+docs/brainstorming/
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.zip

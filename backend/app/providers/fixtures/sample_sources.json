@@ -1,0 +1,75 @@
+[
+  {
+    "source_id": "src_ap_001",
+    "title": "Federal Reserve holds rates steady amid inflation concerns",
+    "publisher": "Associated Press",
+    "url": "https://example.com/ap-fed-rates",
+    "snippet": "The Federal Reserve left interest rates unchanged as officials cited persistent inflation pressures and a cautious outlook for the U.S. economy.",
+    "categories": ["domestic_us", "markets_stocks", "breaking"],
+    "keywords": ["federal reserve", "interest rates", "inflation", "economy", "unchanged"]
+  },
+  {
+    "source_id": "src_reuters_002",
+    "title": "U.S. unemployment rate edges lower in latest jobs report",
+    "publisher": "Reuters",
+    "url": "https://example.com/reuters-jobs",
+    "snippet": "The Labor Department reported the unemployment rate fell slightly as employers added jobs in healthcare and technology sectors.",
+    "categories": ["domestic_us", "markets_stocks"],
+    "keywords": ["unemployment", "jobs report", "labor department", "employers", "economy"]
+  },
+  {
+    "source_id": "src_bbc_003",
+    "title": "European leaders discuss security pact at summit",
+    "publisher": "BBC",
+    "url": "https://example.com/bbc-eu-summit",
+    "snippet": "European Union leaders met to discuss a new security framework and continued support for regional defense coordination.",
+    "categories": ["foreign_world", "breaking"],
+    "keywords": ["european union", "security", "summit", "defense", "leaders"]
+  },
+  {
+    "source_id": "src_techcrunch_004",
+    "title": "Major AI labs announce updated safety guidelines",
+    "publisher": "TechCrunch",
+    "url": "https://example.com/tc-ai-safety",
+    "snippet": "Leading artificial intelligence companies published revised safety guidelines emphasizing transparency and third-party evaluation of models.",
+    "categories": ["tech_ai", "domestic_us"],
+    "keywords": ["artificial intelligence", "safety guidelines", "transparency", "models", "evaluation"]
+  },
+  {
+    "source_id": "src_wsj_005",
+    "title": "Stock markets rally after earnings beat expectations",
+    "publisher": "Wall Street Journal",
+    "url": "https://example.com/wsj-rally",
+    "snippet": "U.S. stock indexes rose after several large companies reported quarterly earnings that exceeded analyst expectations.",
+    "categories": ["markets_stocks", "domestic_us"],
+    "keywords": ["stock market", "earnings", "rally", "indexes", "analyst"]
+  },
+  {
+    "source_id": "src_nyt_006",
+    "title": "Congress debates new infrastructure spending package",
+    "publisher": "New York Times",
+    "url": "https://example.com/nyt-infrastructure",
+    "snippet": "Lawmakers in Washington are debating a bipartisan infrastructure package focused on roads, bridges, and broadband expansion.",
+    "categories": ["domestic_us", "breaking"],
+    "keywords": ["congress", "infrastructure", "bipartisan", "spending", "broadband"]
+  },
+  {
+    "source_id": "src_guardian_007",
+    "title": "Climate scientists warn of record temperatures globally",
+    "publisher": "The Guardian",
+    "url": "https://example.com/guardian-climate",
+    "snippet": "Researchers reported global average temperatures reached new highs, with scientists urging accelerated emissions reductions.",
+    "categories": ["foreign_world", "breaking"],
+    "keywords": ["climate", "temperatures", "emissions", "scientists", "global"]
+  },
+  {
+    "source_id": "src_contradict_008",
+    "title": "Analysts dispute jobs report interpretation",
+    "publisher": "Financial Times",
+    "url": "https://example.com/ft-jobs-dispute",
+    "snippet": "Some economists argue the latest jobs figures overstate labor market strength and mask ongoing hiring slowdowns in manufacturing.",
+    "categories": ["domestic_us", "markets_stocks"],
+    "keywords": ["jobs report", "economists", "labor market", "hiring", "manufacturing"],
+    "stance": "contradictory"
+  }
+]
