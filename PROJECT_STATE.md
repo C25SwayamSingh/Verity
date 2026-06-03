@@ -19,13 +19,14 @@ Language is deliberately non-verdictive ("low corroboration", "notable framing")
 - Frontend: Next.js 15 App Router, Tailwind CSS.
 - No auth, billing, or live data sources.
 
-**Phase 2 (Reliable News Dashboard scaffold) — IN PROGRESS (fixture-only scaffold + provider architecture complete).**
+**Phase 2 (Reliable News Dashboard) — IN PROGRESS (scaffold + provider architecture + live RSS provider complete).**
 - `GET /v1/dashboard/articles?category=<cat>` endpoint live.
 - Fixture-ranked top-5 articles per category.
 - Dashboard UI at `/dashboard` with category dropdown.
 - Provider interface (`DashboardNewsProvider` ABC) separates data sourcing from scoring.
-- `DASHBOARD_NEWS_PROVIDER=fixtures` (default) or `live` (placeholder; falls back to fixtures).
-- No live news APIs, no auth, no drilldown yet.
+- `DASHBOARD_NEWS_PROVIDER=fixtures` (default) or `live` (real RSS, no API key, auto-fallback to fixtures on failure).
+- Live provider reads public RSS feeds: BBC News, NPR, BBC World, Reuters Business, TechCrunch.
+- No auth, no drilldown, no article persistence yet.
 
 ---
 
@@ -165,9 +166,11 @@ When `False`:
 - `dashboard_live_provider.py` — placeholder; `fetch()` raises `NotImplementedError`; ready for real API implementation
 - `dashboard_registry.py` — `get_dashboard_provider(settings)` factory; maps env var to provider class
 
-**Flow**: `main.py` → `DashboardService()` → `get_dashboard_provider(settings)` → returns provider → `service.get_top_articles()` calls `provider.fetch(category)`. If the provider raises `NotImplementedError`, the service logs a warning and falls back to `DashboardFixturesProvider`.
+**Flow**: `main.py` → `DashboardService()` → `get_dashboard_provider(settings)` → returns provider → `service.get_top_articles()` calls `provider.fetch(category)`. If the provider raises `DashboardProviderError` or `NotImplementedError`, the service logs a warning and falls back to `DashboardFixturesProvider`.
 
-**To swap to live**: implement `DashboardLiveProvider.fetch()` and set `DASHBOARD_NEWS_PROVIDER=live`. No endpoint, schema, scoring, or frontend changes required.
+**Live provider** (`DashboardLiveProvider`, Phase 2.7): fetches public RSS feeds via `httpx`, parses with `feedparser`. Estimates `credibility_score` from source name, `freshness_score` from publication age. Fixed defaults for `importance` / `relevance` / `source_diversity` until a scoring model is added.
+
+**To enable live**: set `DASHBOARD_NEWS_PROVIDER=live` in `.env` and restart. No endpoint, schema, scoring, or frontend changes required. Falls back to fixtures automatically on any network/parse failure.
 
 ## 9. Environment variables
 
@@ -251,7 +254,7 @@ No frontend test suite exists yet.
 **Phase 2 — Reliable News Dashboard** (scaffold + provider architecture built; live data not connected):
 - Scaffold: fixture-ranked top-5 articles per category, dashboard UI at `/dashboard`. ✓
 - Provider architecture: ABC + fixtures + live placeholder + registry + env var. ✓
-- Remaining: Implement `DashboardLiveProvider.fetch()` with a real news API
+- Remaining: Improve live provider score estimation (importance, relevance, source diversity are fixed defaults)
 - Remaining: Article detail drilldown page
 - Remaining: Persistence/caching layer for fetched articles
 
@@ -264,7 +267,8 @@ Other future work (not scoped): Creator/Influencer Dashboard, batch video analys
 - **Source provider**: Which live news API to integrate for Phase 2 (NewsAPI, GDELT, Guardian, etc.) — not decided.
 - **Auth strategy**: Session vs. JWT; whether Phase 2 requires login or stays public.
 - **Rate limiter scaling**: Replace in-memory limiter with Redis before any multi-worker deployment.
-- **Live news API choice**: `DashboardLiveProvider` is ready to implement — which API to use (NewsAPI, GDELT, Guardian, etc.) is not decided.
+- **Live provider score quality**: `importance_score`, `relevance_score`, `source_diversity_score` are fixed defaults in the live provider. Real scoring requires NLP or a paid signals API.
+- **RSS feed reliability**: public RSS URLs (BBC, NPR, Reuters, TechCrunch) can change or go offline; no monitoring or fallback-URL list exists yet.
 - **Frontend tests**: No test suite exists; Vitest + React Testing Library vs. Playwright E2E not chosen.
 - **OpenAI model pinning**: `gpt-4o-mini` is the default; no fallback model if it is deprecated.
 - **DB migrations**: SQLite + SQLModel with no Alembic setup; schema changes require manual migration.

@@ -2,7 +2,7 @@ import logging
 from typing import Optional
 
 from app.core.config import get_settings
-from app.providers.dashboard_base import DashboardNewsProvider
+from app.providers.dashboard_base import DashboardNewsProvider, DashboardProviderError
 from app.providers.dashboard_fixtures_provider import DashboardFixturesProvider
 from app.providers.dashboard_registry import get_dashboard_provider
 from app.schemas.dashboard import DashboardArticle, DashboardResponse
@@ -42,9 +42,10 @@ class DashboardService:
 
         try:
             candidates = self._provider.fetch(category)
-        except NotImplementedError as exc:
+        except (NotImplementedError, DashboardProviderError) as exc:
             logger.warning(
-                "Dashboard provider raised NotImplementedError (%s); falling back to fixtures.",
+                "Dashboard provider failed (%s: %s); falling back to fixtures.",
+                type(exc).__name__,
                 exc,
             )
             candidates = self._fallback.fetch(category)

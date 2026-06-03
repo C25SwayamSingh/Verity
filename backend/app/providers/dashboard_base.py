@@ -1,6 +1,10 @@
 from abc import ABC, abstractmethod
 
 
+class DashboardProviderError(Exception):
+    """Raised by a DashboardNewsProvider when fetching or parsing fails at runtime."""
+
+
 class DashboardNewsProvider(ABC):
     """
     Abstract base for all dashboard news providers.
@@ -13,6 +17,9 @@ class DashboardNewsProvider(ABC):
         importance_score, credibility_score, relevance_score, freshness_score,
         source_diversity_score, framing_label, key_claims, support_summary,
         contradiction_warnings, why_selected
+
+    On any retrieval or parse failure, raise ``DashboardProviderError``.
+    DashboardService will catch it and fall back to DashboardFixturesProvider.
     """
 
     @abstractmethod
