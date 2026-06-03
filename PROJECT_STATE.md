@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — The Giver
 
-> Checkpoint for Cursor agents. Last updated: 2026-06-03. Phase 1 complete. Phase 2 scaffold + live RSS provider complete. 41 backend tests green; frontend builds clean.
+> Checkpoint for Cursor agents. Last updated: 2026-06-03. Phase 1 complete. Phase 2 complete (dashboard + live RSS + detail drilldown). 53 backend tests green; frontend builds clean (6 routes).
 
 ---
 
@@ -19,14 +19,15 @@ Language is deliberately non-verdictive ("low corroboration", "notable framing")
 - Frontend: Next.js 15 App Router, Tailwind CSS.
 - No auth, billing, or live data sources.
 
-**Phase 2 (Reliable News Dashboard) — IN PROGRESS (scaffold + provider architecture + live RSS provider complete).**
-- `GET /v1/dashboard/articles?category=<cat>` endpoint live.
-- Fixture-ranked top-5 articles per category.
-- Dashboard UI at `/dashboard` with category dropdown.
-- Provider interface (`DashboardNewsProvider` ABC) separates data sourcing from scoring.
-- `DASHBOARD_NEWS_PROVIDER=fixtures` (default) or `live` (real RSS, no API key, auto-fallback to fixtures on failure).
-- Live provider reads public RSS feeds: BBC News, NPR, BBC World, Reuters Business, TechCrunch.
-- No auth, no drilldown, no article persistence yet.
+**Phase 2 (Reliable News Dashboard) — COMPLETE.**
+- `GET /v1/dashboard/articles?category=<cat>` — top-5 endpoint. ✓
+- `GET /v1/dashboard/articles/{article_id}` — detail endpoint. ✓
+- Dashboard list UI at `/dashboard` with category dropdown. ✓
+- Article detail UI at `/dashboard/[id]`. ✓
+- Provider interface (`DashboardNewsProvider` ABC) separates data sourcing from scoring. ✓
+- `DASHBOARD_NEWS_PROVIDER=fixtures` (default) or `live` (real RSS, no API key, auto-fallback). ✓
+- Live provider reads public RSS feeds: BBC News, NPR, BBC World, Reuters Business, TechCrunch. ✓
+- No auth, no billing, no article persistence.
 
 ---
 
@@ -66,7 +67,8 @@ All component scores are 0–1. Computed dynamically in `DashboardService`; stor
 | `GET` | `/health` | Health check → `{"status":"ok"}` |
 | `POST` | `/v1/analyze` | Run analysis. Body: `AnalyzeRequest`. Returns `AnalysisDetailResponse`. Rate-limited by IP. |
 | `GET` | `/v1/analysis/{analysis_id}` | Fetch previously stored analysis by UUID. Returns 404 if not found. |
-| `GET` | `/v1/dashboard/articles?category=<cat>` | Returns top 5 fixture-ranked articles for a supported category. Returns 422 for unsupported categories (including `other`). |
+| `GET` | `/v1/dashboard/articles?category=<cat>` | Returns top 5 scored articles for a supported category. Returns 422 for unsupported categories (including `other`). |
+| `GET` | `/v1/dashboard/articles/{article_id}` | Returns one article by ID. Returns 404 if not found. Looks up via primary provider then fixtures fallback. |
 
 **Request schema (`AnalyzeRequest`)**
 ```
@@ -87,13 +89,14 @@ analysis_id, summary, key_takeaways[], claims[], framing, neutral_rewrite, eligi
 **Pages** (`frontend/app/`)
 - `/` (`page.tsx`) — text input form, category selector, analyze button
 - `/results/[id]` — renders stored analysis fetched from `GET /v1/analysis/{id}`
-- `/dashboard` (`dashboard/page.tsx`) — Reliable News Dashboard; category dropdown + top-5 article cards
+- `/dashboard` (`dashboard/page.tsx`) — Reliable News Dashboard; category dropdown + top-5 article cards with "View full detail →" links
+- `/dashboard/[id]` (`dashboard/[id]/page.tsx`) — Article detail page; all scores, framing, claims, source corroboration, back link
 - `layout.tsx` — root layout with nav links (Core Checker / Dashboard)
 
 **Components** (`frontend/components/`)
 - `ArticleInput.tsx` — textarea + content-type + category dropdowns
 - `ClaimCard.tsx` — single claim with type badge, corroboration status, sources
-- `DashboardArticleCard.tsx` — ranked article card with scores, framing label, claims, warnings
+- `DashboardArticleCard.tsx` — ranked article card with scores, framing label, claims, warnings, "View full detail →" link
 - `ErrorState.tsx` — error display
 - `FramingPanel.tsx` — framing indicators list + overall label
 - `LoadingState.tsx` — loading spinner
@@ -102,7 +105,7 @@ analysis_id, summary, key_takeaways[], claims[], framing, neutral_rewrite, eligi
 - `SourceAlignmentPanel.tsx` — supporting / contradicting source cards
 
 **Lib** (`frontend/lib/`)
-- `api.ts` — typed fetch wrappers for backend (includes `getDashboardArticles`)
+- `api.ts` — typed fetch wrappers for backend (includes `getDashboardArticles`, `getDashboardArticle`)
 - `types.ts` — TypeScript mirrors of backend schemas (includes `DashboardArticle`, `DashboardResponse`)
 - `color.ts` — corroboration/framing color utilities
 
@@ -166,7 +169,9 @@ When `False`:
 - `dashboard_live_provider.py` — live RSS implementation (BBC, NPR, Reuters, TechCrunch); raises `DashboardProviderError` on failure
 - `dashboard_registry.py` — `get_dashboard_provider(settings)` factory; maps env var to provider class
 
-**Flow**: `main.py` → `DashboardService()` → `get_dashboard_provider(settings)` → returns provider → `service.get_top_articles()` calls `provider.fetch(category)`. If the provider raises `DashboardProviderError` or `NotImplementedError`, the service logs a warning and falls back to `DashboardFixturesProvider`.
+**Flow (list)**: `main.py` → `DashboardService.get_top_articles(category)` → `provider.fetch(category)` → score + sort → top 5. Falls back to fixtures on `DashboardProviderError` / `NotImplementedError`.
+
+**Flow (detail)**: `main.py` → `DashboardService.get_article_by_id(id)` → `provider.fetch_by_id(id)` → falls back to fixtures if primary provider raises or returns None → 404 if not found.
 
 **Live provider** (`DashboardLiveProvider`, Phase 2.7): fetches public RSS feeds via `httpx`, parses with `feedparser`. Estimates `credibility_score` from source name, `freshness_score` from publication age. Fixed defaults for `importance` / `relevance` / `source_diversity` until a scoring model is added.
 
@@ -229,7 +234,7 @@ pytest -q
 #   tests/test_claims.py               — claim extraction/typing
 #   tests/test_rate_limit.py           — rate limiter logic
 #   tests/test_scoring.py              — scoring utilities
-#   tests/test_dashboard.py            — dashboard endpoint, scoring formula, sorting, provider architecture (41 total)
+#   tests/test_dashboard.py            — endpoint, scoring, sorting, provider arch, detail drilldown (53 total)
 ```
 
 No frontend test suite exists yet.
@@ -251,13 +256,12 @@ No frontend test suite exists yet.
 
 ## 14. Next planned phase
 
-**Phase 2 — Reliable News Dashboard** (scaffold + live RSS provider complete; refinement remaining):
-- Scaffold: fixture-ranked top-5 articles per category, dashboard UI at `/dashboard`. ✓
-- Provider architecture: ABC + fixtures + live RSS provider + registry + env var. ✓
-- Live provider: BBC News, NPR, BBC World, Reuters Business, TechCrunch RSS (no API key). ✓
-- Remaining: Improve live provider score estimation (importance, relevance, source diversity are fixed defaults)
-- Remaining: Article detail drilldown page
-- Remaining: Persistence/caching layer for fetched articles
+**Phase 3 — not yet started.** Candidates:
+- Improve live provider score estimation (importance/relevance/diversity are fixed defaults today)
+- Persistent article caching (live articles vanish on restart)
+- Creator/Influencer Dashboard
+- Auth / billing
+- Browser extension
 
 Other future work (not scoped): Creator/Influencer Dashboard, batch video analysis, browser extension, billing, mobile app.
 

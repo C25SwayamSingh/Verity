@@ -8,6 +8,8 @@ from app.providers.dashboard_registry import get_dashboard_provider
 from app.schemas.dashboard import DashboardArticle, DashboardResponse
 from app.schemas.domain import UserCategory
 
+
+
 logger = logging.getLogger(__name__)
 
 SUPPORTED_CATEGORIES = {c.value for c in UserCategory if c != UserCategory.other}
@@ -59,3 +61,31 @@ class DashboardService:
             for a in scored[:limit]
         ]
         return DashboardResponse(category=category, articles=articles)
+
+    def get_article_by_id(self, article_id: str) -> Optional[DashboardArticle]:
+        """Return a single article by ID, or None if not found.
+
+        Tries the configured provider first; falls back to the fixtures provider
+        if the primary provider does not support ID lookup or raises an error.
+        """
+        raw: Optional[dict] = None
+
+        try:
+            raw = self._provider.fetch_by_id(article_id)
+        except (NotImplementedError, DashboardProviderError) as exc:
+            logger.debug(
+                "Primary provider cannot fetch by ID (%s: %s); trying fixtures fallback.",
+                type(exc).__name__,
+                exc,
+            )
+
+        if raw is None:
+            raw = self._fallback.fetch_by_id(article_id)
+
+        if raw is None:
+            return None
+
+        return DashboardArticle(
+            **{k: v for k, v in raw.items()},
+            final_score=_compute_final_score(raw),
+        )

@@ -360,3 +360,125 @@ def test_service_provider_is_abc_subclass():
     assert issubclass(DashboardLiveProvider, DashboardNewsProvider)
 
 
+# ---------------------------------------------------------------------------
+# 7. Article detail endpoint — GET /v1/dashboard/articles/{article_id}
+# ---------------------------------------------------------------------------
+
+def _first_fixture_article_id() -> str:
+    """Return a known valid fixture article ID for use in tests."""
+    provider = DashboardFixturesProvider()
+    return provider.fetch("breaking")[0]["id"]
+
+
+def test_detail_endpoint_returns_article():
+    article_id = _first_fixture_article_id()
+    r = client.get(f"/v1/dashboard/articles/{article_id}")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["id"] == article_id
+
+
+def test_detail_endpoint_returns_all_fields():
+    article_id = _first_fixture_article_id()
+    r = client.get(f"/v1/dashboard/articles/{article_id}")
+    assert r.status_code == 200
+    article = r.json()
+    required_fields = [
+        "id", "headline", "source", "category", "published_at",
+        "neutral_summary", "importance_score", "credibility_score",
+        "relevance_score", "freshness_score", "source_diversity_score",
+        "final_score", "framing_label", "key_claims",
+        "support_summary", "contradiction_warnings", "why_selected",
+    ]
+    for field in required_fields:
+        assert field in article, f"Missing field: {field}"
+
+
+def test_detail_endpoint_final_score_correct():
+    article_id = _first_fixture_article_id()
+    r = client.get(f"/v1/dashboard/articles/{article_id}")
+    article = r.json()
+    expected = round(
+        0.35 * article["importance_score"]
+        + 0.30 * article["credibility_score"]
+        + 0.20 * article["relevance_score"]
+        + 0.10 * article["freshness_score"]
+        + 0.05 * article["source_diversity_score"],
+        4,
+    )
+    assert abs(article["final_score"] - expected) < 1e-3
+
+
+def test_detail_endpoint_unknown_id_returns_404():
+    r = client.get("/v1/dashboard/articles/does_not_exist_xyz")
+    assert r.status_code == 404
+
+
+def test_detail_endpoint_does_not_break_top5():
+    """Fetching an article by ID must not affect the top-5 list endpoint."""
+    article_id = _first_fixture_article_id()
+    client.get(f"/v1/dashboard/articles/{article_id}")
+    r = client.get("/v1/dashboard/articles?category=breaking")
+    assert r.status_code == 200
+    assert len(r.json()["articles"]) == 5
+
+
+def test_detail_endpoint_ids_across_categories():
+    """Every article returned by the top-5 endpoint must be retrievable by ID."""
+    for cat in SUPPORTED_CATEGORIES:
+        r = client.get(f"/v1/dashboard/articles?category={cat}")
+        for article in r.json()["articles"]:
+            detail = client.get(f"/v1/dashboard/articles/{article['id']}")
+            assert detail.status_code == 200, (
+                f"Could not fetch article '{article['id']}' from category '{cat}'"
+            )
+            assert detail.json()["id"] == article["id"]
+
+
+# ---------------------------------------------------------------------------
+# 8. fetch_by_id provider-level tests
+# ---------------------------------------------------------------------------
+
+def test_fixtures_provider_fetch_by_id_returns_article():
+    provider = DashboardFixturesProvider()
+    article_id = provider.fetch("breaking")[0]["id"]
+    result = provider.fetch_by_id(article_id)
+    assert result is not None
+    assert result["id"] == article_id
+
+
+def test_fixtures_provider_fetch_by_id_unknown_returns_none():
+    provider = DashboardFixturesProvider()
+    assert provider.fetch_by_id("nonexistent_id") is None
+
+
+def test_live_provider_fetch_by_id_raises_not_implemented():
+    provider = DashboardLiveProvider()
+    with pytest.raises(NotImplementedError):
+        provider.fetch_by_id("any_id")
+
+
+def test_service_get_article_by_id_found():
+    service = DashboardService(provider=DashboardFixturesProvider())
+    article_id = DashboardFixturesProvider().fetch("tech_ai")[0]["id"]
+    result = service.get_article_by_id(article_id)
+    assert result is not None
+    assert result.id == article_id
+
+
+def test_service_get_article_by_id_not_found():
+    service = DashboardService(provider=DashboardFixturesProvider())
+    assert service.get_article_by_id("definitely_not_real") is None
+
+
+def test_service_get_article_by_id_falls_back_to_fixtures_when_provider_raises():
+    """When primary provider cannot fetch by ID, service falls back to fixtures."""
+    provider = _make_live_provider_with_mock_feed()
+    service = DashboardService(provider=provider)
+    # Live provider can't do fetch_by_id; fixture article ID should still resolve
+    article_id = DashboardFixturesProvider().fetch("breaking")[0]["id"]
+    result = service.get_article_by_id(article_id)
+    assert result is not None
+    assert result.id == article_id
+
+

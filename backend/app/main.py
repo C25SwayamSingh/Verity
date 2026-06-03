@@ -9,7 +9,7 @@ from app.core.logging import setup_logging
 from app.db.session import get_session, init_db
 from app.middleware.rate_limit_middleware import AnalyzeRateLimitMiddleware
 from app.schemas.api import AnalyzeRequest, AnalysisDetailResponse, HealthResponse
-from app.schemas.dashboard import DashboardResponse
+from app.schemas.dashboard import DashboardArticle, DashboardResponse
 from app.services.dashboard_service import DashboardService, SUPPORTED_CATEGORIES
 from app.services.ingest_service import IngestService
 
@@ -75,3 +75,11 @@ def get_dashboard_articles(category: str = "breaking"):
             detail=f"Unsupported category '{category}'. Supported: {sorted(SUPPORTED_CATEGORIES)}",
         )
     return _dashboard.get_top_articles(category)
+
+
+@app.get("/v1/dashboard/articles/{article_id}", response_model=DashboardArticle)
+def get_dashboard_article(article_id: str):
+    result = _dashboard.get_article_by_id(article_id)
+    if result is None:
+        raise HTTPException(status_code=404, detail=f"Article '{article_id}' not found.")
+    return result

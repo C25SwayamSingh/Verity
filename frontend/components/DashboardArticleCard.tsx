@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { DashboardArticle } from "@/lib/types";
 
 interface Props {
@@ -177,6 +178,16 @@ export default function DashboardArticleCard({ article, rank }: Props) {
           <span className="font-medium text-giver-ink not-italic">Why selected: </span>
           {article.why_selected}
         </p>
+
+        {/* Detail link */}
+        <div className="pt-1">
+          <Link
+            href={`/dashboard/${article.id}`}
+            className="text-xs font-medium text-giver-accent hover:underline"
+          >
+            View full detail →
+          </Link>
+        </div>
       </div>
     </article>
   );

@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from typing import Optional
 
 from app.providers.dashboard_base import DashboardNewsProvider
 
@@ -15,3 +16,9 @@ class DashboardFixturesProvider(DashboardNewsProvider):
 
     def fetch(self, category: str) -> list[dict]:
         return [a for a in self._articles if a["category"] == category]
+
+    def fetch_by_id(self, article_id: str) -> Optional[dict]:
+        for a in self._articles:
+            if a["id"] == article_id:
+                return a
+        return None

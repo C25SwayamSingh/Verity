@@ -1,6 +1,7 @@
 import type {
   AnalyzeRequest,
   AnalyzeResponse,
+  DashboardArticle,
   DashboardCategory,
   DashboardResponse,
   RateLimitError,
@@ -52,6 +53,22 @@ export async function getAnalysis(analysisId: string): Promise<AnalyzeResponse> 
   });
   if (!res.ok) {
     throw new ApiError("Analysis not found", res.status);
+  }
+  return res.json();
+}
+
+export async function getDashboardArticle(articleId: string): Promise<DashboardArticle> {
+  const res = await fetch(
+    `${API_URL}/v1/dashboard/articles/${encodeURIComponent(articleId)}`,
+    { cache: "no-store" },
+  );
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError(
+      (body as { detail?: string }).detail ?? "Article not found",
+      res.status,
+      body,
+    );
   }
   return res.json();
 }
