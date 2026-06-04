@@ -117,11 +117,12 @@ class CreatorMetricsService:
         self,
         post: dict,
         category: str,
-        content_type: str = "article",
+        content_type: Optional[str] = None,
     ) -> AnalyzeResponse:
+        ct = content_type or post.get("content_type") or "article"
         return self._ingest.run_analysis(
             text=post_content(post),
-            content_type=content_type,
+            content_type=ct,
             user_selected_category=category,
         )
 

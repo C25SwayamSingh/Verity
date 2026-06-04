@@ -9,7 +9,13 @@ from app.core.logging import setup_logging
 from app.db.session import get_session, init_db
 from app.middleware.rate_limit_middleware import AnalyzeRateLimitMiddleware
 from app.schemas.api import AnalyzeRequest, AnalysisDetailResponse, HealthResponse
-from app.schemas.creator import CreatorListResponse, CreatorOverview, CreatorPostsResponse
+from app.schemas.creator import (
+    CreateDemoCreatorPostRequest,
+    CreateDemoCreatorPostResponse,
+    CreatorListResponse,
+    CreatorOverview,
+    CreatorPostsResponse,
+)
 from app.schemas.dashboard import DashboardArticle, DashboardResponse
 from app.services.creator_service import CreatorService
 from app.services.dashboard_service import DashboardService, SUPPORTED_CATEGORIES
@@ -89,21 +95,38 @@ def get_dashboard_article(article_id: str):
 
 
 @app.get("/v1/creators", response_model=CreatorListResponse)
-def list_creators():
-    return _creators.list_creators()
+def list_creators(session: Session = Depends(get_session)):
+    return _creators.list_creators(session)
 
 
 @app.get("/v1/creators/{creator_id}", response_model=CreatorOverview)
-def get_creator(creator_id: str):
-    result = _creators.get_creator(creator_id)
+def get_creator(creator_id: str, session: Session = Depends(get_session)):
+    result = _creators.get_creator(session, creator_id)
     if result is None:
         raise HTTPException(status_code=404, detail=f"Creator '{creator_id}' not found.")
     return result
 
 
 @app.get("/v1/creators/{creator_id}/posts", response_model=CreatorPostsResponse)
-def get_creator_posts(creator_id: str):
-    result = _creators.get_creator_posts(creator_id)
+def get_creator_posts(creator_id: str, session: Session = Depends(get_session)):
+    result = _creators.get_creator_posts(session, creator_id)
+    if result is None:
+        raise HTTPException(status_code=404, detail=f"Creator '{creator_id}' not found.")
+    return result
+
+
+@app.post(
+    "/v1/creators/{creator_id}/posts/demo",
+    response_model=CreateDemoCreatorPostResponse,
+    status_code=201,
+)
+def add_demo_creator_post(
+    creator_id: str,
+    request: CreateDemoCreatorPostRequest,
+    session: Session = Depends(get_session),
+):
+    """Add or update demo creator post content and run integrity analysis."""
+    result = _creators.add_demo_post(session, creator_id, request)
     if result is None:
         raise HTTPException(status_code=404, detail=f"Creator '{creator_id}' not found.")
     return result

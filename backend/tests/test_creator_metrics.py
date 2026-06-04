@@ -127,7 +127,7 @@ def test_creator_metrics_match_aggregated_posts():
 
 def test_creator_metrics_derived_from_analyzed_post_content():
     service = CreatorService()
-    posts = [p for p in service._posts if p["creator_id"] == KNOWN_CREATOR_ID]
+    posts = [p for p in service._fixture_posts if p["creator_id"] == KNOWN_CREATOR_ID]
     assert posts
     analysis = service._metrics.analyze_post(posts[0], "tech_ai")
     assert analysis.claims

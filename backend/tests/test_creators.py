@@ -12,6 +12,9 @@ Covers:
 import pytest
 from fastapi.testclient import TestClient
 
+from sqlmodel import Session
+
+from app.db.session import engine
 from app.main import app
 from app.services.creator_service import CreatorService
 
@@ -273,26 +276,30 @@ def test_creator_posts_404_has_detail_message():
 
 def test_service_list_creators_returns_all():
     service = CreatorService()
-    result = service.list_creators()
+    with Session(engine) as session:
+        result = service.list_creators(session)
     assert len(result.creators) >= 1
 
 
 def test_service_get_creator_returns_overview():
     service = CreatorService()
-    result = service.get_creator(KNOWN_CREATOR_ID)
+    with Session(engine) as session:
+        result = service.get_creator(session, KNOWN_CREATOR_ID)
     assert result is not None
     assert result.creator_id == KNOWN_CREATOR_ID
 
 
 def test_service_get_creator_unknown_returns_none():
     service = CreatorService()
-    result = service.get_creator(UNKNOWN_CREATOR_ID)
+    with Session(engine) as session:
+        result = service.get_creator(session, UNKNOWN_CREATOR_ID)
     assert result is None
 
 
 def test_service_get_creator_posts_returns_posts():
     service = CreatorService()
-    result = service.get_creator_posts(KNOWN_CREATOR_ID)
+    with Session(engine) as session:
+        result = service.get_creator_posts(session, KNOWN_CREATOR_ID)
     assert result is not None
     assert result.creator_id == KNOWN_CREATOR_ID
     assert len(result.posts) >= 1
@@ -300,13 +307,15 @@ def test_service_get_creator_posts_returns_posts():
 
 def test_service_get_creator_posts_unknown_returns_none():
     service = CreatorService()
-    result = service.get_creator_posts(UNKNOWN_CREATOR_ID)
+    with Session(engine) as session:
+        result = service.get_creator_posts(session, UNKNOWN_CREATOR_ID)
     assert result is None
 
 
 def test_service_creator_overview_score_fields_valid():
     service = CreatorService()
-    result = service.get_creator(KNOWN_CREATOR_ID)
+    with Session(engine) as session:
+        result = service.get_creator(session, KNOWN_CREATOR_ID)
     assert result is not None
     for field in METRIC_SCORE_FIELDS:
         val = getattr(result, field)
@@ -315,9 +324,10 @@ def test_service_creator_overview_score_fields_valid():
 
 def test_service_all_posts_belong_to_correct_creator():
     service = CreatorService()
-    result = service.list_creators()
-    for item in result.creators:
-        posts_result = service.get_creator_posts(item.creator_id)
-        assert posts_result is not None
-        for post in posts_result.posts:
-            assert post.creator_id == item.creator_id
+    with Session(engine) as session:
+        result = service.list_creators(session)
+        for item in result.creators:
+            posts_result = service.get_creator_posts(session, item.creator_id)
+            assert posts_result is not None
+            for post in posts_result.posts:
+                assert post.creator_id == item.creator_id

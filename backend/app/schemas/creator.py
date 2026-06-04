@@ -1,3 +1,5 @@
+from typing import Literal, Optional
+
 from pydantic import BaseModel, Field
 
 
@@ -80,3 +82,25 @@ class CreatorPost(BaseModel):
 class CreatorPostsResponse(BaseModel):
     creator_id: str
     posts: list[CreatorPost]
+
+
+class CreateDemoCreatorPostRequest(BaseModel):
+    """Manual demo workflow: paste transcript or article text for a creator."""
+
+    title: str = Field(min_length=1)
+    content: str = Field(
+        min_length=80,
+        description="Full post, article, or transcript text to analyze (minimum 80 characters).",
+    )
+    topic: str = Field(min_length=1)
+    platform: str = "manual"
+    published_at: Optional[str] = None
+    source_url: str = ""
+    content_type: Literal["article", "transcript", "pasted_text"] = "transcript"
+    post_id: Optional[str] = None
+
+
+class CreateDemoCreatorPostResponse(BaseModel):
+    post: CreatorPost
+    message: str
+    analysis_persisted: bool = True

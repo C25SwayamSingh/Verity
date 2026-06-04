@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — The Giver
 
-> Checkpoint for Cursor agents. Last updated: 2026-06-03. Phase 1 complete. Phase 2 complete. Phase 3 scaffold complete. Phase 3.5 complete (creator metrics derived from IngestService analysis pipeline). 100 backend tests green; frontend builds clean (6 routes).
+> Checkpoint for Cursor agents. Last updated: 2026-06-04. Phase 1–2 complete. Phase 3 through 3.8 complete (creator demo pack + outreach readiness). 106 backend tests green; frontend builds clean (6 routes). Phase 3.8: docs only — tests/build not re-run.
 
 ---
 
@@ -34,7 +34,30 @@ Language is deliberately non-verdictive ("low corroboration", "notable framing")
 - `CreatorMetricsService` — runs fixture post text through analysis; aggregates integrity metrics. ✓
 - `CreatorService` — overview/list/posts metrics derived at request time; `metrics_source: derived_from_analysis`. ✓
 - Post text built from optional `content` field or title + summary + fixture claim text. ✓
-- 12 new backend tests in `test_creator_metrics.py`; 100 tests total green. ✓
+- 12 new backend tests in `test_creator_metrics.py`. ✓
+
+**Phase 3.6 (Creator demo pipeline + persisted analyses) — COMPLETE.**
+- SQLite tables: `creator_post_records`, `creator_post_analysis_records`. ✓
+- Content-hash cache: reuse persisted analysis; recompute when post content changes. ✓
+- `POST /v1/creators/{creator_id}/posts/demo` — manual demo workflow for transcripts/posts. ✓
+- Demo guide: `docs/CREATOR_DEMO_WORKFLOW.md`. ✓
+- 6 new backend tests in `test_creator_persistence.py`; 106 tests total green. ✓
+
+**Phase 3.7 (Creator dashboard demo polish) — COMPLETE.**
+- `/creators` and `/creators/[id]` UI polished for stakeholder demos. ✓
+- Per-metric “what this means” helper copy (claim support, contradiction, low corroboration, source alignment, diversity, framing). ✓
+- Sample integrity report layout on detail page (at-a-glance, transparency summary, claims needing attention). ✓
+- Required disclaimer: measures alignment/support/framing; does not determine absolute truth. ✓
+- Improved loading, empty, and error states with retry on creator pages. ✓
+- No backend or API shape changes. ✓
+
+**Phase 3.8 (Creator demo pack + outreach readiness) — COMPLETE.**
+- `docs/CREATOR_OUTREACH_PACK.md` — creator-facing copy (measures / does not measure / why use / trust), outreach DM/email templates, stakeholder narrative, FAQ, pre-outreach checklist. ✓
+- `docs/CREATOR_DEMO_SCRIPT.md` — 8–10 min live demo script (contrast path creator-003 vs creator-004), language cheat sheet, troubleshooting. ✓
+- `docs/DEMO_CREATOR_PROFILES.md` — guide to four sample integrity profiles and when to use each in demos. ✓
+- `docs/CREATOR_DEMO_WORKFLOW.md` — updated with Phase 3.8 doc index, recommended demo flow, deep links. ✓
+- No backend, frontend, or fixture changes. ✓
+- Tests/build: not re-run (documentation-only phase). ✓
 
 **Phase 2 (Reliable News Dashboard) — COMPLETE.**
 - `GET /v1/dashboard/articles?category=<cat>` — top-5 endpoint. ✓
@@ -90,6 +113,7 @@ All component scores are 0–1. Computed dynamically in `DashboardService`; stor
 | `GET` | `/v1/creators` | Returns list of creator profiles (`CreatorListResponse`). |
 | `GET` | `/v1/creators/{creator_id}` | Returns creator overview with all integrity metrics (`CreatorOverview`). 404 if not found. |
 | `GET` | `/v1/creators/{creator_id}/posts` | Returns analyzed posts for a creator (`CreatorPostsResponse`). 404 if creator not found. |
+| `POST` | `/v1/creators/{creator_id}/posts/demo` | Add/update demo post content; runs analysis; persists result. 404 if creator not found. |
 
 **Request schema (`AnalyzeRequest`)**
 ```
@@ -112,8 +136,8 @@ analysis_id, summary, key_takeaways[], claims[], framing, neutral_rewrite, eligi
 - `/results/[id]` — renders stored analysis fetched from `GET /v1/analysis/{id}`
 - `/dashboard` (`dashboard/page.tsx`) — Reliable News Dashboard; category dropdown + top-5 article cards with "View full detail →" links
 - `/dashboard/[id]` (`dashboard/[id]/page.tsx`) — Article detail page; all scores, framing, claims, source corroboration, back link
-- `/creators` (`creators/page.tsx`) — Creator Integrity Dashboard; list of creator cards with integrity metrics and methodology disclosure
-- `/creators/[id]` (`creators/[id]/page.tsx`) — Creator detail page; metric bars, transparency summary, analyzed posts with expandable claims, weakest claims, source list
+- `/creators` (`creators/page.tsx`) — Creator list with metric helpers, disclaimer, methodology, retry on error
+- `/creators/[id]` (`creators/[id]/page.tsx`) — Sample integrity report layout, at-a-glance signals, metric explanations, transparency summary, claims needing attention, analyzed posts
 - `layout.tsx` — root layout with nav links (Core Checker / Dashboard / Creators)
 
 **Components** (`frontend/components/`)
@@ -127,7 +151,10 @@ analysis_id, summary, key_takeaways[], claims[], framing, neutral_rewrite, eligi
 - `ResultsDashboard.tsx` — orchestrates all result panels
 - `SourceAlignmentPanel.tsx` — supporting / contradicting source cards
 
-Creator integrity UI components are inlined in their page files (Phase 3 scaffold pattern).
+- `CreatorDisclaimer.tsx` — required trust disclaimer (full + compact)
+- `CreatorMetricBar.tsx` — metric bar with inline “what this means” help
+- `CreatorEmptyState.tsx` — empty state for list/detail
+- `lib/creatorDisplay.ts` — shared metric copy, corroboration/framing labels, disclaimer text
 
 **Lib** (`frontend/lib/`)
 - `api.ts` — typed fetch wrappers for backend (includes `getDashboardArticles`, `getDashboardArticle`, `getCreators`, `getCreator`, `getCreatorPosts`)
@@ -186,15 +213,22 @@ When `False`:
 
 ---
 
-## 8c. Creator service architecture (Phase 3 + 3.5)
+## 8c. Creator service architecture (Phase 3 + 3.5 + 3.6)
 
 **Files** (`backend/app/`)
-- `schemas/creator.py` — Pydantic schemas including `metrics_source` on overview/list/post
-- `services/creator_service.py` — loads fixture identity + posts; delegates analysis/aggregation to `CreatorMetricsService`
-- `services/creator_metrics_service.py` — `analyze_post()`, `aggregate_metrics()`, `build_creator_post()`; rate helpers (`claim_support_rate`, `contradiction_rate`, `low_corroboration_rate`, `post_source_alignment`)
+- `schemas/creator.py` — Pydantic schemas including `metrics_source`, `CreateDemoCreatorPostRequest`
+- `services/creator_service.py` — fixture + DB demo posts; `_get_or_analyze_post()` with SQLite cache
+- `services/creator_metrics_service.py` — `analyze_post()`, `aggregate_metrics()`, `build_creator_post()`
+- `services/creator_analysis_store.py` — `compute_content_hash()`, get/save persisted analyses
+- `services/creator_post_store.py` — CRUD for `creator_post_records` (demo posts)
 - `services/ingest_service.py` — `run_analysis()` (no persist); `analyze()` persists via SQLite
-- `providers/fixtures/creators.json` — 4 fixture creator profiles (identity/bio; legacy metric fields ignored at runtime)
+- `db/models.py` — `CreatorPostRecord`, `CreatorPostAnalysisRecord`
+- `providers/fixtures/creators.json` — 4 fixture creator profiles (identity/bio)
 - `providers/fixtures/creator_posts.json` — 20 fixture posts (optional `content`; else title + summary + claims text)
+- `docs/CREATOR_DEMO_WORKFLOW.md` — manual demo workflow
+- `docs/CREATOR_DEMO_SCRIPT.md` — live stakeholder/creator demo script
+- `docs/CREATOR_OUTREACH_PACK.md` — outreach templates + creator-facing explanations
+- `docs/DEMO_CREATOR_PROFILES.md` — sample profile picker for demos
 
 **Metric derivation** (pooled across a creator's analyzed posts):
 - `claim_support_rate` — share of checkable claims with medium/high corroboration
@@ -212,7 +246,9 @@ When `False`:
 | `creator-003` | Leila Okonkwo | Podcast & Substack | foreign_world |
 | `creator-004` | DataDave | TikTok & YouTube | markets_stocks |
 
-**Tests**: `backend/tests/test_creators.py` (35) + `backend/tests/test_creator_metrics.py` (12) — derived metrics, rate math, 404s, pipeline reuse.
+**Persistence flow**: For each post → SHA-256 content hash → lookup `creator_post_analysis_records` → on miss, `run_analysis()` → save JSON → aggregate metrics for dashboard.
+
+**Tests**: `test_creators.py` (35) + `test_creator_metrics.py` (12) + `test_creator_persistence.py` (6).
 
 ---
 
@@ -292,7 +328,8 @@ pytest -q
 #   tests/test_dashboard.py            — endpoint, scoring, sorting, provider arch, detail drilldown (53 total)
 #   tests/test_creators.py             — creator list/detail/posts endpoints, 404s, metric ranges (35 total)
 #   tests/test_creator_metrics.py      — derived metrics from analysis pipeline (12 total)
-# Total: 100 tests
+#   tests/test_creator_persistence.py    — SQLite cache, hash invalidation, demo POST (6 total)
+# Total: 106 tests
 ```
 
 No frontend test suite exists yet.
@@ -311,20 +348,23 @@ No frontend test suite exists yet.
 - **Category detection is keyword-only** — no ML classifier; can misdetect mixed-content text
 - **Creator dashboard is fixture-only** — no real social media API, no scraping, no user accounts
 - **Creator post text is fixture-sourced** — analysis runs on title/summary/claims (or optional `content`), not live platform posts
-- **Creator metrics recomputed per service instance** — in-memory cache per creator_id; not persisted to SQLite
+- **Creator analyses persisted in SQLite** — per-post cache with content-hash invalidation; aggregation still runs each request
 - **Legacy metric fields in creators.json** — retained in fixtures but overridden at runtime by derived values
 - **No public creator badges** — not yet implemented
 - **Creator post claims are not persisted** — no DB connection; creator data exists only in fixture JSON
 - **No creator search or filtering** — list endpoint returns all creators; no pagination, category filter, or text search
+- **No in-app demo post form yet** — demo content still added via API/curl (Phase 3.7 polished display only)
+- **Outreach pack is documentation only** — no PDF export, share links, or CRM integration for creator outreach
 
 ---
 
 ## 14. Next planned phase
 
-**Phase 3.5 — COMPLETE.** Candidates for Phase 3 continuation or Phase 4:
-- Persist creator post analyses to SQLite (avoid recomputing on every request)
+**Phase 3.8 — COMPLETE.** Candidates for Phase 4:
+- Simple UI form on `/creators/[id]` for demo post submission (calls `POST .../posts/demo`)
+- Creator pilot program: track 2–3 real paste-only transcripts with written consent (process, not product)
+- Export/share transparency summary as PDF or static link (opt-in, no public directory)
 - Add optional dedicated `content` field on all fixture posts for richer analysis input
-- Add creator post persistence to SQLite
 - Add creator search, filtering by category, and pagination to the list endpoint
 - Add public creator badges (opt-in transparency tier indicator)
 - Improve live news provider score estimation (importance/relevance/diversity are fixed defaults today)
@@ -346,6 +386,6 @@ Other future work (not scoped): batch video analysis, mobile app.
 - **Frontend tests**: No test suite exists; Vitest + React Testing Library vs. Playwright E2E not chosen.
 - **OpenAI model pinning**: `gpt-4o-mini` is the default; no fallback model if it is deprecated.
 - **DB migrations**: SQLite + SQLModel with no Alembic setup; schema changes require manual migration.
-- **Creator analysis caching**: Metrics are derived on first request per creator and cached in-process; multi-worker deployments need shared cache or DB persistence.
+- **Creator analysis caching**: Per-post analyses persist in SQLite; multi-worker deployments share DB but may race on first analyze.
 - **Creator component extraction**: Creator page UI components are inlined in page files. If the creator UI grows, extract shared components (`CreatorCard`, `PostCard`, `MetricBar`) into `frontend/components/`.
 - **Creator data persistence**: Creator posts are currently fixture JSON only. A production version needs DB models for `Creator` and `CreatorPost` tables with a Alembic migration path.
