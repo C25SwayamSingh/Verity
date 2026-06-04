@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — The Giver
 
-> Checkpoint for Cursor agents. Last updated: 2026-06-04. Phase 1–2 complete. Phase 3 complete. Phase 4A media upload MVP complete. Phase 4C ingestion correction complete (URL-only links no longer analyzed as content). 124 backend tests green; frontend build clean (7 routes).
+> Checkpoint for Cursor agents. Last updated: 2026-06-04. Phase 1–2 complete. Phase 3 complete. Phase 4A media upload MVP complete. Phase 4C ingestion correction complete (URL-only links no longer analyzed as content). Phase 4D article-URL text extraction complete (shared article links are fetched + parsed; social videos still require upload/transcript). 130 backend tests green; frontend build clean (7 routes).
 
 ---
 
@@ -66,6 +66,17 @@ Language is deliberately non-verdictive ("low corroboration", "notable framing")
 - Links from `/creators` and `/creators/[id]`; `CreatorEmptyState` optional CTA. ✓
 - `createDemoCreatorPost()` in `frontend/lib/api.ts`; types in `frontend/lib/types.ts`. ✓
 - No backend or API shape changes; Phase 3.6 SQLite persistence unchanged. ✓
+
+**Phase 4D (Article-URL text extraction) — COMPLETE.**
+- **Why:** a shared *article* link (e.g. a Guardian/AP story) should be analyzed on its real text, not flagged as "no content." This completes the "extract article text from article URL when possible" step of the intended flow.
+- `backend/app/services/article_extraction_service.py` — fetches the shared article URL (httpx: redirects, timeout, size cap, `text/html` only) and extracts the main body with **trafilatura**; returns title + text. Fetcher is injectable so tests never hit the network. ✓
+- Wired into `IngestService`: an `article_url` link-only submission now attempts extraction first. On success → real text runs through the checker with `ingestion.transparency_note = "Analysis based on article text extracted from the linked page…"`. On failure/disabled/too-short → falls back to the Phase 4C "transcript or upload required" state. ✓
+- **Social/video URLs are never fetched** — `social_video_url` skips extraction entirely and still requires an upload or transcript (no download/scrape). ✓
+- Settings: `ARTICLE_EXTRACTION_ENABLED` (default true), `ARTICLE_EXTRACTION_TIMEOUT_SECONDS` (10), `ARTICLE_EXTRACTION_MAX_BYTES` (3 MB), `ARTICLE_EXTRACTION_MIN_CHARS` (250). Degrades gracefully if trafilatura is absent. ✓
+- New deps: `trafilatura`, `lxml_html_clean`. ✓
+- Frontend: results page shows a sky "Source basis" banner with the extraction note + link; `CheckerInput` hint for article links now says The Giver will try to read the article text. ✓
+- **Tests:** +6 in `test_article_extraction.py` (stubbed extractor for wiring + injected fetcher for parsing, no network); 130 total green. **Frontend build:** passed. ✓
+- **Limitation:** extraction quality depends on the page; some paywalled/JS-only pages yield little text → falls back to "paste text" state. Social videos unchanged.
 
 **Phase 4C (Core ingestion correction — URLs are not analyzable content) — COMPLETE.**
 - **What was broken:** submitting only a social/video URL (e.g. an Instagram Reel link) made the checker analyze the URL *string* — summary, key takeaways, and the extracted claim were all the URL itself.

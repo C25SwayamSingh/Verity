@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     dashboard_news_provider: str = "fixtures"
     transcription_provider: str = "mock"
     media_max_upload_bytes: int = 52_428_800
+    article_extraction_enabled: bool = True
+    article_extraction_timeout_seconds: float = 10.0
+    article_extraction_max_bytes: int = 3_000_000
+    article_extraction_min_chars: int = 250
 
     @property
     def cors_origin_list(self) -> list[str]:

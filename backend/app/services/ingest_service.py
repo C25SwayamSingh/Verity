@@ -5,9 +5,11 @@ from typing import Optional
 from sqlmodel import Session
 
 from app.core.ingestion import (
+    INGEST_ARTICLE_URL,
     IngestionClassification,
     classify_ingestion,
 )
+from app.services.article_extraction_service import ArticleExtractionService
 from app.db.models import AnalysisRecord
 from app.schemas.domain import (
     AnalyzeResponse,
@@ -83,13 +85,16 @@ NON_NEWS_KEYWORDS = [
 
 
 class IngestService:
-    def __init__(self) -> None:
+    def __init__(
+        self, article_extractor: Optional[ArticleExtractionService] = None
+    ) -> None:
         self._openai = OpenAIService()
         self._sentences = SentenceService()
         self._claims = ClaimService(self._openai)
         self._alignment = SourceAlignmentService()
         self._framing = FramingService(self._openai)
         self._rewrite = RewriteService(self._openai)
+        self._article_extractor = article_extractor or ArticleExtractionService()
 
     def run_analysis(
         self,
@@ -109,6 +114,11 @@ class IngestService:
 
         classification = classify_ingestion(text)
         if classification.needs_more_input:
+            # For a normal article URL, try to fetch + extract the real article
+            # text so we analyze actual content rather than the link itself.
+            extracted = self._try_extract_article(classification, user_selected_category)
+            if extracted is not None:
+                return extracted
             return self._build_needs_more_input_response(classification)
 
         ingestion = IngestionInfo(
@@ -122,6 +132,40 @@ class IngestService:
             user_selected_category,
             ingestion=ingestion,
         )
+
+    def _try_extract_article(
+        self, classification: IngestionClassification, user_selected_category: str
+    ) -> Optional[AnalyzeResponse]:
+        """Fetch + extract article text for an article-URL-only submission.
+
+        Returns ``None`` for non-article links (e.g. social video) or when
+        extraction is disabled/unavailable/insufficient, so the caller falls
+        back to the "transcript or upload required" state.
+        """
+        if classification.ingestion_type != INGEST_ARTICLE_URL:
+            return None
+        if not classification.source_links:
+            return None
+
+        url = classification.source_links[0]
+        article = self._article_extractor.extract(url)
+        if article is None:
+            return None
+
+        parts = [p for p in (article.title, article.text) if p]
+        analyzable_text = "\n\n".join(parts)
+        ingestion = IngestionInfo(
+            ingestion_type=INGEST_ARTICLE_URL,
+            analyzable=True,
+            needs_more_input=False,
+            source_links=classification.source_links,
+            transparency_note=(
+                "Analysis based on article text extracted from the linked page. "
+                "The Giver fetched the article you shared; it does not download or "
+                "scrape social videos."
+            ),
+        )
+        return self._analyze_text(analyzable_text, user_selected_category, ingestion=ingestion)
 
     def _analyze_text(
         self,
@@ -147,7 +191,9 @@ class IngestService:
         rewrite_allowed = len(cleaned.strip()) >= 40
         neutral = self._rewrite.neutral_rewrite(cleaned, allow=rewrite_allowed)
 
-        if ingestion and ingestion.source_links:
+        if ingestion and ingestion.transparency_note:
+            notes.insert(0, ingestion.transparency_note)
+        elif ingestion and ingestion.source_links:
             notes.append(
                 "Submitted link(s) kept as source metadata only — The Giver did not "
                 "download, scrape, or transcribe linked content."

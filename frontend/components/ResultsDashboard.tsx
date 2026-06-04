@@ -16,6 +16,22 @@ export default function ResultsDashboard({ data }: ResultsDashboardProps) {
 
   return (
     <div className="space-y-6">
+      {data.ingestion?.transparency_note && (
+        <section className="rounded-lg border border-sky-200 bg-sky-50 p-4">
+          <p className="text-xs font-semibold uppercase tracking-wide text-sky-900">
+            Source basis
+          </p>
+          <p className="mt-1 text-sm leading-relaxed text-sky-950">
+            {data.ingestion.transparency_note}
+          </p>
+          {data.ingestion.source_links?.length > 0 && (
+            <p className="mt-2 truncate text-xs text-sky-800">
+              Link: {data.ingestion.source_links[0]}
+            </p>
+          )}
+        </section>
+      )}
+
       {data.media_source && (
         <section className="rounded-lg border border-amber-200 bg-amber-50 p-4">
           <p className="text-xs font-semibold uppercase tracking-wide text-amber-900">
