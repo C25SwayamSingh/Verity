@@ -2,6 +2,8 @@ from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
 
+from app.core.input_basis import DEFAULT_INPUT_BASIS, InputBasis
+
 
 class WeakClaim(BaseModel):
     claim_id: str
@@ -77,6 +79,9 @@ class CreatorPost(BaseModel):
     framing_label: str
     sources_used: list[str]
     audience_signal_placeholder: str
+    input_basis: Optional[str] = None
+    input_basis_label: Optional[str] = None
+    input_basis_note: Optional[str] = None
 
 
 class CreatorPostsResponse(BaseModel):
@@ -97,6 +102,7 @@ class CreateDemoCreatorPostRequest(BaseModel):
     published_at: Optional[str] = None
     source_url: str = ""
     content_type: Literal["article", "transcript", "pasted_text"] = "transcript"
+    input_basis: InputBasis = DEFAULT_INPUT_BASIS
     post_id: Optional[str] = None
 
 

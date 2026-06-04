@@ -93,6 +93,32 @@ def test_add_demo_post_endpoint():
     assert data["post"]["post_id"] in post_ids
 
 
+def test_demo_post_input_basis_defaults_and_note():
+    r = client.post(
+        f"/v1/creators/{KNOWN_CREATOR_ID}/posts/demo",
+        json={**DEMO_POST_BODY, "post_id": "demo-input-basis-test"},
+    )
+    assert r.status_code == 201
+    post = r.json()["post"]
+    assert post["input_basis"] == "third_party_extracted_key_points"
+    assert post["input_basis_label"] == "Third-party extracted key points"
+    assert post["input_basis_note"]
+    assert "verbatim transcript" in post["input_basis_note"].lower()
+
+
+def test_demo_post_full_transcript_no_non_verbatim_note():
+    body = {
+        **DEMO_POST_BODY,
+        "post_id": "demo-full-transcript-test",
+        "input_basis": "full_transcript",
+    }
+    r = client.post(f"/v1/creators/{KNOWN_CREATOR_ID}/posts/demo", json=body)
+    assert r.status_code == 201
+    post = r.json()["post"]
+    assert post["input_basis"] == "full_transcript"
+    assert not post.get("input_basis_note")
+
+
 def test_add_demo_post_unknown_creator_404():
     r = client.post(
         f"/v1/creators/{UNKNOWN_CREATOR_ID}/posts/demo",

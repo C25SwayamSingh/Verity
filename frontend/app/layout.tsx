@@ -1,10 +1,27 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "The Giver — Information Integrity",
   description: "Cross-source corroboration and framing analysis for pasted news text.",
+  manifest: "/manifest.webmanifest",
+  applicationName: "The Giver",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "The Giver",
+  },
+  icons: {
+    icon: "/icon.svg",
+    apple: "/icon.svg",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#2563eb",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

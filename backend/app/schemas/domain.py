@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Literal
+from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -96,6 +96,36 @@ class EligibilityResult(BaseModel):
     reason: str
 
 
+class MediaSourceMetadata(BaseModel):
+    """Transparency metadata for Phase 4A uploaded media analysis."""
+
+    input_basis: str
+    input_basis_label: str
+    transparency_note: str
+    original_filename: str
+    source_url: str = ""
+    title: str = ""
+    transcript_char_count: int = 0
+    transcription_provider: str = "mock"
+    media_kind: str = "video"
+
+
+class IngestionInfo(BaseModel):
+    """How the checker interpreted the submission.
+
+    ``needs_more_input`` is True when only a social/video (or other) URL was
+    submitted with no analyzable text. In that case The Giver does not treat
+    the URL as a claim and asks for a transcript, upload, or source notes.
+    """
+
+    ingestion_type: str
+    analyzable: bool = True
+    needs_more_input: bool = False
+    source_links: list[str] = Field(default_factory=list)
+    guidance: Optional[str] = None
+    transparency_note: Optional[str] = None
+
+
 class AnalyzeResponse(BaseModel):
     analysis_id: str
     summary: str
@@ -105,3 +135,6 @@ class AnalyzeResponse(BaseModel):
     neutral_rewrite: str
     eligibility: EligibilityResult
     notes: list[str] = Field(default_factory=list)
+    ingestion: Optional[IngestionInfo] = None
+    media_source: Optional[MediaSourceMetadata] = None
+    generated_transcript: Optional[str] = None

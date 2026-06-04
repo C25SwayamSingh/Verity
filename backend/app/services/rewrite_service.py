@@ -8,11 +8,16 @@ class RewriteService:
     def __init__(self, openai: Optional[OpenAIService] = None) -> None:
         self._openai = openai or OpenAIService()
 
-    def neutral_rewrite(self, text: str, eligible: bool) -> str:
-        if not eligible:
+    def neutral_rewrite(self, text: str, allow: bool = True) -> str:
+        """Neutral / clearer rewrite of submitted text.
+
+        Available for any content with enough analyzable text — not gated by
+        news category. Only full news bias/framing analysis is category-gated.
+        """
+        if not allow:
             return (
-                "A neutral rewrite is not generated for content outside supported "
-                "news/current-information categories."
+                "A clearer rewrite was not generated because there was not enough "
+                "analyzable text in the submission."
             )
         llm = self._rewrite_llm(text)
         if llm:
@@ -23,7 +28,7 @@ class RewriteService:
         if not self._openai.available:
             return None
         payload = self._openai.complete_json(
-            system='Rewrite news text in neutral, information-integrity tone. Return JSON: {"neutral_rewrite":"..."}',
+            system='Rewrite the text in a neutral, clearer tone, preserving meaning. Return JSON: {"neutral_rewrite":"..."}',
             user=text[:4000],
         )
         if payload and payload.get("neutral_rewrite"):

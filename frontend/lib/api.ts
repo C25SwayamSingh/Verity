@@ -1,6 +1,8 @@
 import type {
   AnalyzeRequest,
   AnalyzeResponse,
+  CreateDemoCreatorPostRequest,
+  CreateDemoCreatorPostResponse,
   CreatorListResponse,
   CreatorOverview,
   CreatorPostsResponse,
@@ -132,6 +134,52 @@ export async function getCreatorPosts(creatorId: string): Promise<CreatorPostsRe
     const body = await res.json().catch(() => ({}));
     throw new ApiError(
       (body as { detail?: string }).detail ?? "Creator posts not found",
+      res.status,
+      body,
+    );
+  }
+  return res.json();
+}
+
+export async function createDemoCreatorPost(
+  creatorId: string,
+  payload: CreateDemoCreatorPostRequest,
+): Promise<CreateDemoCreatorPostResponse> {
+  const res = await fetch(
+    `${API_URL}/v1/creators/${encodeURIComponent(creatorId)}/posts/demo`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    },
+  );
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    const detail = (body as { detail?: string | { msg?: string }[] }).detail;
+    const message =
+      typeof detail === "string"
+        ? detail
+        : Array.isArray(detail)
+          ? detail.map((d) => (typeof d === "object" && d?.msg ? d.msg : String(d))).join("; ")
+          : "Failed to save demo post";
+    throw new ApiError(message, res.status, body);
+  }
+  return res.json();
+}
+
+export async function analyzeMediaUpload(formData: FormData): Promise<AnalyzeResponse> {
+  const res = await fetch(`${API_URL}/v1/analyze/media`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    if (res.status === 429) {
+      const err = body as RateLimitError;
+      throw new ApiError(err.message ?? "Too many requests", 429, body);
+    }
+    throw new ApiError(
+      (body as { detail?: string }).detail ?? "Media analysis failed",
       res.status,
       body,
     );

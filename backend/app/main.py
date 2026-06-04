@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session
 
@@ -20,6 +20,12 @@ from app.schemas.dashboard import DashboardArticle, DashboardResponse
 from app.services.creator_service import CreatorService
 from app.services.dashboard_service import DashboardService, SUPPORTED_CATEGORIES
 from app.services.ingest_service import IngestService
+from app.services.media_ingest_service import (
+    MediaIngestService,
+    MediaTooLargeError,
+    UnsupportedMediaTypeError,
+)
+from app.services.transcription.base import TranscriptionError
 
 setup_logging()
 
@@ -48,6 +54,7 @@ app.add_middleware(
 app.add_middleware(AnalyzeRateLimitMiddleware)
 
 _ingest = IngestService()
+_media = MediaIngestService(_ingest)
 _dashboard = DashboardService()
 _creators = CreatorService()
 
@@ -66,6 +73,40 @@ def analyze(request: AnalyzeRequest, session: Session = Depends(get_session)):
         session=session,
     )
     return result
+
+
+@app.post("/v1/analyze/media", response_model=AnalysisDetailResponse)
+async def analyze_media(
+    session: Session = Depends(get_session),
+    file: UploadFile = File(...),
+    user_selected_category: str = Form("domestic_us"),
+    media_kind: str = Form("video"),
+    title: str = Form(""),
+    source_url: str = Form(""),
+):
+    """
+    Upload user-provided video/audio/screen recording → transcript → integrity analysis.
+    Does not download or scrape social platform URLs.
+    """
+    if not file.filename:
+        raise HTTPException(status_code=422, detail="Missing filename.")
+    try:
+        body = await file.read()
+        return _media.analyze_upload(
+            file_bytes=body,
+            filename=file.filename,
+            media_kind=media_kind,
+            user_selected_category=user_selected_category,
+            title=title,
+            source_url=source_url,
+            session=session,
+        )
+    except UnsupportedMediaTypeError as exc:
+        raise HTTPException(status_code=415, detail=str(exc)) from exc
+    except MediaTooLargeError as exc:
+        raise HTTPException(status_code=413, detail=str(exc)) from exc
+    except TranscriptionError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 @app.get("/v1/analysis/{analysis_id}", response_model=AnalysisDetailResponse)

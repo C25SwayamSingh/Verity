@@ -3,6 +3,7 @@
 from collections import Counter
 from typing import Optional
 
+from app.core.input_basis import input_basis_label, input_basis_transparency_note
 from app.schemas.creator import CreatorPost, PostClaim, WeakClaim
 from app.schemas.domain import AnalyzeResponse, ClaimResult, CorroborationStatus, FramingOverallLabel
 from app.services.ingest_service import IngestService
@@ -175,6 +176,9 @@ class CreatorMetricsService:
                 "audience_signal_placeholder",
                 "Engagement rate and comment sentiment data not yet collected.",
             ),
+            input_basis=post.get("input_basis"),
+            input_basis_label=input_basis_label(post.get("input_basis")),
+            input_basis_note=input_basis_transparency_note(post.get("input_basis")),
             metrics_source=METRICS_SOURCE_DERIVED,
         )
 

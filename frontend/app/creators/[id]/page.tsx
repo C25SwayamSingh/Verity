@@ -115,6 +115,17 @@ function PostCard({ post }: { post: CreatorPost }) {
 
         <p className="text-sm text-giver-slate leading-relaxed">{post.summary}</p>
 
+        {post.input_basis_note && (
+          <p className="text-xs text-amber-900 bg-amber-50 border border-amber-200 rounded-md px-3 py-2 leading-relaxed">
+            {post.input_basis_note}
+          </p>
+        )}
+        {post.input_basis_label && !post.input_basis_note && (
+          <p className="text-xs text-giver-low">
+            Input basis: {post.input_basis_label}
+          </p>
+        )}
+
         <div className="flex flex-wrap items-center gap-2">
           <span
             className={`inline-flex items-center rounded border px-2 py-0.5 text-xs font-medium ${framingStyle}`}
@@ -478,16 +489,27 @@ export default function CreatorDetailPage() {
         ) : (
           <CreatorEmptyState
             title="No analyzed posts for this creator"
-            description="Add demo transcript or article text via POST /v1/creators/{id}/posts/demo to build a sample report."
+            description="Add demo transcript or article text via the internal demo form to build a sample report."
+            actionHref={`/creators/demo?creator_id=${creator.creator_id}`}
+            actionLabel="Add demo post"
           />
         )}
       </section>
 
-      <footer className="pt-2 border-t border-slate-200">
+      <footer className="pt-2 border-t border-slate-200 space-y-3">
         <CreatorDisclaimer compact />
+        <p className="text-xs text-giver-low">
+          Internal demo:{" "}
+          <Link
+            href={`/creators/demo?creator_id=${creator.creator_id}`}
+            className="text-giver-accent hover:underline"
+          >
+            Add demo post for this profile
+          </Link>
+        </p>
         <Link
           href="/creators"
-          className="mt-4 inline-block text-sm text-giver-accent hover:underline"
+          className="inline-block text-sm text-giver-accent hover:underline"
         >
           ← Back to all creator profiles
         </Link>

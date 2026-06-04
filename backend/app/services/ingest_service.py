@@ -1,14 +1,20 @@
-import json
 import re
 import uuid
 from typing import Optional
 
 from sqlmodel import Session
 
+from app.core.ingestion import (
+    IngestionClassification,
+    classify_ingestion,
+)
 from app.db.models import AnalysisRecord
 from app.schemas.domain import (
     AnalyzeResponse,
     EligibilityResult,
+    FramingOverallLabel,
+    FramingResult,
+    IngestionInfo,
     SUPPORTED_NEWS_CATEGORIES,
     UserCategory,
 )
@@ -91,7 +97,38 @@ class IngestService:
         content_type: str,
         user_selected_category: str,
     ) -> AnalyzeResponse:
-        """Run the analysis pipeline without persisting to the database."""
+        """Run the analysis pipeline without persisting to the database.
+
+        For raw checker submissions the text is first classified. A link-only
+        social/video (or other) URL is never treated as analyzable content;
+        instead a clear "transcript or upload required" state is returned.
+        """
+        # Transcripts (e.g. from uploaded media) are already analyzable text.
+        if content_type == "transcript":
+            return self._analyze_text(text, user_selected_category, ingestion=None)
+
+        classification = classify_ingestion(text)
+        if classification.needs_more_input:
+            return self._build_needs_more_input_response(classification)
+
+        ingestion = IngestionInfo(
+            ingestion_type=classification.ingestion_type,
+            analyzable=True,
+            needs_more_input=False,
+            source_links=classification.source_links,
+        )
+        return self._analyze_text(
+            classification.analyzable_text or text,
+            user_selected_category,
+            ingestion=ingestion,
+        )
+
+    def _analyze_text(
+        self,
+        text: str,
+        user_selected_category: str,
+        ingestion: Optional[IngestionInfo],
+    ) -> AnalyzeResponse:
         cleaned, sentences = self._sentences.process(text)
         detected = self._detect_category(cleaned, user_selected_category)
         eligible = self._is_bias_framing_eligible(detected, cleaned, user_selected_category)
@@ -104,7 +141,17 @@ class IngestService:
         claim_results = self._alignment.align_claims(raw_claims, category_for_alignment, eligible)
 
         framing = self._framing.analyze(cleaned, eligible)
-        neutral = self._rewrite.neutral_rewrite(cleaned, eligible)
+
+        # Neutral / clearer rewrite is available for any content with enough
+        # analyzable text — only full news bias/framing is gated by eligibility.
+        rewrite_allowed = len(cleaned.strip()) >= 40
+        neutral = self._rewrite.neutral_rewrite(cleaned, allow=rewrite_allowed)
+
+        if ingestion and ingestion.source_links:
+            notes.append(
+                "Submitted link(s) kept as source metadata only — The Giver did not "
+                "download, scrape, or transcribe linked content."
+            )
 
         return AnalyzeResponse(
             analysis_id=str(uuid.uuid4()),
@@ -115,6 +162,43 @@ class IngestService:
             neutral_rewrite=neutral,
             eligibility=eligibility,
             notes=notes,
+            ingestion=ingestion,
+        )
+
+    def _build_needs_more_input_response(
+        self, classification: IngestionClassification
+    ) -> AnalyzeResponse:
+        """Return a clear "transcript or upload required" state for link-only input."""
+        summary = (
+            "We found a link, but no transcript or analyzable text was provided, so "
+            "The Giver did not analyze the link itself."
+        )
+        return AnalyzeResponse(
+            analysis_id=str(uuid.uuid4()),
+            summary=summary,
+            key_takeaways=[],
+            claims=[],
+            framing=FramingResult(
+                overall_label=FramingOverallLabel.mostly_neutral, indicators=[]
+            ),
+            neutral_rewrite="",
+            eligibility=EligibilityResult(
+                bias_framing_eligible=False,
+                detected_category="unknown",
+                reason=(
+                    "No analyzable text was available. The Giver analyzes submitted or "
+                    "generated text, not a raw link."
+                ),
+            ),
+            notes=[classification.transparency_note] if classification.transparency_note else [],
+            ingestion=IngestionInfo(
+                ingestion_type=classification.ingestion_type,
+                analyzable=False,
+                needs_more_input=True,
+                source_links=classification.source_links,
+                guidance=classification.guidance,
+                transparency_note=classification.transparency_note,
+            ),
         )
 
     def analyze(

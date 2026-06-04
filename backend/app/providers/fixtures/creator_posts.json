@@ -33,8 +33,13 @@
     "low_corroboration_claims_count": 0,
     "source_alignment_score": 0.91,
     "framing_label": "mostly_neutral",
-    "sources_used": ["EUR-Lex Official Text", "MIT Technology Review", "European Parliament Press"],
-    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+    "sources_used": [
+      "EUR-Lex Official Text",
+      "MIT Technology Review",
+      "European Parliament Press"
+    ],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected.",
+    "content": "This segment summarizes the EU AI Act using the official EUR-Lex text and reporting from MIT Technology Review. The law classifies artificial intelligence systems into four risk tiers: unacceptable, high, limited, and minimal. High-risk systems require conformity assessments before deployment in the European Union. European Parliament materials state that real-time biometric surveillance in public spaces is prohibited except for narrow law-enforcement exceptions. This is explanatory journalism about AI regulation, not legal advice."
   },
   {
     "post_id": "post-001-b",
@@ -70,8 +75,12 @@
     "low_corroboration_claims_count": 1,
     "source_alignment_score": 0.63,
     "framing_label": "mixed_framing",
-    "sources_used": ["ArXiv paper", "The Verge benchmark article"],
-    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+    "sources_used": [
+      "ArXiv paper",
+      "The Verge benchmark article"
+    ],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected.",
+    "content": "We're reviewing a new code-generation model described in an ArXiv preprint and benchmarked by The Verge. The model reportedly scores 87% on HumanEval, above the prior published benchmark leader. I think most software engineers could become redundant within two years \u2014 that's my prediction, not a consensus forecast. Independent testers note the system still struggles with multi-file reasoning across large codebases. Viewers should treat employment impact claims as speculation."
   },
   {
     "post_id": "post-001-c",
@@ -81,7 +90,7 @@
     "published_at": "2026-04-28T16:00:00Z",
     "source_url": "https://youtube.com/watch?v=mock-001-c",
     "topic": "data privacy",
-    "summary": "An explainer on federated learning architecture — how models are trained without centralizing raw data — covering current implementations at major technology companies and known limitations.",
+    "summary": "An explainer on federated learning architecture \u2014 how models are trained without centralizing raw data \u2014 covering current implementations at major technology companies and known limitations.",
     "claims": [
       {
         "claim_id": "c-001-c-1",
@@ -107,8 +116,13 @@
     "low_corroboration_claims_count": 0,
     "source_alignment_score": 0.88,
     "framing_label": "mostly_neutral",
-    "sources_used": ["Google AI Blog", "Nature AI", "USENIX Security paper"],
-    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+    "sources_used": [
+      "Google AI Blog",
+      "Nature AI",
+      "USENIX Security paper"
+    ],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected.",
+    "content": "Federated learning trains models without centralizing raw user data, according to Google's AI blog and peer-reviewed work in Nature AI. In typical designs, raw data stays on the device while only model updates are shared. Google documents federated learning for Gboard keyboard suggestions. Security researchers at USENIX have shown gradient inversion attacks can partially reconstruct training data under certain assumptions. This explainer focuses on privacy architecture tradeoffs."
   },
   {
     "post_id": "post-001-d",
@@ -138,8 +152,12 @@
     "low_corroboration_claims_count": 0,
     "source_alignment_score": 0.52,
     "framing_label": "mixed_framing",
-    "sources_used": ["Anthropic safety paper", "Meta AI release notes"],
-    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+    "sources_used": [
+      "Anthropic safety paper",
+      "Meta AI release notes"
+    ],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected.",
+    "content": "Today's debate compares open-weight and proprietary large language models. I previously said open-source AI models are consistently safer than proprietary ones \u2014 that was an oversimplification. Meta's Llama 3 release notes and Anthropic safety evaluations suggest benchmark outcomes vary by harm category and evaluation setup. Policy discussion should separate access, transparency, and documented red-team results rather than a single safety ranking."
   },
   {
     "post_id": "post-001-e",
@@ -169,8 +187,12 @@
     "low_corroboration_claims_count": 0,
     "source_alignment_score": 0.95,
     "framing_label": "mostly_neutral",
-    "sources_used": ["Vaswani et al. 2017", "The Illustrated Transformer"],
-    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+    "sources_used": [
+      "Vaswani et al. 2017",
+      "The Illustrated Transformer"
+    ],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected.",
+    "content": "Transformer self-attention lets each token attend to other tokens in a sequence, as described in Vaswani et al., Attention Is All You Need (2017), and visualized in The Illustrated Transformer. The 2017 paper introduced the architecture that later scaled to modern large language models. This episode is a technical explainer on machine learning fundamentals for a general audience."
   },
   {
     "post_id": "post-002-a",
@@ -200,8 +222,13 @@
     "low_corroboration_claims_count": 0,
     "source_alignment_score": 0.83,
     "framing_label": "mostly_neutral",
-    "sources_used": ["Congressional Record", "GovTrack", "ACLU analysis"],
-    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+    "sources_used": [
+      "Congressional Record",
+      "GovTrack",
+      "ACLU analysis"
+    ],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected.",
+    "content": "This newsletter walks through a proposed federal voting rights bill using the Congressional Record and GovTrack sponsor data. Section 4 would require at least 15 days of early voting in federal elections under the draft text. As of publication, GovTrack lists 42 House co-sponsors. The ACLU's summary notes preemption questions over state election administration. I'm summarizing legislative text, not endorsing the bill."
   },
   {
     "post_id": "post-002-b",
@@ -237,8 +264,13 @@
     "low_corroboration_claims_count": 1,
     "source_alignment_score": 0.67,
     "framing_label": "mixed_framing",
-    "sources_used": ["OMB Budget Document", "POLITICO", "CBO Projections"],
-    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+    "sources_used": [
+      "OMB Budget Document",
+      "POLITICO",
+      "CBO Projections"
+    ],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected.",
+    "content": "The Office of Management and Budget released discretionary spending tables compared with last fiscal year. POLITICO reports defense spending would rise about 4.2% in the proposal. Congressional Budget Office tables show environmental protection accounts facing an 18% reduction relative to the prior baseline. In my view, this budget could stall meaningful federal climate policy for years \u2014 that is analysis, not a scored forecast from the CBO."
   },
   {
     "post_id": "post-002-c",
@@ -268,8 +300,11 @@
     "low_corroboration_claims_count": 1,
     "source_alignment_score": 0.44,
     "framing_label": "notable_framing",
-    "sources_used": ["Federal Register"],
-    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+    "sources_used": [
+      "Federal Register"
+    ],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected.",
+    "content": "A federal agency published a regulatory notice in the Federal Register at 5:47 p.m. on Friday. Some commentators argue late-Friday releases reduce news coverage; I suggested the administration deliberately timed this announcement to suppress voter turnout. I have not cited internal planning documents proving intent. This thread mixes a verifiable publication timestamp with unattributed motivation claims."
   },
   {
     "post_id": "post-002-d",
@@ -299,8 +334,12 @@
     "low_corroboration_claims_count": 2,
     "source_alignment_score": 0.38,
     "framing_label": "notable_framing",
-    "sources_used": ["Media Matters", "TV Eyes monitoring service"],
-    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+    "sources_used": [
+      "Media Matters",
+      "TV Eyes monitoring service"
+    ],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected.",
+    "content": "Using TV Eyes monitoring, Media Matters counted no primetime segments on this policy topic across five major cable networks in the past week. I also claimed corporate media is coordinating talking points on the issue without providing emails, contracts, or editorial directives. The observation about airtime may be checkable; the coordination claim needs stronger sourcing."
   },
   {
     "post_id": "post-002-e",
@@ -330,8 +369,13 @@
     "low_corroboration_claims_count": 0,
     "source_alignment_score": 0.89,
     "framing_label": "mostly_neutral",
-    "sources_used": ["SCOTUS ruling", "Princeton Gerrymandering Project", "Brennan Center"],
-    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+    "sources_used": [
+      "SCOTUS ruling",
+      "Princeton Gerrymandering Project",
+      "Brennan Center"
+    ],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected.",
+    "content": "Gerrymandering metrics and court precedent explained with materials from the Princeton Gerrymandering Project and the Brennan Center. The efficiency gap measures wasted votes between parties in district maps. In Rucho v. Common Cause, the Supreme Court held federal courts cannot adjudicate partisan gerrymandering claims. This piece is a civics explainer on redistricting litigation in the United States."
   },
   {
     "post_id": "post-003-a",
@@ -367,7 +411,11 @@
     "low_corroboration_claims_count": 0,
     "source_alignment_score": 0.92,
     "framing_label": "mostly_neutral",
-    "sources_used": ["UN OCHA Report", "International Crisis Group", "WFP Bulletin"],
+    "sources_used": [
+      "UN OCHA Report",
+      "International Crisis Group",
+      "WFP Bulletin"
+    ],
     "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
   },
   {
@@ -398,7 +446,11 @@
     "low_corroboration_claims_count": 0,
     "source_alignment_score": 0.94,
     "framing_label": "mostly_neutral",
-    "sources_used": ["UN Charter", "Security Council Veto List", "Foreign Affairs"],
+    "sources_used": [
+      "UN Charter",
+      "Security Council Veto List",
+      "Foreign Affairs"
+    ],
     "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
   },
   {
@@ -429,7 +481,10 @@
     "low_corroboration_claims_count": 0,
     "source_alignment_score": 0.61,
     "framing_label": "mixed_framing",
-    "sources_used": ["Hufbauer et al. Economic Sanctions Reconsidered", "CFR Sanctions Tracker"],
+    "sources_used": [
+      "Hufbauer et al. Economic Sanctions Reconsidered",
+      "CFR Sanctions Tracker"
+    ],
     "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
   },
   {
@@ -460,7 +515,11 @@
     "low_corroboration_claims_count": 0,
     "source_alignment_score": 0.91,
     "framing_label": "mostly_neutral",
-    "sources_used": ["UN Panel of Experts Report", "BBC World Service", "Reuters"],
+    "sources_used": [
+      "UN Panel of Experts Report",
+      "BBC World Service",
+      "Reuters"
+    ],
     "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
   },
   {
@@ -489,9 +548,13 @@
     "supported_claims_count": 2,
     "contradicted_claims_count": 0,
     "low_corroboration_claims_count": 0,
-    "source_alignment_score": 0.90,
+    "source_alignment_score": 0.9,
     "framing_label": "mostly_neutral",
-    "sources_used": ["World Bank Groundswell Report", "UNHCR", "Nature Climate Change"],
+    "sources_used": [
+      "World Bank Groundswell Report",
+      "UNHCR",
+      "Nature Climate Change"
+    ],
     "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
   },
   {
@@ -522,13 +585,17 @@
     "low_corroboration_claims_count": 0,
     "source_alignment_score": 0.88,
     "framing_label": "mostly_neutral",
-    "sources_used": ["SEC Investor Guide", "Bloomberg Financial Literacy"],
-    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+    "sources_used": [
+      "SEC Investor Guide",
+      "Bloomberg Financial Literacy"
+    ],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected.",
+    "content": "Earnings season basics using the SEC investor guide and Bloomberg education materials. Earnings per share equals net income divided by shares outstanding. Academic summaries cited by Bloomberg note companies that beat consensus EPS estimates often see positive short-term price reactions on average, though outcomes vary by sector and macro conditions. This is general market education, not a buy or sell recommendation."
   },
   {
     "post_id": "post-004-b",
     "creator_id": "creator-004",
-    "title": "This Chart Pattern Predicts a 2x Move — Here's Why I'm All In",
+    "title": "This Chart Pattern Predicts a 2x Move \u2014 Here's Why I'm All In",
     "platform": "TikTok",
     "published_at": "2026-05-05T17:00:00Z",
     "source_url": "https://tiktok.com/@realdatadave/mock-004-b",
@@ -553,8 +620,11 @@
     "low_corroboration_claims_count": 1,
     "source_alignment_score": 0.41,
     "framing_label": "notable_framing",
-    "sources_used": ["TradingView chart screenshots"],
-    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+    "sources_used": [
+      "TradingView chart screenshots"
+    ],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected.",
+    "content": "I'm long this ticker and sharing a cup-and-handle chart from TradingView. I said the stock is guaranteed to double in 90 days based on the pattern \u2014 that certainty goes beyond what technical analysis literature supports. Some sector studies find cup-and-handle breakouts precede rallies in subsets of historical data, but patterns fail often. Disclosure: personal position; not investment advice."
   },
   {
     "post_id": "post-004-c",
@@ -584,8 +654,11 @@
     "low_corroboration_claims_count": 0,
     "source_alignment_score": 0.31,
     "framing_label": "notable_framing",
-    "sources_used": ["ShadowStats website"],
-    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+    "sources_used": [
+      "ShadowStats website"
+    ],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected.",
+    "content": "This short video questions U.S. inflation data. I claimed the Federal Reserve is lying about inflation to protect Wall Street without citing BLS methodology audits. The Bureau of Labor Statistics documents substitution effects in CPI construction, which can lower reported inflation when consumers switch goods. Skepticism about measurement is not the same as documented fraud."
   },
   {
     "post_id": "post-004-d",
@@ -615,8 +688,11 @@
     "low_corroboration_claims_count": 1,
     "source_alignment_score": 0.45,
     "framing_label": "notable_framing",
-    "sources_used": ["SEC enforcement release"],
-    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+    "sources_used": [
+      "SEC enforcement release"
+    ],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected.",
+    "content": "Thread on banks and market crashes. I alleged every major bank knew a crash was coming and shorted clients without court filings or trading records attached. The SEC's 2010 Goldman Sachs Abacus enforcement release documents a specific CDO marketing case \u2014 that is not proof of a universal pre-crash strategy. Mixing one enforcement example with a broad accusation weakens source alignment."
   },
   {
     "post_id": "post-004-e",
@@ -646,7 +722,11 @@
     "low_corroboration_claims_count": 0,
     "source_alignment_score": 0.87,
     "framing_label": "mostly_neutral",
-    "sources_used": ["Federal Reserve official statements", "BLS data"],
-    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+    "sources_used": [
+      "Federal Reserve official statements",
+      "BLS data"
+    ],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected.",
+    "content": "Federal Reserve explainer using official Fed communications and Bureau of Labor Statistics releases. Congress assigned the Fed a dual mandate: maximum employment and stable prices. Policymakers reference a 2% inflation objective using the personal consumption expenditures price index. This video summarizes mainstream macro reporting on interest rates and inflation in the United States economy."
   }
 ]

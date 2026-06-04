@@ -197,6 +197,7 @@ class CreatorService:
             published_at=request.published_at,
             source_url=request.source_url,
             content_type=request.content_type,
+            input_basis=request.input_basis,
             post_id=post_id,
         )
 

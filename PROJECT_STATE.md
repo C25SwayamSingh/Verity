@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — The Giver
 
-> Checkpoint for Cursor agents. Last updated: 2026-06-04. Phase 1–2 complete. Phase 3 through 3.8 complete (creator demo pack + outreach readiness). 106 backend tests green; frontend builds clean (6 routes). Phase 3.8: docs only — tests/build not re-run.
+> Checkpoint for Cursor agents. Last updated: 2026-06-04. Phase 1–2 complete. Phase 3 complete. Phase 4A media upload MVP complete. Phase 4C ingestion correction complete (URL-only links no longer analyzed as content). 124 backend tests green; frontend build clean (7 routes).
 
 ---
 
@@ -59,6 +59,65 @@ Language is deliberately non-verdictive ("low corroboration", "notable framing")
 - No backend, frontend, or fixture changes. ✓
 - Tests/build: not re-run (documentation-only phase). ✓
 
+**Phase 3.9 (Internal demo post form) — COMPLETE.**
+- `/creators/demo` — internal-only form; submits to existing `POST /v1/creators/{creator_id}/posts/demo`. ✓
+- Fields: creator ID, title, platform, original link, topic, optional summary (prepended to analyzable text), transcript/content, content type, optional post ID for updates. ✓
+- Success state with link to `/creators/{id}`; clear error and loading states. ✓
+- Links from `/creators` and `/creators/[id]`; `CreatorEmptyState` optional CTA. ✓
+- `createDemoCreatorPost()` in `frontend/lib/api.ts`; types in `frontend/lib/types.ts`. ✓
+- No backend or API shape changes; Phase 3.6 SQLite persistence unchanged. ✓
+
+**Phase 4C (Core ingestion correction — URLs are not analyzable content) — COMPLETE.**
+- **What was broken:** submitting only a social/video URL (e.g. an Instagram Reel link) made the checker analyze the URL *string* — summary, key takeaways, and the extracted claim were all the URL itself.
+- **Fix:** new `backend/app/core/ingestion.py` classifies each checker submission and detects link-only input. A bare social/video (or other) URL is never treated as a claim.
+- **Ingestion types:** `pasted_text`, `article_url`, `social_video_url`, `transcript_text`, `source_notes` (text endpoint) plus `uploaded_video/audio/screen_recording` (media endpoint, Phase 4A). Exposed on `AnalyzeResponse.ingestion` (`IngestionInfo`). ✓
+- **URL-only behavior:** returns `ingestion.needs_more_input=true` with `guidance`; `summary` is a clear "no analyzable text" message; `key_takeaways=[]`, `claims=[]`, `neutral_rewrite=""`. The URL is kept in `ingestion.source_links` as metadata only — no download/scrape. ✓
+- **Text + link:** when analyzable text is present, the text is analyzed and links are retained as source metadata (note added). ✓
+- **Input basis values:** unchanged (`full_transcript`, `manual_rough_transcript`, `caption_text`, `third_party_extracted_key_points`, `manual_summary_source_notes`) plus media bases (`uploaded_video/audio/screen_recording_transcript`). ✓
+- **Eligibility correction:** neutral/clearer rewrite is now available for **any** content with enough analyzable text (≥40 chars). Only full news bias/framing + cross-source corroboration remain gated to supported news categories (breaking, domestic_us, foreign_world, markets_stocks, tech_ai). ✓
+- **Frontend:** results page renders a focused "transcript or upload required" state for link-only input; `CheckerInput` shows an inline hint for link-only text; `NeutralRewrite` shows a "Clearer rewrite" for non-news; homepage copy clarifies input options. ✓
+- **Media/transcription:** upload→transcript→checker path (Phase 4A) preserved; transcripts skip link-only detection. Transcription remains a swappable adapter (`mock` default; `openai` Whisper optional); tests use the mock provider. ✓
+- **Limitations:** no article-text extraction from article URLs yet (article-URL-only also returns "text required"); no social download/scrape; mock transcription is deterministic placeholder text.
+- **Tests:** 124 passed (10 new in `test_ingestion.py`). **Frontend build:** passed. ✓
+
+**Phase 4B (Single-input UX + installable PWA share target) — COMPLETE.**
+- Homepage rebuilt to one clean input: paste text/link or attach audio/video, single **Analyze** button. ✓
+- Category dropdown, title, original-link, and media-type fields removed (category auto-detected). ✓
+- Deleted `ArticleInput.tsx` and `MediaUploadPanel.tsx`; new `components/CheckerInput.tsx`. ✓
+- PWA: `public/manifest.webmanifest` with Web `share_target` (GET); `icon.svg`/`icon-maskable.svg`; PWA meta in `layout.tsx`. ✓
+- `/` reads `?title=/?text=/?url=` to pre-fill and auto-run when shared text ≥40 chars. ✓
+- iOS share-sheet via Apple Shortcut (Safari lacks Web Share Target); docs in `docs/PWA_SHARE.md`. ✓
+- No backend changes; media upload still posts `media_kind=auto` (backend infers from extension). ✓
+- **Frontend build:** passed. Backend tests unchanged (114). ✓
+
+**Phase 4A (Media ingestion MVP — upload → transcript → analysis) — COMPLETE.**
+- `POST /v1/analyze/media` — multipart upload (video/audio/screen recording). ✓
+- Formats: mp4, mov, m4a, mp3, wav; max 50 MB (`MEDIA_MAX_UPLOAD_BYTES`). ✓
+- Transcription adapter: `mock` (default, tests) or `openai` (Whisper when key set). ✓
+- Video → audio via ffmpeg when not in mock mode; temp files only. ✓
+- Transcript → `IngestService.analyze()` → `/results/[id]` with `media_source` metadata. ✓
+- Core Checker `/` upload UI; transparency note on results. ✓
+- `docs/MEDIA_UPLOAD.md` — formats, providers, social-video guidance. ✓
+- **Tests:** 114 passed. **Frontend build:** passed. ✓
+
+**Phase 3.11 (Demo input basis / non-verbatim transparency) — COMPLETE.**
+- `input_basis` on demo posts: full transcript, rough transcript, caption, third-party key points (default), manual source notes. ✓
+- Stored in `creator_post_records.input_basis`; returned on `CreatorPost` as `input_basis`, `input_basis_label`, `input_basis_note`. ✓
+- `/creators/demo` form: input basis selector + Fofo-style guidance; default third-party extracted key points. ✓
+- Post cards on `/creators/[id]` show amber note for non-verbatim input. ✓
+- `docs/CREATOR_DEMO_WORKFLOW.md` — input basis table, Instagram/Fofo sample inputs (docs only). ✓
+- Checker pipeline unchanged — analyzes submitted text only. ✓
+- **Tests:** 108 passed. **Frontend build:** passed. ✓
+
+**Phase 3.10 (Demo validation with sample creator profiles) — COMPLETE.**
+- Validated three fictional demo personas: `creator-001` (tech_ai), `creator-002` (domestic_us), `creator-004` (markets_stocks). ✓
+- Added full analyzable `content` to 15 fixture posts (5 per persona) for information-dense transcripts. ✓
+- `docs/CREATOR_DEMO_VALIDATION.md` — checklist, what worked/confused, transparency clarity, wording review, demo-readiness verdict. ✓
+- `backend/scripts/enrich_demo_validation_content.py` — reproducible content enrichment. ✓
+- API/UI smoke: list, overview metrics, weakest claims, transparency summary, post cards render correctly. ✓
+- No API shape changes; no frontend code changes. ✓
+- **Tests:** 106 passed after fixture update. **Frontend build:** not re-run (no frontend files changed). ✓
+
 **Phase 2 (Reliable News Dashboard) — COMPLETE.**
 - `GET /v1/dashboard/articles?category=<cat>` — top-5 endpoint. ✓
 - `GET /v1/dashboard/articles/{article_id}` — detail endpoint. ✓
@@ -107,6 +166,7 @@ All component scores are 0–1. Computed dynamically in `DashboardService`; stor
 |--------|------|-------------|
 | `GET` | `/health` | Health check → `{"status":"ok"}` |
 | `POST` | `/v1/analyze` | Run analysis. Body: `AnalyzeRequest`. Returns `AnalysisDetailResponse`. Rate-limited by IP. |
+| `POST` | `/v1/analyze/media` | Upload media → transcribe → analyze. Multipart: `file`, `media_kind`, `user_selected_category`, optional `title`/`source_url`. Rate-limited by IP. |
 | `GET` | `/v1/analysis/{analysis_id}` | Fetch previously stored analysis by UUID. Returns 404 if not found. |
 | `GET` | `/v1/dashboard/articles?category=<cat>` | Returns top 5 scored articles for a supported category. Returns 422 for unsupported categories (including `other`). |
 | `GET` | `/v1/dashboard/articles/{article_id}` | Returns one article by ID. Returns 404 if not found. Looks up via primary provider then fixtures fallback. |
@@ -138,6 +198,7 @@ analysis_id, summary, key_takeaways[], claims[], framing, neutral_rewrite, eligi
 - `/dashboard/[id]` (`dashboard/[id]/page.tsx`) — Article detail page; all scores, framing, claims, source corroboration, back link
 - `/creators` (`creators/page.tsx`) — Creator list with metric helpers, disclaimer, methodology, retry on error
 - `/creators/[id]` (`creators/[id]/page.tsx`) — Sample integrity report layout, at-a-glance signals, metric explanations, transparency summary, claims needing attention, analyzed posts
+- `/creators/demo` (`creators/demo/page.tsx`) — Internal demo post form (Phase 3.9); not in main nav
 - `layout.tsx` — root layout with nav links (Core Checker / Dashboard / Creators)
 
 **Components** (`frontend/components/`)
@@ -157,7 +218,7 @@ analysis_id, summary, key_takeaways[], claims[], framing, neutral_rewrite, eligi
 - `lib/creatorDisplay.ts` — shared metric copy, corroboration/framing labels, disclaimer text
 
 **Lib** (`frontend/lib/`)
-- `api.ts` — typed fetch wrappers for backend (includes `getDashboardArticles`, `getDashboardArticle`, `getCreators`, `getCreator`, `getCreatorPosts`)
+- `api.ts` — typed fetch wrappers for backend (includes `getDashboardArticles`, `getDashboardArticle`, `getCreators`, `getCreator`, `getCreatorPosts`, `createDemoCreatorPost`)
 - `types.ts` — TypeScript mirrors of backend schemas (includes `DashboardArticle`, `DashboardResponse`, `CreatorListItem`, `CreatorOverview`, `CreatorPost`, `CreatorPostsResponse`, `WeakClaim`, `PostClaim`)
 - `color.ts` — corroboration/framing color utilities
 
@@ -203,7 +264,7 @@ When `False`:
 
 ## 8. Rate limiting behavior
 
-- **Scope**: `POST /v1/analyze` only
+- **Scope**: `POST /v1/analyze` and `POST /v1/analyze/media`
 - **Algorithm**: IP-based in-memory sliding window (`InMemoryRateLimiter` in `app/core/rate_limit.py`)
 - **Defaults**: 5 requests per 3600 seconds per IP
 - **IP resolution**: `X-Forwarded-For` header (first value) → `request.client.host` → `"unknown"`
@@ -224,11 +285,12 @@ When `False`:
 - `services/ingest_service.py` — `run_analysis()` (no persist); `analyze()` persists via SQLite
 - `db/models.py` — `CreatorPostRecord`, `CreatorPostAnalysisRecord`
 - `providers/fixtures/creators.json` — 4 fixture creator profiles (identity/bio)
-- `providers/fixtures/creator_posts.json` — 20 fixture posts (optional `content`; else title + summary + claims text)
+- `providers/fixtures/creator_posts.json` — 20 fixture posts; **creator-001/002/004** have full `content` on all 5 posts each (Phase 3.10)
 - `docs/CREATOR_DEMO_WORKFLOW.md` — manual demo workflow
 - `docs/CREATOR_DEMO_SCRIPT.md` — live stakeholder/creator demo script
 - `docs/CREATOR_OUTREACH_PACK.md` — outreach templates + creator-facing explanations
 - `docs/DEMO_CREATOR_PROFILES.md` — sample profile picker for demos
+- `docs/CREATOR_DEMO_VALIDATION.md` — Phase 3.10 validation notes and demo-readiness checklist
 
 **Metric derivation** (pooled across a creator's analyzed posts):
 - `claim_support_rate` — share of checkable claims with medium/high corroboration
@@ -280,6 +342,8 @@ When `False`:
 | `RATE_LIMIT_ANALYZE_WINDOW_SECONDS` | backend | `3600` | |
 | `CORS_ORIGINS` | backend | `http://localhost:3000` | Comma-separated list |
 | `DASHBOARD_NEWS_PROVIDER` | backend | `fixtures` | `fixtures` (JSON) or `live` (RSS, no API key) |
+| `TRANSCRIPTION_PROVIDER` | backend | `mock` | `mock` (dev/tests) or `openai` (Whisper) |
+| `MEDIA_MAX_UPLOAD_BYTES` | backend | `52428800` | 50 MB default |
 | `NEXT_PUBLIC_API_URL` | frontend | `http://localhost:8000` | Backend base URL |
 
 Backend reads from `backend/.env` (copy from `backend/.env.example`).  
@@ -329,7 +393,8 @@ pytest -q
 #   tests/test_creators.py             — creator list/detail/posts endpoints, 404s, metric ranges (35 total)
 #   tests/test_creator_metrics.py      — derived metrics from analysis pipeline (12 total)
 #   tests/test_creator_persistence.py    — SQLite cache, hash invalidation, demo POST (6 total)
-# Total: 106 tests
+#   tests/test_media_upload.py          — media upload, transcription mock, analysis pipeline (6 total)
+# Total: 114 tests
 ```
 
 No frontend test suite exists yet.
@@ -347,22 +412,30 @@ No frontend test suite exists yet.
 - **OpenAI path untested in CI** — tests run with `OPENAI_API_KEY` unset (deterministic path only)
 - **Category detection is keyword-only** — no ML classifier; can misdetect mixed-content text
 - **Creator dashboard is fixture-only** — no real social media API, no scraping, no user accounts
-- **Creator post text is fixture-sourced** — analysis runs on title/summary/claims (or optional `content`), not live platform posts
+- **Creator post text is fixture-sourced** — primary personas use full `content` transcripts; other posts may still use title/summary/claims; not live platform posts
+- **Legacy `creators.json` metrics can mislead** — dashboard values are derived at runtime; see `CREATOR_DEMO_VALIDATION.md`
 - **Creator analyses persisted in SQLite** — per-post cache with content-hash invalidation; aggregation still runs each request
 - **Legacy metric fields in creators.json** — retained in fixtures but overridden at runtime by derived values
 - **No public creator badges** — not yet implemented
 - **Creator post claims are not persisted** — no DB connection; creator data exists only in fixture JSON
 - **No creator search or filtering** — list endpoint returns all creators; no pagination, category filter, or text search
-- **No in-app demo post form yet** — demo content still added via API/curl (Phase 3.7 polished display only)
+- **Demo post form is internal-only** — `/creators/demo` has no auth; not creator onboarding or a public feature
+- **Media upload is user-provided files only** — no URL download; Instagram/TikTok links are metadata on upload form
+- **Video upload needs ffmpeg** when `TRANSCRIPTION_PROVIDER` is not `mock`
+- **No batch media upload** — single file per request
+- **Uploaded video files not retained** — transcript + analysis stored in SQLite
+- **No video ingestion** — `input_basis` labels what was pasted; The Giver does not watch/transcribe Reels unless user supplies a full transcript or upload
 - **Outreach pack is documentation only** — no PDF export, share links, or CRM integration for creator outreach
 
 ---
 
 ## 14. Next planned phase
 
-**Phase 3.8 — COMPLETE.** Candidates for Phase 4:
-- Simple UI form on `/creators/[id]` for demo post submission (calls `POST .../posts/demo`)
+**Phase 4A — COMPLETE.** Candidates for next:
+- Wire media upload into creator demo workflow (optional)
+- Batch upload, media library (Phase 4B+)
 - Creator pilot program: track 2–3 real paste-only transcripts with written consent (process, not product)
+- Enrich `content` on `creator-003` (and remaining posts) for parity with validation trio
 - Export/share transparency summary as PDF or static link (opt-in, no public directory)
 - Add optional dedicated `content` field on all fixture posts for richer analysis input
 - Add creator search, filtering by category, and pagination to the list endpoint

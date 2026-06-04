@@ -14,6 +14,8 @@ class Settings(BaseSettings):
     rate_limit_analyze_window_seconds: int = 3600
     cors_origins: str = "http://localhost:3000"
     dashboard_news_provider: str = "fixtures"
+    transcription_provider: str = "mock"
+    media_max_upload_bytes: int = 52_428_800
 
     @property
     def cors_origin_list(self) -> list[str]:

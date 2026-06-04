@@ -16,7 +16,7 @@ def _client_ip(request: Request) -> str:
 
 class AnalyzeRateLimitMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        if request.method == "POST" and request.url.path == "/v1/analyze":
+        if request.method == "POST" and request.url.path in ("/v1/analyze", "/v1/analyze/media"):
             allowed, retry_after = check_analyze_rate_limit(_client_ip(request))
             if not allowed:
                 return JSONResponse(

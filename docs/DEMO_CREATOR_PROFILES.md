@@ -2,6 +2,8 @@
 
 Four fictional creators ship with The Giver. Metrics on `/creators` are **derived at runtime** from the analysis pipeline (`metrics_source: derived_from_analysis`), not the legacy numbers in `creators.json`. Use this guide to choose profiles for demos and outreach.
 
+**Phase 3.10:** `creator-001`, `creator-002`, and `creator-004` include full analyzable `content` on each fixture post. See `CREATOR_DEMO_VALIDATION.md` for validation notes and live-metric caveats.
+
 ---
 
 ## Profile comparison (illustrative)

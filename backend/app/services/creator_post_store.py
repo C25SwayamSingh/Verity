@@ -6,6 +6,7 @@ from typing import Optional
 
 from sqlmodel import Session, select
 
+from app.core.input_basis import DEFAULT_INPUT_BASIS
 from app.db.models import CreatorPostRecord
 
 
@@ -24,6 +25,7 @@ def record_to_post_dict(record: CreatorPostRecord) -> dict:
         "topic": record.topic,
         "content": record.content,
         "content_type": record.content_type,
+        "input_basis": getattr(record, "input_basis", None) or DEFAULT_INPUT_BASIS,
         "claims": [],
         "audience_signal_placeholder": (
             "Engagement rate and comment sentiment data not yet collected."
@@ -55,6 +57,7 @@ def create_demo_post(
     published_at: Optional[str] = None,
     source_url: str = "",
     content_type: str = "transcript",
+    input_basis: str = DEFAULT_INPUT_BASIS,
     post_id: Optional[str] = None,
 ) -> dict:
     pid = post_id or f"demo-{uuid.uuid4().hex[:12]}"
@@ -68,6 +71,7 @@ def create_demo_post(
         existing.topic = topic
         existing.content = content
         existing.content_type = content_type
+        existing.input_basis = input_basis
         existing.updated_at = now
         session.add(existing)
         session.commit()
@@ -84,6 +88,7 @@ def create_demo_post(
         topic=topic,
         content=content,
         content_type=content_type,
+        input_basis=input_basis,
     )
     session.add(record)
     session.commit()

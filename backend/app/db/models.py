@@ -29,6 +29,7 @@ class CreatorPostRecord(SQLModel, table=True):
     topic: str
     content: str
     content_type: str = "transcript"
+    input_basis: str = "third_party_extracted_key_points"
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 

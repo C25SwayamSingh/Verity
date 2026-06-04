@@ -153,6 +153,14 @@ export default function CreatorsPage() {
 
       <CreatorDisclaimer compact />
 
+      <p className="text-xs text-giver-low">
+        Internal:{" "}
+        <Link href="/creators/demo" className="text-giver-accent hover:underline font-medium">
+          Add demo creator post
+        </Link>{" "}
+        (not public onboarding)
+      </p>
+
       <details className="group rounded-lg border border-slate-200 bg-giver-mist">
         <summary className="flex cursor-pointer select-none items-center justify-between px-4 py-3 text-sm font-medium text-giver-ink">
           <span>What these metrics mean</span>
@@ -167,7 +175,11 @@ export default function CreatorsPage() {
           ))}
           <p className="text-[11px] text-giver-low pt-1 border-t border-slate-200">
             Metrics are derived from analyzed post content via the information-integrity engine.
-            Analyses persist in SQLite until content changes. Demo posts:{" "}
+            Analyses persist in SQLite until content changes.             Demo posts:{" "}
+            <Link href="/creators/demo" className="text-giver-accent hover:underline">
+              internal demo form
+            </Link>{" "}
+            or{" "}
             <code className="rounded bg-white px-1">POST /v1/creators/&#123;id&#125;/posts/demo</code>{" "}
             (see <code className="rounded bg-white px-1">docs/CREATOR_DEMO_WORKFLOW.md</code>).
           </p>

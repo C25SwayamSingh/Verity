@@ -60,6 +60,27 @@ export interface EligibilityResult {
   reason: string;
 }
 
+export interface IngestionInfo {
+  ingestion_type: string;
+  analyzable: boolean;
+  needs_more_input: boolean;
+  source_links: string[];
+  guidance?: string | null;
+  transparency_note?: string | null;
+}
+
+export interface MediaSourceMetadata {
+  input_basis: string;
+  input_basis_label: string;
+  transparency_note: string;
+  original_filename: string;
+  source_url?: string;
+  title?: string;
+  transcript_char_count: number;
+  transcription_provider: string;
+  media_kind: string;
+}
+
 export interface AnalyzeResponse {
   analysis_id: string;
   summary: string;
@@ -69,6 +90,9 @@ export interface AnalyzeResponse {
   neutral_rewrite: string;
   eligibility: EligibilityResult;
   notes?: string[];
+  ingestion?: IngestionInfo | null;
+  media_source?: MediaSourceMetadata | null;
+  generated_transcript?: string | null;
 }
 
 export interface AnalyzeRequest {
@@ -193,9 +217,37 @@ export interface CreatorPost {
   framing_label: string;
   sources_used: string[];
   audience_signal_placeholder: string;
+  input_basis?: string | null;
+  input_basis_label?: string | null;
+  input_basis_note?: string | null;
 }
 
 export interface CreatorPostsResponse {
   creator_id: string;
   posts: CreatorPost[];
+}
+
+export type InputBasis =
+  | "full_transcript"
+  | "manual_rough_transcript"
+  | "caption_text"
+  | "third_party_extracted_key_points"
+  | "manual_summary_source_notes";
+
+export interface CreateDemoCreatorPostRequest {
+  title: string;
+  content: string;
+  topic: string;
+  platform?: string;
+  published_at?: string;
+  source_url?: string;
+  content_type?: "article" | "transcript" | "pasted_text";
+  input_basis?: InputBasis;
+  post_id?: string;
+}
+
+export interface CreateDemoCreatorPostResponse {
+  post: CreatorPost;
+  message: string;
+  analysis_persisted: boolean;
 }
