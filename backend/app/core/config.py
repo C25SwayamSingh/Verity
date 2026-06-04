@@ -14,6 +14,11 @@ class Settings(BaseSettings):
     rate_limit_analyze_window_seconds: int = 3600
     cors_origins: str = "http://localhost:3000"
     dashboard_news_provider: str = "fixtures"
+    # Optional API keys for future/licensed providers. Empty by default; the app
+    # never crashes when these are unset (providers stay disabled / fall back).
+    newsapi_api_key: str = ""
+    gnews_api_key: str = ""
+    google_factcheck_api_key: str = ""
     transcription_provider: str = "mock"
     media_max_upload_bytes: int = 52_428_800
     article_extraction_enabled: bool = True

@@ -140,6 +140,73 @@ export interface DashboardResponse {
 }
 
 // ---------------------------------------------------------------------------
+// News Integrity Feed (home page)
+// ---------------------------------------------------------------------------
+
+export interface CorroborationSignal {
+  level: "strong" | "moderate" | "limited" | "single_source";
+  label: string;
+  strength: number;
+  detail: string;
+}
+
+export interface ContradictionSignal {
+  present: boolean;
+  label: string;
+  detail: string;
+}
+
+export interface FramingSignal {
+  level: "neutral" | "mixed" | "notable" | "unknown";
+  label: string;
+}
+
+export interface ConfidenceSignal {
+  level: "high" | "medium" | "low";
+  label: string;
+  score: number;
+}
+
+export interface ScoreExplanation {
+  key: string;
+  label: string;
+  weight: number;
+  weighted: boolean;
+  description: string;
+}
+
+export interface NewsFeedItem {
+  id: string;
+  headline: string;
+  source: string;
+  category: string;
+  published_at: string;
+  neutral_summary: string;
+  final_score: number;
+  importance_score: number;
+  credibility_score: number;
+  relevance_score: number;
+  freshness_score: number;
+  source_diversity_score: number;
+  corroboration: CorroborationSignal;
+  contradiction: ContradictionSignal;
+  framing: FramingSignal;
+  confidence: ConfidenceSignal;
+  key_claims: string[];
+  why_selected: string;
+  detail_path: string;
+}
+
+export interface NewsFeedResponse {
+  category: string;
+  provider_mode: string;
+  generated_at: string;
+  items: NewsFeedItem[];
+  score_explanations: ScoreExplanation[];
+  disclaimer: string;
+}
+
+// ---------------------------------------------------------------------------
 // Creator / Influencer Integrity Dashboard — Phase 3
 // ---------------------------------------------------------------------------
 

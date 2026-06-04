@@ -17,9 +17,11 @@ from app.schemas.creator import (
     CreatorPostsResponse,
 )
 from app.schemas.dashboard import DashboardArticle, DashboardResponse
+from app.schemas.news_feed import NewsFeedResponse, ScoringMethodResponse
 from app.services.creator_service import CreatorService
 from app.services.dashboard_service import DashboardService, SUPPORTED_CATEGORIES
 from app.services.ingest_service import IngestService
+from app.services.news_feed_service import NewsFeedService
 from app.services.media_ingest_service import (
     MediaIngestService,
     MediaTooLargeError,
@@ -56,6 +58,7 @@ app.add_middleware(AnalyzeRateLimitMiddleware)
 _ingest = IngestService()
 _media = MediaIngestService(_ingest)
 _dashboard = DashboardService()
+_news_feed = NewsFeedService(_dashboard)
 _creators = CreatorService()
 
 
@@ -115,6 +118,28 @@ def get_analysis(analysis_id: str, session: Session = Depends(get_session)):
     if not result:
         raise HTTPException(status_code=404, detail="Analysis not found")
     return result
+
+
+@app.get("/v1/news/feed", response_model=NewsFeedResponse)
+def get_news_feed(category: str = "breaking"):
+    """News Integrity Feed for the home page.
+
+    Returns current stories for *category*, each annotated with cross-source
+    corroboration, contradiction, framing, and confidence signals plus the score
+    explanations. Provider failures fall back to fixtures automatically.
+    """
+    if category not in SUPPORTED_CATEGORIES:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Unsupported category '{category}'. Supported: {sorted(SUPPORTED_CATEGORIES)}",
+        )
+    return _news_feed.get_feed(category)
+
+
+@app.get("/v1/news/scoring", response_model=ScoringMethodResponse)
+def get_news_scoring():
+    """Return the ranking formula, weights, and plain-English score definitions."""
+    return _news_feed.scoring_method()
 
 
 @app.get("/v1/dashboard/articles", response_model=DashboardResponse)

@@ -44,7 +44,13 @@ export default function RootLayout({
                   href="/"
                   className="text-giver-slate hover:text-giver-accent transition-colors"
                 >
-                  Core Checker
+                  News Feed
+                </Link>
+                <Link
+                  href="/check"
+                  className="text-giver-slate hover:text-giver-accent transition-colors"
+                >
+                  Check
                 </Link>
                 <Link
                   href="/dashboard"

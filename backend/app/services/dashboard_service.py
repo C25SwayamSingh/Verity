@@ -2,6 +2,8 @@ import logging
 from typing import Optional
 
 from app.core.config import get_settings
+from app.core.news_scoring import SCORE_WEIGHTS as _SCORE_WEIGHTS
+from app.core.news_scoring import compute_final_score as _compute_final_score
 from app.providers.dashboard_base import DashboardNewsProvider, DashboardProviderError
 from app.providers.dashboard_fixtures_provider import DashboardFixturesProvider
 from app.providers.dashboard_registry import get_dashboard_provider
@@ -13,21 +15,6 @@ from app.schemas.domain import UserCategory
 logger = logging.getLogger(__name__)
 
 SUPPORTED_CATEGORIES = {c.value for c in UserCategory if c != UserCategory.other}
-
-_SCORE_WEIGHTS = {
-    "importance_score": 0.35,
-    "credibility_score": 0.30,
-    "relevance_score": 0.20,
-    "freshness_score": 0.10,
-    "source_diversity_score": 0.05,
-}
-
-
-def _compute_final_score(article: dict) -> float:
-    return round(
-        sum(article[k] * w for k, w in _SCORE_WEIGHTS.items()),
-        4,
-    )
 
 
 class DashboardService:

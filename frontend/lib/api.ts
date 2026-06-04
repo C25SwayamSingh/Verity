@@ -9,6 +9,7 @@ import type {
   DashboardArticle,
   DashboardCategory,
   DashboardResponse,
+  NewsFeedResponse,
   RateLimitError,
 } from "./types";
 
@@ -58,6 +59,24 @@ export async function getAnalysis(analysisId: string): Promise<AnalyzeResponse> 
   });
   if (!res.ok) {
     throw new ApiError("Analysis not found", res.status);
+  }
+  return res.json();
+}
+
+export async function getNewsFeed(
+  category: DashboardCategory,
+): Promise<NewsFeedResponse> {
+  const res = await fetch(
+    `${API_URL}/v1/news/feed?category=${encodeURIComponent(category)}`,
+    { cache: "no-store" },
+  );
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError(
+      (body as { detail?: string }).detail ?? "Failed to load news feed",
+      res.status,
+      body,
+    );
   }
   return res.json();
 }

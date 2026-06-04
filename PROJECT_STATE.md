@@ -1,6 +1,27 @@
 # PROJECT_STATE.md — The Giver
 
-> Checkpoint for Cursor agents. Last updated: 2026-06-04. Phase 1–2 complete. Phase 3 complete. Phase 4A media upload MVP complete. Phase 4C ingestion correction complete (URL-only links no longer analyzed as content). Phase 4D article-URL text extraction complete (shared article links are fetched + parsed; social videos still require upload/transcript). 130 backend tests green; frontend build clean (7 routes).
+> Checkpoint for Cursor agents. Last updated: 2026-06-04. Phase 1–2 complete. Phase 3 complete. Phase 4A media upload MVP complete. Phase 4C ingestion correction complete (URL-only links no longer analyzed as content). Phase 4D article-URL text extraction complete. **Phase 5 News Integrity Feed + provider architecture complete** (home page is now a swipeable news feed with integrity signals; `/v1/news/feed` + `/v1/news/scoring`; optional GDELT provider; central scoring module; checker moved to `/check`). 156 backend tests green; frontend build clean (8 routes).
+
+---
+
+## 0. Phase 5 — News Integrity Feed + Provider Architecture (LATEST)
+
+**What changed**
+- **Home page (`/`) is now the News Integrity Feed** — a category-filtered, Tinder-style swipeable card stack of current stories with concise integrity signals. The checker moved to **`/check`** (behavior preserved, including PWA share-target).
+- **New endpoints**: `GET /v1/news/feed?category=<cat>` (feed items with signals) and `GET /v1/news/scoring` (formula + weights + plain-English definitions).
+- **Central scoring module** `backend/app/core/news_scoring.py` — single source of truth for weights, score definitions, and derived signals (cross-source corroboration, contradiction, framing, confidence). `DashboardService` now imports its weights/formula from here (behavior unchanged).
+- **Optional GDELT provider** (`gdelt`) added alongside `fixtures` (default) and `live` (RSS). Open, key-free, falls back to fixtures on any failure.
+- **Provider strategy documented**: fixtures/RSS/GDELT available now; NewsAPI/GNews/Google Fact Check are optional + key-gated; Reuters/AP treated as licensed; Ground News not depended on. Optional keys (`NEWSAPI_API_KEY`, `GNEWS_API_KEY`, `GOOGLE_FACTCHECK_API_KEY`) default empty and never crash the app.
+
+**Provider architecture**: one `DashboardNewsProvider` interface; `DashboardService` scores/sorts/limits + falls back to fixtures; `NewsFeedService` wraps it and adds signals (no network calls of its own). See `docs/NEWS_PROVIDER_STRATEGY.md`.
+
+**Scoring**: formula unchanged (audited + kept) — `0.35*importance + 0.30*credibility/corroboration + 0.20*relevance + 0.10*freshness + 0.05*source_diversity`. Derived non-weighted signals: corroboration (`strong/moderate/limited/single_source`), contradiction (present/absent), framing (`neutral/mixed/notable`), confidence (`high/medium/low`). Full definitions in `docs/SCORING_METHOD.md`. No "truth score" anywhere.
+
+**Social URL-only behavior**: unchanged and still enforced — a bare social/video link returns `needs_more_input` with guidance; no fabricated summary/claims/rewrite; link kept as metadata only. See `docs/SOCIAL_VIDEO_LIMITATIONS.md`.
+
+**Tests/build**: 156 backend tests green (+26: `test_news_feed.py`, `test_gdelt_provider.py`); frontend build clean, 8 routes (`/`, `/check`, `/results/[id]`, `/dashboard`, `/dashboard/[id]`, `/creators`, `/creators/[id]`, `/creators/demo`).
+
+**Remaining limitations**: live/GDELT items use fixed defaults for importance/relevance/diversity (no real corroboration clustering yet); saved-stories list in the feed is client-side only (not persisted); no NewsAPI/AP/Reuters integration (key-gated/licensed, documented for later).
 
 ---
 
@@ -179,6 +200,8 @@ All component scores are 0–1. Computed dynamically in `DashboardService`; stor
 | `POST` | `/v1/analyze` | Run analysis. Body: `AnalyzeRequest`. Returns `AnalysisDetailResponse`. Rate-limited by IP. |
 | `POST` | `/v1/analyze/media` | Upload media → transcribe → analyze. Multipart: `file`, `media_kind`, `user_selected_category`, optional `title`/`source_url`. Rate-limited by IP. |
 | `GET` | `/v1/analysis/{analysis_id}` | Fetch previously stored analysis by UUID. Returns 404 if not found. |
+| `GET` | `/v1/news/feed?category=<cat>` | News Integrity Feed items for a category, each with corroboration/contradiction/framing/confidence signals + `score_explanations` + `disclaimer`. 422 for unsupported category. |
+| `GET` | `/v1/news/scoring` | Ranking formula, component weights, and plain-English score definitions. |
 | `GET` | `/v1/dashboard/articles?category=<cat>` | Returns top 5 scored articles for a supported category. Returns 422 for unsupported categories (including `other`). |
 | `GET` | `/v1/dashboard/articles/{article_id}` | Returns one article by ID. Returns 404 if not found. Looks up via primary provider then fixtures fallback. |
 | `GET` | `/v1/creators` | Returns list of creator profiles (`CreatorListResponse`). |
@@ -203,7 +226,8 @@ analysis_id, summary, key_takeaways[], claims[], framing, neutral_rewrite, eligi
 ## 5. Frontend pages / components
 
 **Pages** (`frontend/app/`)
-- `/` (`page.tsx`) — text input form, category selector, analyze button
+- `/` (`page.tsx`) — **News Integrity Feed**: category filter pills, swipeable card stack (Skip / Save / Open), per-card integrity signals, saved list, "how these signals work" methodology, "Check your own →" CTA to `/check`
+- `/check` (`check/page.tsx`) — the Core Checker input (moved from `/`); PWA share-target action; paste text/link or upload media → analysis
 - `/results/[id]` — renders stored analysis fetched from `GET /v1/analysis/{id}`
 - `/dashboard` (`dashboard/page.tsx`) — Reliable News Dashboard; category dropdown + top-5 article cards with "View full detail →" links
 - `/dashboard/[id]` (`dashboard/[id]/page.tsx`) — Article detail page; all scores, framing, claims, source corroboration, back link
@@ -213,7 +237,8 @@ analysis_id, summary, key_takeaways[], claims[], framing, neutral_rewrite, eligi
 - `layout.tsx` — root layout with nav links (Core Checker / Dashboard / Creators)
 
 **Components** (`frontend/components/`)
-- `ArticleInput.tsx` — textarea + content-type + category dropdowns
+- `NewsFeedCard.tsx` — home-feed story card: category badge, headline, source/time, neutral summary, corroboration/framing/contradiction badges, "why this story appears here", confidence, open/check links
+- `CheckerInput.tsx` — single checker input (paste text/link or attach media)
 - `ClaimCard.tsx` — single claim with type badge, corroboration status, sources
 - `DashboardArticleCard.tsx` — ranked article card with scores, framing label, claims, warnings, "View full detail →" link
 - `ErrorState.tsx` — error display
@@ -229,8 +254,8 @@ analysis_id, summary, key_takeaways[], claims[], framing, neutral_rewrite, eligi
 - `lib/creatorDisplay.ts` — shared metric copy, corroboration/framing labels, disclaimer text
 
 **Lib** (`frontend/lib/`)
-- `api.ts` — typed fetch wrappers for backend (includes `getDashboardArticles`, `getDashboardArticle`, `getCreators`, `getCreator`, `getCreatorPosts`, `createDemoCreatorPost`)
-- `types.ts` — TypeScript mirrors of backend schemas (includes `DashboardArticle`, `DashboardResponse`, `CreatorListItem`, `CreatorOverview`, `CreatorPost`, `CreatorPostsResponse`, `WeakClaim`, `PostClaim`)
+- `api.ts` — typed fetch wrappers for backend (includes `getNewsFeed`, `getDashboardArticles`, `getDashboardArticle`, `getCreators`, `getCreator`, `getCreatorPosts`, `createDemoCreatorPost`)
+- `types.ts` — TypeScript mirrors of backend schemas (includes `NewsFeedItem`/`NewsFeedResponse` + signal types, `DashboardArticle`, `DashboardResponse`, `CreatorListItem`, `CreatorOverview`, `CreatorPost`, `CreatorPostsResponse`, `WeakClaim`, `PostClaim`)
 - `color.ts` — corroboration/framing color utilities
 
 ---
@@ -331,7 +356,10 @@ When `False`:
 - `dashboard_base.py` — `DashboardNewsProvider` ABC; single method `fetch(category) -> list[dict]`
 - `dashboard_fixtures_provider.py` — loads `dashboard_articles.json`; default provider
 - `dashboard_live_provider.py` — live RSS implementation (BBC, NPR, Reuters, TechCrunch); raises `DashboardProviderError` on failure
-- `dashboard_registry.py` — `get_dashboard_provider(settings)` factory; maps env var to provider class
+- `dashboard_gdelt_provider.py` — open GDELT 2.0 DOC API provider (key-free); per-category query; network seam `_fetch_raw` is patched in tests; raises `DashboardProviderError` on failure
+- `dashboard_registry.py` — `get_dashboard_provider(settings)` factory; maps env var (`fixtures`/`live`/`gdelt`) to provider class
+- `app/core/news_scoring.py` — central scoring weights, definitions, and derived signals (used by `DashboardService` + `NewsFeedService`)
+- `app/services/news_feed_service.py` — wraps `DashboardService`, adds feed signals; backs `/v1/news/feed` + `/v1/news/scoring`
 
 **Flow (list)**: `main.py` → `DashboardService.get_top_articles(category)` → `provider.fetch(category)` → score + sort → top 5. Falls back to fixtures on `DashboardProviderError` / `NotImplementedError`.
 
@@ -352,7 +380,10 @@ When `False`:
 | `RATE_LIMIT_ANALYZE_REQUESTS` | backend | `5` | Per IP per window |
 | `RATE_LIMIT_ANALYZE_WINDOW_SECONDS` | backend | `3600` | |
 | `CORS_ORIGINS` | backend | `http://localhost:3000` | Comma-separated list |
-| `DASHBOARD_NEWS_PROVIDER` | backend | `fixtures` | `fixtures` (JSON) or `live` (RSS, no API key) |
+| `DASHBOARD_NEWS_PROVIDER` | backend | `fixtures` | `fixtures` (JSON), `live` (RSS, no key), or `gdelt` (open GDELT, no key) |
+| `NEWSAPI_API_KEY` | backend | `""` | Optional; provider not built yet. Empty is safe. |
+| `GNEWS_API_KEY` | backend | `""` | Optional; provider not built yet. Empty is safe. |
+| `GOOGLE_FACTCHECK_API_KEY` | backend | `""` | Optional; provider not built yet. Empty is safe. |
 | `TRANSCRIPTION_PROVIDER` | backend | `mock` | `mock` (dev/tests) or `openai` (Whisper) |
 | `MEDIA_MAX_UPLOAD_BYTES` | backend | `52428800` | 50 MB default |
 | `NEXT_PUBLIC_API_URL` | frontend | `http://localhost:8000` | Backend base URL |
@@ -405,8 +436,12 @@ pytest -q
 #   tests/test_creator_metrics.py      — derived metrics from analysis pipeline (12 total)
 #   tests/test_creator_persistence.py    — SQLite cache, hash invalidation, demo POST (6 total)
 #   tests/test_media_upload.py          — media upload, transcription mock, analysis pipeline (6 total)
-# Total: 114 tests
+#   tests/test_news_feed.py             — feed endpoint, normalized item schema, signals, scoring explanations, fallback, no-key startup
+#   tests/test_gdelt_provider.py        — GDELT normalization, domain credibility, fallback (network mocked)
+# Total: 156 tests
 ```
+
+Run with `RATE_LIMIT_ENABLED=false pytest -q` to avoid rate-limit interference across API tests.
 
 No frontend test suite exists yet.
 
