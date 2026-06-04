@@ -114,3 +114,88 @@ export interface DashboardResponse {
   category: string;
   articles: DashboardArticle[];
 }
+
+// ---------------------------------------------------------------------------
+// Creator / Influencer Integrity Dashboard — Phase 3
+// ---------------------------------------------------------------------------
+
+export interface WeakClaim {
+  claim_id: string;
+  post_id: string;
+  text: string;
+  corroboration_status: string;
+  note: string;
+}
+
+export interface CreatorListItem {
+  creator_id: string;
+  name: string;
+  platform: string;
+  handle: string;
+  category: string;
+  bio: string;
+  metrics_source?: string;
+  total_analyzed_posts: number;
+  source_alignment_score: number;
+  claim_support_rate: number;
+  contradiction_rate: number;
+  top_topics: string[];
+}
+
+export interface CreatorListResponse {
+  creators: CreatorListItem[];
+}
+
+export interface CreatorOverview {
+  creator_id: string;
+  name: string;
+  platform: string;
+  handle: string;
+  category: string;
+  bio: string;
+  metrics_source?: string;
+  total_analyzed_posts: number;
+  source_alignment_score: number;
+  claim_support_rate: number;
+  contradiction_rate: number;
+  low_corroboration_rate: number;
+  source_diversity_score: number;
+  average_framing_score: number;
+  top_topics: string[];
+  most_used_sources: string[];
+  most_reliable_posts: string[];
+  weakest_claims: WeakClaim[];
+  transparency_summary: string;
+}
+
+export interface PostClaim {
+  claim_id: string;
+  text: string;
+  claim_type: string;
+  corroboration_status: string;
+}
+
+export interface CreatorPost {
+  post_id: string;
+  creator_id: string;
+  title: string;
+  platform: string;
+  published_at: string;
+  source_url: string;
+  topic: string;
+  summary: string;
+  metrics_source?: string;
+  claims: PostClaim[];
+  supported_claims_count: number;
+  contradicted_claims_count: number;
+  low_corroboration_claims_count: number;
+  source_alignment_score: number;
+  framing_label: string;
+  sources_used: string[];
+  audience_signal_placeholder: string;
+}
+
+export interface CreatorPostsResponse {
+  creator_id: string;
+  posts: CreatorPost[];
+}

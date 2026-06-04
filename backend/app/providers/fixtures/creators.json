@@ -1,0 +1,142 @@
+[
+  {
+    "creator_id": "creator-001",
+    "name": "Nova Rivera",
+    "platform": "YouTube",
+    "handle": "@novarivera",
+    "category": "tech_ai",
+    "bio": "Independent technology journalist covering AI policy, open-source development, and the societal impact of emerging technologies. Nova's channel focuses on breaking down complex technical topics for general audiences.",
+    "total_analyzed_posts": 5,
+    "source_alignment_score": 0.74,
+    "claim_support_rate": 0.68,
+    "contradiction_rate": 0.09,
+    "low_corroboration_rate": 0.23,
+    "source_diversity_score": 0.81,
+    "average_framing_score": 0.71,
+    "top_topics": ["artificial intelligence", "open-source software", "AI regulation", "machine learning", "data privacy"],
+    "most_used_sources": ["MIT Technology Review", "ArXiv", "The Verge", "Nature AI", "Wired"],
+    "most_reliable_posts": ["post-001-a", "post-001-c"],
+    "weakest_claims": [
+      {
+        "claim_id": "wc-001-1",
+        "post_id": "post-001-b",
+        "text": "This new model will make most software engineers redundant within two years.",
+        "corroboration_status": "low_corroboration",
+        "note": "Speculative prediction with no cited supporting evidence."
+      },
+      {
+        "claim_id": "wc-001-2",
+        "post_id": "post-001-d",
+        "text": "Open-source AI models are consistently safer than proprietary ones.",
+        "corroboration_status": "contradicted",
+        "note": "Multiple safety researchers dispute this as an oversimplification."
+      }
+    ],
+    "transparency_summary": "Nova Rivera regularly cites peer-reviewed sources and links primary documents. Opinion segments are usually labeled. Some forward-looking claims about labor market displacement lack corroboration and are stated with more certainty than the evidence supports."
+  },
+  {
+    "creator_id": "creator-002",
+    "name": "Marcus Webb",
+    "platform": "Twitter/X & Substack",
+    "handle": "@marcuswebb",
+    "category": "domestic_us",
+    "bio": "Former newspaper editor turned independent political commentator. Marcus covers U.S. domestic policy, elections, and institutional governance from a process-focused lens.",
+    "total_analyzed_posts": 5,
+    "source_alignment_score": 0.61,
+    "claim_support_rate": 0.54,
+    "contradiction_rate": 0.18,
+    "low_corroboration_rate": 0.28,
+    "source_diversity_score": 0.59,
+    "average_framing_score": 0.49,
+    "top_topics": ["election integrity", "congressional legislation", "executive branch", "civil liberties", "media criticism"],
+    "most_used_sources": ["Congressional Record", "POLITICO", "Washington Post", "Pew Research", "ACLU"],
+    "most_reliable_posts": ["post-002-a", "post-002-e"],
+    "weakest_claims": [
+      {
+        "claim_id": "wc-002-1",
+        "post_id": "post-002-c",
+        "text": "The administration deliberately timed this announcement to suppress voter turnout.",
+        "corroboration_status": "low_corroboration",
+        "note": "Intent attribution lacks cited evidence; framed as established fact."
+      },
+      {
+        "claim_id": "wc-002-2",
+        "post_id": "post-002-d",
+        "text": "Corporate media is coordinating talking points on this issue.",
+        "corroboration_status": "low_corroboration",
+        "note": "Coordination claim is not substantiated with sourced documentation."
+      }
+    ],
+    "transparency_summary": "Marcus Webb cites primary legislative sources reliably. However, a notable share of posts show mixed framing — particularly when attributing intent to political actors. Opinion and analysis are not always clearly separated from factual summaries."
+  },
+  {
+    "creator_id": "creator-003",
+    "name": "Leila Okonkwo",
+    "platform": "Podcast & Substack",
+    "handle": "@leilaokonkwo",
+    "category": "foreign_world",
+    "bio": "Foreign policy researcher and podcast host covering geopolitics, international development, and conflict analysis. Leila has contributed to several think tanks and brings an academic sourcing standard to public commentary.",
+    "total_analyzed_posts": 5,
+    "source_alignment_score": 0.86,
+    "claim_support_rate": 0.79,
+    "contradiction_rate": 0.05,
+    "low_corroboration_rate": 0.16,
+    "source_diversity_score": 0.88,
+    "average_framing_score": 0.83,
+    "top_topics": ["geopolitics", "humanitarian crises", "UN policy", "regional security", "economic development"],
+    "most_used_sources": ["Foreign Affairs", "International Crisis Group", "UN Reports", "BBC World Service", "Reuters"],
+    "most_reliable_posts": ["post-003-a", "post-003-b", "post-003-d"],
+    "weakest_claims": [
+      {
+        "claim_id": "wc-003-1",
+        "post_id": "post-003-c",
+        "text": "Sanctions have never successfully changed a government's strategic behavior.",
+        "corroboration_status": "contradicted",
+        "note": "Multiple academic studies document cases where sanctions influenced policy outcomes."
+      }
+    ],
+    "transparency_summary": "Leila Okonkwo maintains strong sourcing discipline with consistent citation of institutional and academic sources. Framing is largely neutral. One post contains an absolute claim about sanctions that is contradicted by peer-reviewed literature."
+  },
+  {
+    "creator_id": "creator-004",
+    "name": "DataDave",
+    "platform": "TikTok & YouTube",
+    "handle": "@realdatadave",
+    "category": "markets_stocks",
+    "bio": "Retail investor and self-described 'data nerd' who creates short-form content about stock market trends, earnings analysis, and macroeconomic indicators. No financial credentials disclosed.",
+    "total_analyzed_posts": 5,
+    "source_alignment_score": 0.52,
+    "claim_support_rate": 0.45,
+    "contradiction_rate": 0.22,
+    "low_corroboration_rate": 0.33,
+    "source_diversity_score": 0.44,
+    "average_framing_score": 0.41,
+    "top_topics": ["stock market", "earnings reports", "inflation", "interest rates", "retail investing"],
+    "most_used_sources": ["Bloomberg", "SEC filings", "Yahoo Finance", "Federal Reserve releases"],
+    "most_reliable_posts": ["post-004-a"],
+    "weakest_claims": [
+      {
+        "claim_id": "wc-004-1",
+        "post_id": "post-004-b",
+        "text": "This stock is guaranteed to double in 90 days based on the chart pattern.",
+        "corroboration_status": "low_corroboration",
+        "note": "Price predictions presented as certainties; no analyst consensus cited."
+      },
+      {
+        "claim_id": "wc-004-2",
+        "post_id": "post-004-c",
+        "text": "The Fed is lying about inflation numbers to protect Wall Street.",
+        "corroboration_status": "contradicted",
+        "note": "Conspiracy framing with no sourced evidence; contradicted by multiple independent analyses of BLS methodology."
+      },
+      {
+        "claim_id": "wc-004-3",
+        "post_id": "post-004-d",
+        "text": "Every major bank knew the crash was coming and shorted their own clients.",
+        "corroboration_status": "low_corroboration",
+        "note": "Broad unsourced allegation about coordinated bank activity."
+      }
+    ],
+    "transparency_summary": "DataDave frequently cites real data sources but often presents speculative price predictions and causal claims with unwarranted certainty. Some posts contain framing that attributes intentional deception to institutions without sourced evidence. Financial credentials are not disclosed."
+  }
+]

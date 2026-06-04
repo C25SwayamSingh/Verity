@@ -85,13 +85,13 @@ class IngestService:
         self._framing = FramingService(self._openai)
         self._rewrite = RewriteService(self._openai)
 
-    def analyze(
+    def run_analysis(
         self,
         text: str,
         content_type: str,
         user_selected_category: str,
-        session: Session,
     ) -> AnalyzeResponse:
+        """Run the analysis pipeline without persisting to the database."""
         cleaned, sentences = self._sentences.process(text)
         detected = self._detect_category(cleaned, user_selected_category)
         eligible = self._is_bias_framing_eligible(detected, cleaned, user_selected_category)
@@ -106,9 +106,8 @@ class IngestService:
         framing = self._framing.analyze(cleaned, eligible)
         neutral = self._rewrite.neutral_rewrite(cleaned, eligible)
 
-        analysis_id = str(uuid.uuid4())
-        response = AnalyzeResponse(
-            analysis_id=analysis_id,
+        return AnalyzeResponse(
+            analysis_id=str(uuid.uuid4()),
             summary=summary,
             key_takeaways=takeaways,
             claims=claim_results,
@@ -118,9 +117,18 @@ class IngestService:
             notes=notes,
         )
 
+    def analyze(
+        self,
+        text: str,
+        content_type: str,
+        user_selected_category: str,
+        session: Session,
+    ) -> AnalyzeResponse:
+        response = self.run_analysis(text, content_type, user_selected_category)
+
         record = AnalysisRecord(
-            id=analysis_id,
-            request_text=cleaned[:10000],
+            id=response.analysis_id,
+            request_text=text[:10000],
             content_type=content_type,
             user_selected_category=user_selected_category,
             result_json=response.model_dump_json(),

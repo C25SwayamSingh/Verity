@@ -35,6 +35,12 @@ export default function RootLayout({
                 >
                   Dashboard
                 </Link>
+                <Link
+                  href="/creators"
+                  className="text-giver-slate hover:text-giver-accent transition-colors"
+                >
+                  Creators
+                </Link>
               </nav>
             </div>
           </div>

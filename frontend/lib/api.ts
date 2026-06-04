@@ -1,6 +1,9 @@
 import type {
   AnalyzeRequest,
   AnalyzeResponse,
+  CreatorListResponse,
+  CreatorOverview,
+  CreatorPostsResponse,
   DashboardArticle,
   DashboardCategory,
   DashboardResponse,
@@ -84,6 +87,51 @@ export async function getDashboardArticles(
     const body = await res.json().catch(() => ({}));
     throw new ApiError(
       (body as { detail?: string }).detail ?? "Failed to load dashboard",
+      res.status,
+      body,
+    );
+  }
+  return res.json();
+}
+
+export async function getCreators(): Promise<CreatorListResponse> {
+  const res = await fetch(`${API_URL}/v1/creators`, { cache: "no-store" });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError(
+      (body as { detail?: string }).detail ?? "Failed to load creators",
+      res.status,
+      body,
+    );
+  }
+  return res.json();
+}
+
+export async function getCreator(creatorId: string): Promise<CreatorOverview> {
+  const res = await fetch(
+    `${API_URL}/v1/creators/${encodeURIComponent(creatorId)}`,
+    { cache: "no-store" },
+  );
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError(
+      (body as { detail?: string }).detail ?? "Creator not found",
+      res.status,
+      body,
+    );
+  }
+  return res.json();
+}
+
+export async function getCreatorPosts(creatorId: string): Promise<CreatorPostsResponse> {
+  const res = await fetch(
+    `${API_URL}/v1/creators/${encodeURIComponent(creatorId)}/posts`,
+    { cache: "no-store" },
+  );
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError(
+      (body as { detail?: string }).detail ?? "Creator posts not found",
       res.status,
       body,
     );

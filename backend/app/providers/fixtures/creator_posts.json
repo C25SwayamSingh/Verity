@@ -1,0 +1,652 @@
+[
+  {
+    "post_id": "post-001-a",
+    "creator_id": "creator-001",
+    "title": "What the EU AI Act Actually Means for Developers",
+    "platform": "YouTube",
+    "published_at": "2026-05-20T14:30:00Z",
+    "source_url": "https://youtube.com/watch?v=mock-001-a",
+    "topic": "AI regulation",
+    "summary": "An overview of the EU AI Act's risk-tiered framework, prohibited use cases, and compliance obligations for developers building AI-powered applications in the European market.",
+    "claims": [
+      {
+        "claim_id": "c-001-a-1",
+        "text": "The EU AI Act classifies AI systems into four risk tiers: unacceptable, high, limited, and minimal.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      },
+      {
+        "claim_id": "c-001-a-2",
+        "text": "High-risk AI systems require conformity assessments before deployment in the EU.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      },
+      {
+        "claim_id": "c-001-a-3",
+        "text": "Real-time biometric surveillance in public spaces is prohibited under the Act.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "medium_corroboration"
+      }
+    ],
+    "supported_claims_count": 2,
+    "contradicted_claims_count": 0,
+    "low_corroboration_claims_count": 0,
+    "source_alignment_score": 0.91,
+    "framing_label": "mostly_neutral",
+    "sources_used": ["EUR-Lex Official Text", "MIT Technology Review", "European Parliament Press"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-001-b",
+    "creator_id": "creator-001",
+    "title": "The New Coding Model That Could Replace Junior Devs",
+    "platform": "YouTube",
+    "published_at": "2026-05-10T11:00:00Z",
+    "source_url": "https://youtube.com/watch?v=mock-001-b",
+    "topic": "artificial intelligence",
+    "summary": "A review of a recently released code-generation model, including benchmark comparisons, limitations, and speculative claims about its potential impact on software engineering employment.",
+    "claims": [
+      {
+        "claim_id": "c-001-b-1",
+        "text": "The model scores 87% on HumanEval, beating the previous state of the art.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      },
+      {
+        "claim_id": "c-001-b-2",
+        "text": "This new model will make most software engineers redundant within two years.",
+        "claim_type": "prediction",
+        "corroboration_status": "low_corroboration"
+      },
+      {
+        "claim_id": "c-001-b-3",
+        "text": "The model struggles with reasoning across large codebases.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "medium_corroboration"
+      }
+    ],
+    "supported_claims_count": 1,
+    "contradicted_claims_count": 0,
+    "low_corroboration_claims_count": 1,
+    "source_alignment_score": 0.63,
+    "framing_label": "mixed_framing",
+    "sources_used": ["ArXiv paper", "The Verge benchmark article"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-001-c",
+    "creator_id": "creator-001",
+    "title": "How Federated Learning Protects User Privacy",
+    "platform": "YouTube",
+    "published_at": "2026-04-28T16:00:00Z",
+    "source_url": "https://youtube.com/watch?v=mock-001-c",
+    "topic": "data privacy",
+    "summary": "An explainer on federated learning architecture — how models are trained without centralizing raw data — covering current implementations at major technology companies and known limitations.",
+    "claims": [
+      {
+        "claim_id": "c-001-c-1",
+        "text": "In federated learning, raw data never leaves the user's device.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      },
+      {
+        "claim_id": "c-001-c-2",
+        "text": "Google uses federated learning for Gboard keyboard suggestions.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      },
+      {
+        "claim_id": "c-001-c-3",
+        "text": "Gradient inversion attacks can still partially reconstruct training data.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "medium_corroboration"
+      }
+    ],
+    "supported_claims_count": 2,
+    "contradicted_claims_count": 0,
+    "low_corroboration_claims_count": 0,
+    "source_alignment_score": 0.88,
+    "framing_label": "mostly_neutral",
+    "sources_used": ["Google AI Blog", "Nature AI", "USENIX Security paper"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-001-d",
+    "creator_id": "creator-001",
+    "title": "Open-Source vs. Closed AI: A Safety Comparison",
+    "platform": "YouTube",
+    "published_at": "2026-04-15T10:00:00Z",
+    "source_url": "https://youtube.com/watch?v=mock-001-d",
+    "topic": "open-source software",
+    "summary": "An analysis of the safety tradeoffs between open-weight and proprietary AI models, drawing on published safety benchmarks and policy arguments from both sides of the debate.",
+    "claims": [
+      {
+        "claim_id": "c-001-d-1",
+        "text": "Open-source AI models are consistently safer than proprietary ones.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "contradicted"
+      },
+      {
+        "claim_id": "c-001-d-2",
+        "text": "Meta's Llama 3 has a lower rate of harmful output than GPT-4 on standard red-team benchmarks.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "medium_corroboration"
+      }
+    ],
+    "supported_claims_count": 0,
+    "contradicted_claims_count": 1,
+    "low_corroboration_claims_count": 0,
+    "source_alignment_score": 0.52,
+    "framing_label": "mixed_framing",
+    "sources_used": ["Anthropic safety paper", "Meta AI release notes"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-001-e",
+    "creator_id": "creator-001",
+    "title": "Understanding Transformer Attention Mechanisms",
+    "platform": "YouTube",
+    "published_at": "2026-04-05T13:00:00Z",
+    "source_url": "https://youtube.com/watch?v=mock-001-e",
+    "topic": "machine learning",
+    "summary": "A visual explainer of the self-attention mechanism in transformer architectures, covering the query-key-value formulation and how attention heads learn to focus on relevant token relationships.",
+    "claims": [
+      {
+        "claim_id": "c-001-e-1",
+        "text": "Self-attention allows each token to attend to every other token in the sequence.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      },
+      {
+        "claim_id": "c-001-e-2",
+        "text": "The original 'Attention Is All You Need' paper introduced the transformer architecture in 2017.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      }
+    ],
+    "supported_claims_count": 2,
+    "contradicted_claims_count": 0,
+    "low_corroboration_claims_count": 0,
+    "source_alignment_score": 0.95,
+    "framing_label": "mostly_neutral",
+    "sources_used": ["Vaswani et al. 2017", "The Illustrated Transformer"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-002-a",
+    "creator_id": "creator-002",
+    "title": "What the New Voting Rights Bill Actually Says",
+    "platform": "Substack",
+    "published_at": "2026-05-18T09:00:00Z",
+    "source_url": "https://substack.com/mock-002-a",
+    "topic": "election integrity",
+    "summary": "A section-by-section summary of a proposed federal voting rights bill, covering provisions on voter ID requirements, early voting mandates, and federal preemption of state election laws.",
+    "claims": [
+      {
+        "claim_id": "c-002-a-1",
+        "text": "Section 4 of the bill mandates a minimum of 15 days of early voting in federal elections.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      },
+      {
+        "claim_id": "c-002-a-2",
+        "text": "The bill has 42 co-sponsors in the House as of the publication date.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "medium_corroboration"
+      }
+    ],
+    "supported_claims_count": 1,
+    "contradicted_claims_count": 0,
+    "low_corroboration_claims_count": 0,
+    "source_alignment_score": 0.83,
+    "framing_label": "mostly_neutral",
+    "sources_used": ["Congressional Record", "GovTrack", "ACLU analysis"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-002-b",
+    "creator_id": "creator-002",
+    "title": "Inside the Budget Debate: Winners and Losers",
+    "platform": "Substack",
+    "published_at": "2026-05-08T10:30:00Z",
+    "source_url": "https://substack.com/mock-002-b",
+    "topic": "congressional legislation",
+    "summary": "Analysis of the proposed federal discretionary budget, including line-item comparisons to the prior year's appropriations and commentary on which agencies received notable increases or cuts.",
+    "claims": [
+      {
+        "claim_id": "c-002-b-1",
+        "text": "The proposed budget increases defense spending by 4.2% over the previous fiscal year.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      },
+      {
+        "claim_id": "c-002-b-2",
+        "text": "Environmental protection funding would be cut by 18% under the proposal.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "medium_corroboration"
+      },
+      {
+        "claim_id": "c-002-b-3",
+        "text": "This budget will effectively end meaningful climate policy for a generation.",
+        "claim_type": "opinion",
+        "corroboration_status": "low_corroboration"
+      }
+    ],
+    "supported_claims_count": 1,
+    "contradicted_claims_count": 0,
+    "low_corroboration_claims_count": 1,
+    "source_alignment_score": 0.67,
+    "framing_label": "mixed_framing",
+    "sources_used": ["OMB Budget Document", "POLITICO", "CBO Projections"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-002-c",
+    "creator_id": "creator-002",
+    "title": "The Announcement They Don't Want You to Notice",
+    "platform": "Twitter/X",
+    "published_at": "2026-04-30T18:45:00Z",
+    "source_url": "https://twitter.com/mock-002-c",
+    "topic": "executive branch",
+    "summary": "A thread arguing that a federal agency's regulatory announcement was deliberately timed to coincide with a major news cycle to limit public scrutiny, characterizing the timing as intentional information suppression.",
+    "claims": [
+      {
+        "claim_id": "c-002-c-1",
+        "text": "The regulatory announcement was published at 5:47 PM on a Friday.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      },
+      {
+        "claim_id": "c-002-c-2",
+        "text": "The administration deliberately timed this announcement to suppress voter turnout.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "low_corroboration"
+      }
+    ],
+    "supported_claims_count": 1,
+    "contradicted_claims_count": 0,
+    "low_corroboration_claims_count": 1,
+    "source_alignment_score": 0.44,
+    "framing_label": "notable_framing",
+    "sources_used": ["Federal Register"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-002-d",
+    "creator_id": "creator-002",
+    "title": "Why the Press Is Ignoring This Story",
+    "platform": "Substack",
+    "published_at": "2026-04-20T11:00:00Z",
+    "source_url": "https://substack.com/mock-002-d",
+    "topic": "media criticism",
+    "summary": "Commentary arguing that mainstream news outlets have collectively underreported a particular policy story, attributing the omission to coordinated editorial bias rather than news-value judgments.",
+    "claims": [
+      {
+        "claim_id": "c-002-d-1",
+        "text": "None of the top five cable news networks ran a segment on this story in the past week.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "medium_corroboration"
+      },
+      {
+        "claim_id": "c-002-d-2",
+        "text": "Corporate media is coordinating talking points on this issue.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "low_corroboration"
+      }
+    ],
+    "supported_claims_count": 0,
+    "contradicted_claims_count": 0,
+    "low_corroboration_claims_count": 2,
+    "source_alignment_score": 0.38,
+    "framing_label": "notable_framing",
+    "sources_used": ["Media Matters", "TV Eyes monitoring service"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-002-e",
+    "creator_id": "creator-002",
+    "title": "How Gerrymandering Works: A Data Explainer",
+    "platform": "Substack",
+    "published_at": "2026-04-10T09:00:00Z",
+    "source_url": "https://substack.com/mock-002-e",
+    "topic": "civil liberties",
+    "summary": "A data-driven explainer on congressional district mapping, covering partisan gerrymandering metrics, court precedents, and the current state of redistricting litigation across several states.",
+    "claims": [
+      {
+        "claim_id": "c-002-e-1",
+        "text": "The efficiency gap metric measures the degree of wasted votes between parties.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      },
+      {
+        "claim_id": "c-002-e-2",
+        "text": "The Supreme Court ruled in Rucho v. Common Cause that federal courts cannot review partisan gerrymandering claims.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      }
+    ],
+    "supported_claims_count": 2,
+    "contradicted_claims_count": 0,
+    "low_corroboration_claims_count": 0,
+    "source_alignment_score": 0.89,
+    "framing_label": "mostly_neutral",
+    "sources_used": ["SCOTUS ruling", "Princeton Gerrymandering Project", "Brennan Center"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-003-a",
+    "creator_id": "creator-003",
+    "title": "The Geopolitics of the Horn of Africa in 2026",
+    "platform": "Podcast",
+    "published_at": "2026-05-22T08:00:00Z",
+    "source_url": "https://podcast.mock/leila-003-a",
+    "topic": "regional security",
+    "summary": "An analysis of shifting geopolitical alignments in the Horn of Africa, covering naval access negotiations, proxy influences, and humanitarian indicators from recent UN monitoring reports.",
+    "claims": [
+      {
+        "claim_id": "c-003-a-1",
+        "text": "The UN OCHA reported over 4.2 million internally displaced persons in the region as of Q1 2026.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      },
+      {
+        "claim_id": "c-003-a-2",
+        "text": "At least three external states are competing for naval basing agreements in the region.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      },
+      {
+        "claim_id": "c-003-a-3",
+        "text": "Food insecurity has worsened by 12% year-over-year according to the World Food Programme.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "medium_corroboration"
+      }
+    ],
+    "supported_claims_count": 2,
+    "contradicted_claims_count": 0,
+    "low_corroboration_claims_count": 0,
+    "source_alignment_score": 0.92,
+    "framing_label": "mostly_neutral",
+    "sources_used": ["UN OCHA Report", "International Crisis Group", "WFP Bulletin"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-003-b",
+    "creator_id": "creator-003",
+    "title": "Understanding the UN Security Council Veto: History and Reform Proposals",
+    "platform": "Substack",
+    "published_at": "2026-05-12T10:00:00Z",
+    "source_url": "https://substack.com/leila-mock-003-b",
+    "topic": "UN policy",
+    "summary": "A historical overview of the UN Security Council veto mechanism, its use across key conflicts, and current reform proposals from the UN's Summit of the Future process.",
+    "claims": [
+      {
+        "claim_id": "c-003-b-1",
+        "text": "The P5 veto power has been used over 300 times since the UN's founding in 1945.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      },
+      {
+        "claim_id": "c-003-b-2",
+        "text": "Russia and China jointly vetoed at least 6 Syria-related resolutions between 2011 and 2022.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      }
+    ],
+    "supported_claims_count": 2,
+    "contradicted_claims_count": 0,
+    "low_corroboration_claims_count": 0,
+    "source_alignment_score": 0.94,
+    "framing_label": "mostly_neutral",
+    "sources_used": ["UN Charter", "Security Council Veto List", "Foreign Affairs"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-003-c",
+    "creator_id": "creator-003",
+    "title": "Do Economic Sanctions Actually Work?",
+    "platform": "Podcast",
+    "published_at": "2026-04-25T08:00:00Z",
+    "source_url": "https://podcast.mock/leila-003-c",
+    "topic": "geopolitics",
+    "summary": "An examination of the effectiveness record of economic sanctions as a foreign policy tool, referencing historical case studies and academic literature on behavioral compliance.",
+    "claims": [
+      {
+        "claim_id": "c-003-c-1",
+        "text": "Sanctions have never successfully changed a government's strategic behavior.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "contradicted"
+      },
+      {
+        "claim_id": "c-003-c-2",
+        "text": "The comprehensive sanctions regime against apartheid South Africa is frequently cited as a contributing factor in the regime transition.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "medium_corroboration"
+      }
+    ],
+    "supported_claims_count": 0,
+    "contradicted_claims_count": 1,
+    "low_corroboration_claims_count": 0,
+    "source_alignment_score": 0.61,
+    "framing_label": "mixed_framing",
+    "sources_used": ["Hufbauer et al. Economic Sanctions Reconsidered", "CFR Sanctions Tracker"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-003-d",
+    "creator_id": "creator-003",
+    "title": "The Sahel Security Vacuum: What the Troop Withdrawals Mean",
+    "platform": "Substack",
+    "published_at": "2026-04-14T11:00:00Z",
+    "source_url": "https://substack.com/leila-mock-003-d",
+    "topic": "regional security",
+    "summary": "Analysis of the security implications following the withdrawal of Western military forces from Sahel nations, including the entry of alternative security partnerships and their documented human rights records.",
+    "claims": [
+      {
+        "claim_id": "c-003-d-1",
+        "text": "France completed its military withdrawal from Mali in 2022 following demands from the transitional government.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      },
+      {
+        "claim_id": "c-003-d-2",
+        "text": "The Wagner Group has documented ties to extrajudicial violence in Mali according to UN reports.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      }
+    ],
+    "supported_claims_count": 2,
+    "contradicted_claims_count": 0,
+    "low_corroboration_claims_count": 0,
+    "source_alignment_score": 0.91,
+    "framing_label": "mostly_neutral",
+    "sources_used": ["UN Panel of Experts Report", "BBC World Service", "Reuters"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-003-e",
+    "creator_id": "creator-003",
+    "title": "How Climate Change Is Reshaping Migration Patterns",
+    "platform": "Podcast",
+    "published_at": "2026-04-03T08:00:00Z",
+    "source_url": "https://podcast.mock/leila-003-e",
+    "topic": "humanitarian crises",
+    "summary": "A research-backed episode on climate-driven displacement, covering sea-level projections, agricultural disruption, and international legal frameworks for climate migrants.",
+    "claims": [
+      {
+        "claim_id": "c-003-e-1",
+        "text": "The World Bank projects up to 216 million internal climate migrants by 2050.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      },
+      {
+        "claim_id": "c-003-e-2",
+        "text": "There is currently no binding international legal status for climate refugees.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      }
+    ],
+    "supported_claims_count": 2,
+    "contradicted_claims_count": 0,
+    "low_corroboration_claims_count": 0,
+    "source_alignment_score": 0.90,
+    "framing_label": "mostly_neutral",
+    "sources_used": ["World Bank Groundswell Report", "UNHCR", "Nature Climate Change"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-004-a",
+    "creator_id": "creator-004",
+    "title": "Reading an Earnings Report: The Basics",
+    "platform": "YouTube",
+    "published_at": "2026-05-15T14:00:00Z",
+    "source_url": "https://youtube.com/watch?v=mock-004-a",
+    "topic": "earnings reports",
+    "summary": "An introductory guide to reading quarterly earnings reports, covering revenue, net income, EPS, guidance, and how analysts compare results to consensus estimates.",
+    "claims": [
+      {
+        "claim_id": "c-004-a-1",
+        "text": "Earnings per share (EPS) is calculated by dividing net income by total shares outstanding.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      },
+      {
+        "claim_id": "c-004-a-2",
+        "text": "Companies that beat EPS consensus estimates historically see positive short-term price reactions on average.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      }
+    ],
+    "supported_claims_count": 2,
+    "contradicted_claims_count": 0,
+    "low_corroboration_claims_count": 0,
+    "source_alignment_score": 0.88,
+    "framing_label": "mostly_neutral",
+    "sources_used": ["SEC Investor Guide", "Bloomberg Financial Literacy"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-004-b",
+    "creator_id": "creator-004",
+    "title": "This Chart Pattern Predicts a 2x Move — Here's Why I'm All In",
+    "platform": "TikTok",
+    "published_at": "2026-05-05T17:00:00Z",
+    "source_url": "https://tiktok.com/@realdatadave/mock-004-b",
+    "topic": "stock market",
+    "summary": "A short-form video arguing that a specific stock's chart pattern indicates an imminent price doubling, with the creator disclosing they hold a long position in the stock.",
+    "claims": [
+      {
+        "claim_id": "c-004-b-1",
+        "text": "This stock is guaranteed to double in 90 days based on the chart pattern.",
+        "claim_type": "prediction",
+        "corroboration_status": "low_corroboration"
+      },
+      {
+        "claim_id": "c-004-b-2",
+        "text": "Cup-and-handle patterns have historically preceded breakouts in this sector.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "medium_corroboration"
+      }
+    ],
+    "supported_claims_count": 0,
+    "contradicted_claims_count": 0,
+    "low_corroboration_claims_count": 1,
+    "source_alignment_score": 0.41,
+    "framing_label": "notable_framing",
+    "sources_used": ["TradingView chart screenshots"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-004-c",
+    "creator_id": "creator-004",
+    "title": "The Government Is Lying to You About Inflation",
+    "platform": "TikTok",
+    "published_at": "2026-04-22T19:00:00Z",
+    "source_url": "https://tiktok.com/@realdatadave/mock-004-c",
+    "topic": "inflation",
+    "summary": "A video arguing that official CPI figures are manipulated to understate actual consumer inflation, without citing specific methodological evidence or official statistical documentation.",
+    "claims": [
+      {
+        "claim_id": "c-004-c-1",
+        "text": "The Fed is lying about inflation numbers to protect Wall Street.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "contradicted"
+      },
+      {
+        "claim_id": "c-004-c-2",
+        "text": "CPI uses a 'substitution bias' methodology that reduces reported inflation.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "medium_corroboration"
+      }
+    ],
+    "supported_claims_count": 0,
+    "contradicted_claims_count": 1,
+    "low_corroboration_claims_count": 0,
+    "source_alignment_score": 0.31,
+    "framing_label": "notable_framing",
+    "sources_used": ["ShadowStats website"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-004-d",
+    "creator_id": "creator-004",
+    "title": "How Banks Profit From Market Crashes (Thread)",
+    "platform": "Twitter/X",
+    "published_at": "2026-04-12T16:30:00Z",
+    "source_url": "https://twitter.com/@realdatadave/mock-004-d",
+    "topic": "stock market",
+    "summary": "A thread alleging that major financial institutions systematically profit from market downturns by shorting their own clients' positions, presented as an established pattern without sourced institutional evidence.",
+    "claims": [
+      {
+        "claim_id": "c-004-d-1",
+        "text": "Every major bank knew the crash was coming and shorted their own clients.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "low_corroboration"
+      },
+      {
+        "claim_id": "c-004-d-2",
+        "text": "Goldman Sachs was fined by the SEC in 2010 related to Abacus CDO marketing.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      }
+    ],
+    "supported_claims_count": 1,
+    "contradicted_claims_count": 0,
+    "low_corroboration_claims_count": 1,
+    "source_alignment_score": 0.45,
+    "framing_label": "notable_framing",
+    "sources_used": ["SEC enforcement release"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  },
+  {
+    "post_id": "post-004-e",
+    "creator_id": "creator-004",
+    "title": "Interest Rates Explained: The Fed's Balancing Act",
+    "platform": "YouTube",
+    "published_at": "2026-04-01T12:00:00Z",
+    "source_url": "https://youtube.com/watch?v=mock-004-e",
+    "topic": "interest rates",
+    "summary": "An explainer on how the Federal Reserve sets the federal funds rate, the relationship between rate decisions and inflation/employment targets, and the dual mandate.",
+    "claims": [
+      {
+        "claim_id": "c-004-e-1",
+        "text": "The Federal Reserve has a dual mandate: maximum employment and stable prices.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      },
+      {
+        "claim_id": "c-004-e-2",
+        "text": "The Fed targets a 2% inflation rate as measured by the PCE index.",
+        "claim_type": "factual_claim",
+        "corroboration_status": "high_corroboration"
+      }
+    ],
+    "supported_claims_count": 2,
+    "contradicted_claims_count": 0,
+    "low_corroboration_claims_count": 0,
+    "source_alignment_score": 0.87,
+    "framing_label": "mostly_neutral",
+    "sources_used": ["Federal Reserve official statements", "BLS data"],
+    "audience_signal_placeholder": "Engagement rate and comment sentiment data not yet collected."
+  }
+]

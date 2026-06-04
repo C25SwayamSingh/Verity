@@ -9,7 +9,9 @@ from app.core.logging import setup_logging
 from app.db.session import get_session, init_db
 from app.middleware.rate_limit_middleware import AnalyzeRateLimitMiddleware
 from app.schemas.api import AnalyzeRequest, AnalysisDetailResponse, HealthResponse
+from app.schemas.creator import CreatorListResponse, CreatorOverview, CreatorPostsResponse
 from app.schemas.dashboard import DashboardArticle, DashboardResponse
+from app.services.creator_service import CreatorService
 from app.services.dashboard_service import DashboardService, SUPPORTED_CATEGORIES
 from app.services.ingest_service import IngestService
 
@@ -41,6 +43,7 @@ app.add_middleware(AnalyzeRateLimitMiddleware)
 
 _ingest = IngestService()
 _dashboard = DashboardService()
+_creators = CreatorService()
 
 
 @app.get("/health", response_model=HealthResponse)
@@ -82,4 +85,25 @@ def get_dashboard_article(article_id: str):
     result = _dashboard.get_article_by_id(article_id)
     if result is None:
         raise HTTPException(status_code=404, detail=f"Article '{article_id}' not found.")
+    return result
+
+
+@app.get("/v1/creators", response_model=CreatorListResponse)
+def list_creators():
+    return _creators.list_creators()
+
+
+@app.get("/v1/creators/{creator_id}", response_model=CreatorOverview)
+def get_creator(creator_id: str):
+    result = _creators.get_creator(creator_id)
+    if result is None:
+        raise HTTPException(status_code=404, detail=f"Creator '{creator_id}' not found.")
+    return result
+
+
+@app.get("/v1/creators/{creator_id}/posts", response_model=CreatorPostsResponse)
+def get_creator_posts(creator_id: str):
+    result = _creators.get_creator_posts(creator_id)
+    if result is None:
+        raise HTTPException(status_code=404, detail=f"Creator '{creator_id}' not found.")
     return result
