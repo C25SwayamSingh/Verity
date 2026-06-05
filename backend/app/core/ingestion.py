@@ -1,6 +1,6 @@
 """Ingestion classification for the core checker.
 
-The Giver analyzes *analyzable text* (pasted text, article text, transcripts,
+Verity analyzes *analyzable text* (pasted text, article text, transcripts,
 source notes) — never a raw social/video URL string. This module decides what
 kind of submission we received and whether real analyzable text is present.
 
@@ -93,14 +93,14 @@ def has_analyzable_text(residual: str) -> bool:
 SOCIAL_LINK_ONLY_GUIDANCE = (
     "We found a video link, but no transcript or analyzable text was provided. "
     "Upload the video, screen recording, or audio, paste a transcript or captions, "
-    "or add source notes so The Giver can analyze the actual content. "
-    "The Giver does not download or scrape social videos."
+    "or add source notes so Verity can analyze the actual content. "
+    "Verity does not download or scrape social videos."
 )
 
 ARTICLE_LINK_ONLY_GUIDANCE = (
     "We found a link, but no analyzable text was provided. "
-    "Paste the article text, a transcript, or source notes so The Giver can analyze the content. "
-    "The Giver does not fetch or scrape pages from a link alone."
+    "Paste the article text, a transcript, or source notes so Verity can analyze the content. "
+    "Verity does not fetch or scrape pages from a link alone."
 )
 
 
@@ -146,7 +146,7 @@ def classify_ingestion(text: str) -> IngestionClassification:
             source_links=urls,
             guidance=SOCIAL_LINK_ONLY_GUIDANCE,
             transparency_note=(
-                "Link stored as source metadata only — The Giver did not download, "
+                "Link stored as source metadata only — Verity did not download, "
                 "scrape, or transcribe the linked video."
             ),
         )
@@ -159,6 +159,6 @@ def classify_ingestion(text: str) -> IngestionClassification:
         source_links=urls,
         guidance=ARTICLE_LINK_ONLY_GUIDANCE,
         transparency_note=(
-            "Link stored as source metadata only — The Giver did not fetch or scrape the page."
+            "Link stored as source metadata only — Verity did not fetch or scrape the page."
         ),
     )

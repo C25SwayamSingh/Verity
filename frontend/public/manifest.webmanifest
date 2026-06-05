@@ -1,6 +1,6 @@
 {
-  "name": "The Giver — Information Integrity",
-  "short_name": "The Giver",
+  "name": "Verity — Information Integrity",
+  "short_name": "Verity",
   "description": "Check any post: transcript, claim support, cross-source corroboration, framing indicators, and a neutral rewrite.",
   "start_url": "/",
   "scope": "/",

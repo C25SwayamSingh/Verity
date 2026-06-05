@@ -39,7 +39,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="The Giver API",
+    title="Verity API",
     description="Information integrity analysis — Phase 1 Core Checker MVP",
     version="0.1.0",
     lifespan=lifespan,
@@ -58,7 +58,7 @@ app.add_middleware(AnalyzeRateLimitMiddleware)
 _ingest = IngestService()
 _media = MediaIngestService(_ingest)
 _dashboard = DashboardService()
-_news_feed = NewsFeedService(_dashboard)
+_news_feed = NewsFeedService()
 _creators = CreatorService()
 
 

@@ -2,7 +2,6 @@ import logging
 from typing import Optional
 
 from app.core.config import get_settings
-from app.core.news_scoring import SCORE_WEIGHTS as _SCORE_WEIGHTS
 from app.core.news_scoring import compute_final_score as _compute_final_score
 from app.providers.dashboard_base import DashboardNewsProvider, DashboardProviderError
 from app.providers.dashboard_fixtures_provider import DashboardFixturesProvider

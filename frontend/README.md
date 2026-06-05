@@ -1,4 +1,4 @@
-# The Giver — Frontend
+# Verity — Frontend
 
 Next.js App Router UI for the Phase 1 Core Checker MVP.
 

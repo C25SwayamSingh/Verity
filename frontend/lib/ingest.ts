@@ -1,6 +1,6 @@
 // Lightweight, client-side mirror of the backend ingestion classifier.
 // Used only to show an inline hint before submitting — the backend is the
-// source of truth. The Giver never downloads or scrapes linked content.
+// source of truth. Verity never downloads or scrapes linked content.
 
 const URL_RE = /https?:\/\/[^\s<>"')]+/gi;
 const BARE_DOMAIN_RE =

@@ -1,8 +1,8 @@
-# Scoring Method — The Giver News Integrity Feed & Dashboard
+# Scoring Method — Verity News Integrity Feed & Dashboard
 
 > Single source of truth in code: `backend/app/core/news_scoring.py`.
 
-The Giver does **not** compute a "truth score" and does not decide whether a
+Verity does **not** compute a "truth score" and does not decide whether a
 source is right or wrong. Every number below estimates **how consistently a
 story is reported across sources** and **whether its language appears loaded**.
 It is a discovery/ranking signal plus transparency context — not a verdict.
@@ -51,22 +51,30 @@ per story), revisit the importance vs. corroboration balance.
 
 ## Derived integrity signals (per feed item)
 
-These are computed from the component scores and surfaced under each headline.
-They do **not** change `final_score`.
+These are computed from cluster evidence and surfaced under each headline.
+They do **not** change `final_score` directly; they inform the underlying
+component scores in cluster mode.
 
-- **Cross-source corroboration / source alignment** — `0.6*credibility +
-  0.4*source_diversity`, mapped to: `strong` ≥ 0.85, `moderate` ≥ 0.65,
-  `limited` ≥ 0.45, else `single_source`.
+- **Cross-source corroboration / source alignment** — derived from cluster-level
+  evidence:
+  - `single_source`: one independent source group
+  - `limited`: 2+ source groups with weak overlap
+  - `moderate`: 3+ source groups with partial overlap
+  - `strong`: 4+ source groups with high overlap
+  `detail` now includes source counts and overlap score.
+- **Source diversity signal** — mapped from `independent_source_count` and
+  reported with `source_count`.
 - **Contradiction signal** — `present: true` when the story carries
-  contradiction warnings (independent sources disagree), else a neutral "no
-  contradiction signals detected."
+  explicit contradiction warnings (independent sources disagree on a specific
+  detail); otherwise a neutral "no contradiction signals detected." This is
+  intentionally conservative and does not invent conflicts.
 - **Framing indicator** — from the framing label: `mostly_neutral` → "Mostly
   neutral language", `mixed_framing` → "Some framing language", `notable_framing`
   → "Notable framing language."
 - **Confidence signal** — confidence in the *integrity read* (not in the story
-  being true): `0.5*final + 0.3*credibility + 0.2*source_diversity`, minus 0.15
-  if contradiction signals are present. Mapped to `high` ≥ 0.8, `medium` ≥ 0.55,
-  else `low`.
+  being true): blend of final score, corroboration, source diversity, and
+  source-overlap; penalized for contradiction warnings and single-source
+  clusters.
 - **Why this story appears here** — provider-supplied rationale, or a generated
   one combining the corroboration + framing + contradiction signals.
 
@@ -79,10 +87,29 @@ neutral rewrite, evidence-backed summary, most consistently reported details.
 Avoided: truth score, fake news detector, propaganda detector, unbiased truth,
 closest thing to truth, guaranteed accurate, proving a source right or wrong.
 
+## Cluster-informed scoring (Phase 2.6A)
+
+The feed now builds story clusters across configured open providers and computes:
+
+- `source_count`
+- `independent_source_count`
+- `source_overlap_score` (token/claim overlap across independent sources)
+- `common_reported_details`
+- `differing_details` / conservative contradiction warnings
+
+Then it derives:
+
+- `credibility_score` from overlap + diversity + provider baseline credibility
+- `source_diversity_score` from independent source count
+- `confidence_signal` from overlap-aware confidence math
+
+The ranking formula remains unchanged for clarity and continuity.
+
 ## Limitations
 
-- Fixture and RSS/GDELT live data currently use **fixed defaults** for
-  importance / relevance / source_diversity (and credibility from a domain prior
-  for live sources). A real corroboration model — clustering the same story
-  across independent outlets and counting agreement/disagreement — is future
-  work. Until then, corroboration/diversity on live items is an estimate.
+- Clustering is lexical/token-based (headline + details + time window), not an
+  embedding model yet.
+- Contradiction warnings are conservative by design and currently rely on
+  explicit differing-detail signals available in source records.
+- We do not scrape full article pages in feed ingestion; only permitted feed/API
+  metadata (headline/link/source/time/snippet/claims where available).

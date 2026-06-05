@@ -94,7 +94,7 @@ function CheckInner() {
         <h2 className="text-2xl font-semibold text-giver-ink">Check any post</h2>
         <p className="mx-auto mt-2 max-w-lg text-sm text-giver-slate">
           Paste article text, a transcript, captions, or source notes — or attach an audio/video
-          clip or screen recording. The Giver returns claim support, cross-source corroboration,
+          clip or screen recording. Verity returns claim support, cross-source corroboration,
           framing indicators, and a neutral rewrite.
         </p>
       </div>
@@ -129,7 +129,7 @@ function CheckInner() {
           />
           <p className="text-center text-xs text-giver-low">
             Category is detected automatically. A pasted Instagram/TikTok/YouTube link is kept as
-            source metadata only — The Giver does not download or scrape videos. For a Reel, attach a
+            source metadata only — Verity does not download or scrape videos. For a Reel, attach a
             screen recording or its audio, or paste the transcript/source notes.
           </p>
         </>

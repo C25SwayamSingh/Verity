@@ -12,7 +12,7 @@ Use this guide to build and show **sample integrity profiles** on the Creator In
 
 ## Input basis (non-verbatim demos)
 
-The internal form at `/creators/demo` requires an **input basis** so the dashboard does not imply The Giver watched or transcribed the original video.
+The internal form at `/creators/demo` requires an **input basis** so the dashboard does not imply Verity watched or transcribed the original video.
 
 | Input basis | When to use |
 |-------------|-------------|

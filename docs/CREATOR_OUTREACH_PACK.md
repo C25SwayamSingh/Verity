@@ -1,4 +1,4 @@
-# Creator Outreach Pack — The Giver (Phase 3.8)
+# Creator Outreach Pack — Verity (Phase 3.8)
 
 Use this pack when reaching out to creators or briefing stakeholders. It complements the live demo script (`CREATOR_DEMO_SCRIPT.md`) and the technical workflow (`CREATOR_DEMO_WORKFLOW.md`).
 
@@ -16,9 +16,9 @@ Use this pack when reaching out to creators or briefing stakeholders. It complem
 
 ---
 
-## What The Giver measures
+## What Verity measures
 
-The Giver produces **information integrity** reports for pasted articles, transcripts, or post text. For creators, it aggregates those reports into a **sample integrity profile** across analyzed posts.
+Verity produces **information integrity** reports for pasted articles, transcripts, or post text. For creators, it aggregates those reports into a **sample integrity profile** across analyzed posts.
 
 | Signal | What it reflects |
 |--------|------------------|
@@ -34,7 +34,7 @@ All of this is framed as **source transparency** and **claim support** — not a
 
 ---
 
-## What The Giver does not measure
+## What Verity does not measure
 
 Be explicit in every conversation:
 
@@ -51,7 +51,7 @@ Corroboration in the current MVP uses **fixture-based cross-source alignment** f
 
 ## Why creators would use it
 
-Creators who explain news, policy, markets, or science often hear: *“Where did you get that?”* The Giver helps answer that systematically.
+Creators who explain news, policy, markets, or science often hear: *“Where did you get that?”* Verity helps answer that systematically.
 
 1. **Audience trust** — Showing **source transparency** (what is corroborated, what needs more sourcing) signals respect for the audience’s ability to verify.
 2. **Editorial hygiene** — Spot **low corroboration** and **contradiction signals** before publish, not only in the comments.
@@ -59,13 +59,13 @@ Creators who explain news, policy, markets, or science often hear: *“Where did
 4. **Differentiation** — Creators who already cite well can document **claim support** and **source alignment** as part of their brand — without claiming infallibility.
 5. **Conversation, not condemnation** — Reports highlight *claims* and *sources*, not personal attacks.
 
-Position The Giver as a **transparency tool for the creator’s own workflow**, optional to share with audiences when they choose.
+Position Verity as a **transparency tool for the creator’s own workflow**, optional to share with audiences when they choose.
 
 ---
 
 ## How source transparency builds audience trust
 
-Audiences increasingly distinguish *“I trust this person”* from *“I can check this claim.”* The Giver bridges that gap:
+Audiences increasingly distinguish *“I trust this person”* from *“I can check this claim.”* Verity bridges that gap:
 
 - **Cross-source corroboration** shows when a claim lines up with reporting elsewhere — or when it stands alone.
 - **Contradiction signals** flag when a strong statement conflicts with widely cited sources — a prompt to clarify, qualify, or add context.
@@ -92,7 +92,7 @@ Customize names and links. Keep tone curious and respectful — never accusatory
 
 > Hi [Name],
 >
-> I work on **The Giver**, an information integrity platform that summarizes **source alignment**, **claim support**, **contradiction signals**, and **framing indicators** from text you choose to analyze (articles, transcripts, posts).
+> I work on **Verity**, an information integrity platform that summarizes **source alignment**, **claim support**, **contradiction signals**, and **framing indicators** from text you choose to analyze (articles, transcripts, posts).
 >
 > It does **not** determine absolute truth or connect to your social accounts in the current demo. We use **sample integrity profiles** so creators can see the format before any real integration.
 >
@@ -112,7 +112,7 @@ Customize names and links. Keep tone curious and respectful — never accusatory
 
 ### Template D — After a positive demo
 
-> Thanks again for the time today. As discussed, The Giver is early — fixture-based corroboration for the demo, no live platform hookup yet. If you want to try your own transcript, the workflow is in our demo guide: paste via API or we can do it together. I’ll follow up when we have [in-app demo form / richer sourcing / whatever is true].
+> Thanks again for the time today. As discussed, Verity is early — fixture-based corroboration for the demo, no live platform hookup yet. If you want to try your own transcript, the workflow is in our demo guide: paste via API or we can do it together. I’ll follow up when we have [in-app demo form / richer sourcing / whatever is true].
 
 ### What to avoid in outreach
 
@@ -129,7 +129,7 @@ Use this arc before opening the UI. Full click-path: `CREATOR_DEMO_SCRIPT.md`.
 
 1. **Problem (30s)** — Audiences want to verify claims; creators want trust without being reduced to a single score. News and commentary blur fact, prediction, and opinion.
 
-2. **Approach (45s)** — The Giver extracts claims, checks **cross-source corroboration** (demo: fixture alignment), surfaces **contradiction signals** and **framing indicators**, and writes a **transparency summary**. Language stays non-verdictive: **low corroboration**, not “false.”
+2. **Approach (45s)** — Verity extracts claims, checks **cross-source corroboration** (demo: fixture alignment), surfaces **contradiction signals** and **framing indicators**, and writes a **transparency summary**. Language stays non-verdictive: **low corroboration**, not “false.”
 
 3. **Two surfaces (45s)** — **Core Checker** (`/`) for one-off paste; **Creator dashboard** (`/creators`) for aggregated **sample integrity profiles** across posts.
 

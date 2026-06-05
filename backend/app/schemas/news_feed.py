@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel, Field
 
 
@@ -33,13 +35,37 @@ class ScoreExplanation(BaseModel):
     description: str
 
 
-class NewsFeedItem(BaseModel):
+class SourceDiversitySignal(BaseModel):
+    level: str  # strong | moderate | limited | single_source
+    label: str
+    score: float = Field(ge=0.0, le=1.0)
+    detail: str = ""
+
+
+class ClusterArticleRef(BaseModel):
     id: str
     headline: str
     source: str
+    published_at: str
+    provider_name: Optional[str] = None
+
+
+class NewsFeedItem(BaseModel):
+    id: str  # cluster_id
+    cluster_id: str
+    headline: str
+    source: str
+    publishers: list[str]
+    source_count: int = Field(ge=1)
+    independent_source_count: int = Field(ge=1)
     category: str
     published_at: str
+    earliest_published_at: str
+    latest_published_at: str
     neutral_summary: str
+    commonly_reported_details: list[str]
+    differing_details: list[str]
+    articles: list[ClusterArticleRef]
 
     # Composite ranking + components (kept for transparency).
     final_score: float = Field(ge=0.0, le=1.0)
@@ -51,6 +77,7 @@ class NewsFeedItem(BaseModel):
 
     # Derived integrity signals (non-weighted; surfaced under each headline).
     corroboration: CorroborationSignal
+    source_diversity: SourceDiversitySignal
     contradiction: ContradictionSignal
     framing: FramingSignal
     confidence: ConfidenceSignal
@@ -58,6 +85,7 @@ class NewsFeedItem(BaseModel):
     key_claims: list[str]
     why_selected: str
     detail_path: str
+    score_explanations: list[ScoreExplanation]
 
 
 class NewsFeedResponse(BaseModel):

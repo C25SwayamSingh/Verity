@@ -161,7 +161,7 @@ class IngestService:
             source_links=classification.source_links,
             transparency_note=(
                 "Analysis based on article text extracted from the linked page. "
-                "The Giver fetched the article you shared; it does not download or "
+                "Verity fetched the article you shared; it does not download or "
                 "scrape social videos."
             ),
         )
@@ -195,7 +195,7 @@ class IngestService:
             notes.insert(0, ingestion.transparency_note)
         elif ingestion and ingestion.source_links:
             notes.append(
-                "Submitted link(s) kept as source metadata only — The Giver did not "
+                "Submitted link(s) kept as source metadata only — Verity did not "
                 "download, scrape, or transcribe linked content."
             )
 
@@ -217,7 +217,7 @@ class IngestService:
         """Return a clear "transcript or upload required" state for link-only input."""
         summary = (
             "We found a link, but no transcript or analyzable text was provided, so "
-            "The Giver did not analyze the link itself."
+            "Verity did not analyze the link itself."
         )
         return AnalyzeResponse(
             analysis_id=str(uuid.uuid4()),
@@ -232,7 +232,7 @@ class IngestService:
                 bias_framing_eligible=False,
                 detected_category="unknown",
                 reason=(
-                    "No analyzable text was available. The Giver analyzes submitted or "
+                    "No analyzable text was available. Verity analyzes submitted or "
                     "generated text, not a raw link."
                 ),
             ),

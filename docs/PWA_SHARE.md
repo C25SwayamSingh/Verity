@@ -1,6 +1,6 @@
-# Install & Share-to-App — The Giver
+# Install & Share-to-App — Verity
 
-The Giver is an installable PWA with a single entry point: **Check any post**. You can open it from a home-screen icon and (on supported platforms) share content straight into it.
+Verity is an installable PWA with a single entry point: **Check any post**. You can open it from a home-screen icon and (on supported platforms) share content straight into it.
 
 ---
 
@@ -30,7 +30,7 @@ All values must be URL-encoded.
 
 ---
 
-## Platform support for "Share → The Giver"
+## Platform support for "Share → Verity"
 
 | Platform | How it works |
 |----------|--------------|
@@ -38,13 +38,13 @@ All values must be URL-encoded.
 | **Desktop (Chrome/Edge)** | Install from the address bar; open from app icon. Paste into the single box. |
 | **iOS (Safari)** | Safari does **not** support Web Share Target. Use the **Apple Shortcut** below to appear in the iOS share sheet, or "Add to Home Screen" and paste. |
 
-> The Giver never downloads or scrapes Instagram/TikTok. A shared **link** is context only. To analyze a Reel’s spoken content, share/attach a **screen recording or its audio**, or paste a transcript.
+> Verity never downloads or scrapes Instagram/TikTok. A shared **link** is context only. To analyze a Reel’s spoken content, share/attach a **screen recording or its audio**, or paste a transcript.
 
 ---
 
-## iOS: add "The Giver" to the share sheet (Apple Shortcut)
+## iOS: add "Verity" to the share sheet (Apple Shortcut)
 
-iOS Safari cannot register a web share target. You build a **Shortcut** once; it then appears in Instagram’s **Share** menu and opens The Giver in Safari with the Reel link already in the box.
+iOS Safari cannot register a web share target. You build a **Shortcut** once; it then appears in Instagram’s **Share** menu and opens Verity in Safari with the Reel link already in the box.
 
 Use your deployed `https://YOUR_HOST` in the steps below, or for LAN testing on this project: **`http://192.168.1.27:3000`** (see **Your local setup** — servers must be running).
 
@@ -77,7 +77,7 @@ On the iPhone, open Safari → `http://192.168.1.27:3000` → Share → **Add to
 **What success looks like**
 
 1. Safari on your iPhone opens `http://192.168.1.27:3000` and shows **Check any post** with one large text box.
-2. From Instagram: **Share → The Giver** → Safari opens again with the Reel URL **already inside** that box.
+2. From Instagram: **Share → Verity** → Safari opens again with the Reel URL **already inside** that box.
 3. You tap **Analyze** (or **+ Attach audio / video** if you have a screen recording). A shared link alone does **not** auto-analyze — that is intentional.
 
 If step 1 fails, do **Part A** below before building the Shortcut.
@@ -109,7 +109,7 @@ If the number is not `192.168.1.27`, replace that address everywhere in the Shor
 1. Open the **Shortcuts** app (purple icon).
 2. Bottom tab **Shortcuts** (not **Automation**).
 3. Top-right **+**.
-4. Tap **New Shortcut** at the top → rename to **The Giver** (exact spelling helps you find it in Instagram’s share list).
+4. Tap **New Shortcut** at the top → rename to **Verity** (exact spelling helps you find it in Instagram’s share list).
 
 **B2 — Show in Share Sheet**
 
@@ -161,12 +161,12 @@ If the number is not `192.168.1.27`, replace that address everywhere in the Shor
 
 **B7 — Test without Instagram**
 
-1. In Shortcuts, tap **The Giver** to run it.
+1. In Shortcuts, tap **Verity** to run it.
 2. If asked for input, paste:
    ```
    https://www.instagram.com/reel/DXAOA0Wkj4I/
    ```
-3. Safari should open The Giver with that link in the box. If this works, Instagram will work.
+3. Safari should open Verity with that link in the box. If this works, Instagram will work.
 
 ---
 
@@ -174,13 +174,13 @@ If the number is not `192.168.1.27`, replace that address everywhere in the Shor
 
 1. Open the **Reel** in Instagram.
 2. Tap **Share** (paper plane).
-3. Swipe the app row; if you don’t see **The Giver**, tap **More** (⋯).
-4. Under **Shortcuts**, tap **The Giver** once.
+3. Swipe the app row; if you don’t see **Verity**, tap **More** (⋯).
+4. Under **Shortcuts**, tap **Verity** once.
 5. Safari opens with the link pre-filled → tap **Analyze** when ready.
 
-**If The Giver isn’t in the list**
+**If Verity isn’t in the list**
 
-- Share sheet → scroll → **Edit Actions** / **More** → enable **The Giver**.
+- Share sheet → scroll → **Edit Actions** / **More** → enable **Verity**.
 - **Settings → Shortcuts** → allow Shortcuts to run.
 - Re-open the shortcut → **ⓘ** → confirm **Show in Share Sheet** is ON.
 
@@ -208,7 +208,7 @@ plus the same **URL Encoded Text** variable. Text ≥40 characters can auto-run 
 | Shortcut not in Instagram | Share sheet disabled | ⓘ → **Show in Share Sheet** ON; **URLs** ON. |
 | Worked before, not now | Mac asleep / new IP | Wake Mac, rerun servers, `ipconfig getifaddr en0`, update Shortcut. |
 
-**What Instagram share does not do:** download the Reel, transcribe from the link alone, or appear in the share row until this Shortcut exists. For spoken content: screen-record the Reel → **+ Attach audio / video** in The Giver.
+**What Instagram share does not do:** download the Reel, transcribe from the link alone, or appear in the share row until this Shortcut exists. For spoken content: screen-record the Reel → **+ Attach audio / video** in Verity.
 
 > LAN testing only works while Mac servers run on the same Wi‑Fi. For use anywhere, deploy with HTTPS and put your real host in the Shortcut instead of `192.168.1.27`.
 

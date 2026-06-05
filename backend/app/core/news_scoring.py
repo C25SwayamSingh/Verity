@@ -1,4 +1,4 @@
-"""Central scoring definitions and derived integrity signals for The Giver's news product.
+"""Central scoring definitions and derived integrity signals for Verity's news product.
 
 This module is the single source of truth for:
 
@@ -10,7 +10,7 @@ This module is the single source of truth for:
    corroboration, contradiction signals, framing indicators, source diversity,
    and an overall confidence signal.
 
-IMPORTANT — language policy. The Giver does **not** compute a "truth score" or
+IMPORTANT — language policy. Verity does **not** compute a "truth score" or
 decide whether a source is right or wrong. Every value here estimates how
 *consistently* a story is reported and how *loaded* its language appears. Labels
 use the approved vocabulary: source alignment, cross-source corroboration,
@@ -19,8 +19,6 @@ confidence signal.
 """
 
 from __future__ import annotations
-
-from typing import Optional
 
 # ---------------------------------------------------------------------------
 # Composite ranking formula
@@ -174,21 +172,82 @@ def corroboration_signal(article: dict) -> dict:
     reliable the reporting is *and* how many independent outlets carry the same
     core facts. Returns a level, an approved-language label, and detail text.
     """
-    credibility = float(article.get("credibility_score", 0.0))
-    diversity = float(article.get("source_diversity_score", 0.0))
-    strength = round(0.6 * credibility + 0.4 * diversity, 4)
+    source_count = int(article.get("source_count") or 0)
+    independent = int(article.get("independent_source_count") or 0)
+    overlap = float(article.get("source_overlap_score") or 0.0)
 
-    if strength >= 0.85:
-        level, label = "strong", "Strong cross-source corroboration"
-    elif strength >= 0.65:
-        level, label = "moderate", "Moderate cross-source corroboration"
-    elif strength >= 0.45:
-        level, label = "limited", "Limited corroboration"
+    if source_count > 0:
+        if independent <= 1:
+            level, label, strength = "single_source", "Largely single-source so far", 0.2
+        elif independent >= 4 and overlap >= 0.28:
+            level, label = "strong", "Strong cross-source corroboration"
+            strength = 0.85 + min(0.15, overlap * 0.2)
+        elif independent >= 3 and overlap >= 0.16:
+            level, label = "moderate", "Moderate cross-source corroboration"
+            strength = 0.65 + min(0.2, overlap * 0.2)
+        else:
+            level, label = "limited", "Limited corroboration"
+            strength = 0.45 + min(0.15, overlap * 0.2)
     else:
-        level, label = "single_source", "Largely single-source so far"
+        credibility = float(article.get("credibility_score", 0.0))
+        diversity = float(article.get("source_diversity_score", 0.0))
+        strength = round(0.6 * credibility + 0.4 * diversity, 4)
 
-    detail = (article.get("support_summary") or "").strip()
+        if strength >= 0.85:
+            level, label = "strong", "Strong cross-source corroboration"
+        elif strength >= 0.65:
+            level, label = "moderate", "Moderate cross-source corroboration"
+        elif strength >= 0.45:
+            level, label = "limited", "Limited corroboration"
+        else:
+            level, label = "single_source", "Largely single-source so far"
+
+    strength = round(max(0.0, min(1.0, strength)), 4)
+
+    if source_count > 0:
+        detail = (
+            f"Reported by {source_count} sources "
+            f"({independent} independent), source-overlap score {round(overlap, 3)}."
+        )
+    else:
+        detail = (article.get("support_summary") or "").strip()
     return {"level": level, "label": label, "strength": strength, "detail": detail}
+
+
+def source_diversity_signal(article: dict) -> dict:
+    """Source diversity signal from independent source counts when available."""
+    source_count = int(article.get("source_count") or 0)
+    independent = int(article.get("independent_source_count") or 0)
+
+    if source_count > 0:
+        if independent <= 1:
+            score = 0.18
+            level, label = "single_source", "Single-source coverage"
+        elif independent == 2:
+            score = 0.45
+            level, label = "limited", "Limited source diversity"
+        elif independent == 3:
+            score = 0.65
+            level, label = "moderate", "Moderate source diversity"
+        else:
+            score = min(1.0, 0.8 + 0.05 * (independent - 4))
+            level, label = "strong", "Strong source diversity"
+        detail = (
+            f"{independent} independent source groups across {source_count} total sources."
+        )
+        return {"level": level, "label": label, "score": round(score, 4), "detail": detail}
+
+    # Backward-compatible fallback for article-level mode.
+    score = float(article.get("source_diversity_score", 0.0))
+    if score >= 0.8:
+        level, label = "strong", "Strong source diversity"
+    elif score >= 0.55:
+        level, label = "moderate", "Moderate source diversity"
+    elif score >= 0.3:
+        level, label = "limited", "Limited source diversity"
+    else:
+        level, label = "single_source", "Single-source coverage"
+    return {"level": level, "label": label, "score": round(score, 4), "detail": ""}
 
 
 def contradiction_signal(article: dict) -> dict:
@@ -217,9 +276,13 @@ def confidence_signal(article: dict) -> dict:
     final = float(article.get("final_score") or compute_final_score(article))
     credibility = float(article.get("credibility_score", 0.0))
     diversity = float(article.get("source_diversity_score", 0.0))
+    overlap = float(article.get("source_overlap_score") or 0.0)
+    independent = int(article.get("independent_source_count") or 0)
     has_contradiction = bool([w for w in (article.get("contradiction_warnings") or []) if w])
 
-    confidence = 0.5 * final + 0.3 * credibility + 0.2 * diversity
+    confidence = 0.45 * final + 0.25 * credibility + 0.15 * diversity + 0.15 * overlap
+    if independent <= 1:
+        confidence -= 0.10
     if has_contradiction:
         confidence -= 0.15
     confidence = max(0.0, min(1.0, round(confidence, 4)))
@@ -244,17 +307,43 @@ def why_selected(article: dict) -> str:
         return existing
 
     corr = corroboration_signal(article)
+    diversity = source_diversity_signal(article)
     fram = framing_signal(article)
     contra = contradiction_signal(article)
+    source_count = int(article.get("source_count") or 0)
+    independent = int(article.get("independent_source_count") or 0)
     bits = [
         f"{corr['label'].lower()}",
+        f"{diversity['label'].lower()}",
         f"{fram['label'].lower()}",
     ]
+    if source_count > 0:
+        bits.append(f"{source_count} sources ({independent} independent)")
     if contra["present"]:
         bits.append("contradiction signals flagged for review")
     return "Surfaced for " + ", ".join(bits) + "."
 
 
-def score_explanations() -> list[dict]:
+def score_explanations(evidence_mode: bool = False) -> list[dict]:
     """Return the ordered, serializable list of score-component explanations."""
-    return [dict(d) for d in SCORE_DEFINITIONS]
+    explanations = [dict(d) for d in SCORE_DEFINITIONS]
+    if not evidence_mode:
+        return explanations
+
+    for item in explanations:
+        if item["key"] == "credibility_score":
+            item["description"] += (
+                " In cluster mode, this is driven by measured source-overlap and "
+                "agreement across independent reporting, not only provider priors."
+            )
+        elif item["key"] == "source_diversity_score":
+            item["description"] += (
+                " In cluster mode, this uses independent source-group counts "
+                "observed in the cluster."
+            )
+        elif item["key"] == "contradiction_signal":
+            item["description"] += (
+                " Contradiction signals are conservative and only surfaced when "
+                "explicit conflicting details are available."
+            )
+    return explanations

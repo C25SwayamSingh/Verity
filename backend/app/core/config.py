@@ -8,12 +8,17 @@ class Settings(BaseSettings):
 
     openai_api_key: str = ""
     openai_model: str = "gpt-4o-mini"
-    database_url: str = "sqlite:///./the_giver.db"
+    database_url: str = "sqlite:///./verity.db"
     rate_limit_enabled: bool = True
     rate_limit_analyze_requests: int = 5
     rate_limit_analyze_window_seconds: int = 3600
     cors_origins: str = "http://localhost:3000"
     dashboard_news_provider: str = "fixtures"
+    # Comma-separated provider stack for the News Integrity Feed clustering path.
+    # Keep fixtures first for deterministic offline mode unless intentionally changed.
+    news_feed_provider_stack: str = "fixtures"
+    # Max number of raw articles read from each provider per category for feed clustering.
+    news_feed_max_articles_per_provider: int = 20
     # Optional API keys for future/licensed providers. Empty by default; the app
     # never crashes when these are unset (providers stay disabled / fall back).
     newsapi_api_key: str = ""

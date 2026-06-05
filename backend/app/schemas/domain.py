@@ -114,7 +114,7 @@ class IngestionInfo(BaseModel):
     """How the checker interpreted the submission.
 
     ``needs_more_input`` is True when only a social/video (or other) URL was
-    submitted with no analyzable text. In that case The Giver does not treat
+    submitted with no analyzable text. In that case Verity does not treat
     the URL as a claim and asks for a transcript, upload, or source notes.
     """
 

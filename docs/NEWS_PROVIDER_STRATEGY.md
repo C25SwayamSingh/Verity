@@ -1,9 +1,9 @@
-# News Provider Strategy — The Giver
+# News Provider Strategy — Verity
 
-How The Giver sources the stories shown in the **News Integrity Feed** (home
-page) and the **Reliable News Dashboard**. The goal is one clean, swappable
-provider path that prefers open/free/demo-friendly sources, never crashes when a
-key is missing, and always falls back to fixtures.
+How Verity sources the stories shown in the **News Integrity Feed** (home
+page) and the **Reliable News Dashboard**. The goal is an open, swappable
+provider path that prefers free/low-risk sources, never crashes when a key is
+missing, and always falls back to fixtures.
 
 ## Architecture
 
@@ -16,13 +16,15 @@ class DashboardNewsProvider(ABC):
     def fetch_by_id(self, article_id: str) -> dict | None  # optional
 ```
 
-- `DashboardService` selects the active provider via
+- `DashboardService` selects the active dashboard provider via
   `get_dashboard_provider(settings)` (`dashboard_registry.py`), keyed off
   `DASHBOARD_NEWS_PROVIDER`.
 - `DashboardService` **scores, sorts, and limits**; providers only return raw,
   normalized article dicts. One scoring formula lives in `core/news_scoring.py`.
-- `NewsFeedService` wraps `DashboardService` and adds the derived integrity
-  signals for the feed. It performs **no network calls of its own**.
+- `NewsFeedService` now reads a provider **stack** (`NEWS_FEED_PROVIDER_STACK`,
+  comma-separated, default `fixtures`) and clusters articles across providers.
+- `StoryClusterService` computes cluster-level corroboration, source diversity,
+  contradiction, and confidence signals from source overlap.
 - On any `DashboardProviderError` / `NotImplementedError`, `DashboardService`
   logs a warning and falls back to `DashboardFixturesProvider`. The app never
   crashes on a provider failure.
@@ -50,6 +52,18 @@ Both `live` and `gdelt` are **open and key-free**. They supply
 headline/source/time but not real corroboration scores yet (see
 `SCORING_METHOD.md`).
 
+### Feed provider stack (Phase 2.6A)
+
+`/v1/news/feed` supports a stack of providers and clustering:
+
+- `NEWS_FEED_PROVIDER_STACK=fixtures` (default, deterministic/offline/tests)
+- Example open stack: `NEWS_FEED_PROVIDER_STACK=fixtures,live,gdelt`
+- `NEWS_FEED_MAX_ARTICLES_PER_PROVIDER` caps per-provider fetch volume for
+  clustering
+
+If a provider in the stack fails, it is skipped; if all fail, fixtures fallback
+is used.
+
 ## Providers planned / later (not implemented)
 
 These require licensed credentials or an official API and are **documented only**.
@@ -63,6 +77,10 @@ empty so nothing breaks when unset.
 | Google Fact Check Tools API | optional, key-gated | Useful for claim-level fact-check lookups; needs an API key. |
 | Reuters / AP | licensed/commercial | **Do not assume free.** High-quality but paid. Add only with explicit licensed credentials. |
 | Ground News | not planned | No official open API; do not depend on it. |
+
+Also planned later (optional, not core): SEC EDGAR, BLS, FRED, EIA, BEA, World
+Bank, Guardian Open Platform — each should remain optional and key-gated where
+needed.
 
 ### How to add a licensed/keyed provider later
 
@@ -84,3 +102,5 @@ empty so nothing breaks when unset.
 - Tests never depend on external network calls (the `_fetch_raw` seam is patched).
 - Live providers parse defensively and raise `DashboardProviderError` on any
   fetch/parse error.
+- Feed clustering works on normalized metadata only; no scraping of full article
+  bodies in provider ingestion.

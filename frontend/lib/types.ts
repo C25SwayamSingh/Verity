@@ -161,6 +161,13 @@ export interface FramingSignal {
   label: string;
 }
 
+export interface SourceDiversitySignal {
+  level: "strong" | "moderate" | "limited" | "single_source";
+  label: string;
+  score: number;
+  detail: string;
+}
+
 export interface ConfidenceSignal {
   level: "high" | "medium" | "low";
   label: string;
@@ -177,11 +184,26 @@ export interface ScoreExplanation {
 
 export interface NewsFeedItem {
   id: string;
+  cluster_id: string;
   headline: string;
   source: string;
+  publishers: string[];
+  source_count: number;
+  independent_source_count: number;
   category: string;
   published_at: string;
+  earliest_published_at: string;
+  latest_published_at: string;
   neutral_summary: string;
+  commonly_reported_details: string[];
+  differing_details: string[];
+  articles: {
+    id: string;
+    headline: string;
+    source: string;
+    published_at: string;
+    provider_name?: string | null;
+  }[];
   final_score: number;
   importance_score: number;
   credibility_score: number;
@@ -189,12 +211,14 @@ export interface NewsFeedItem {
   freshness_score: number;
   source_diversity_score: number;
   corroboration: CorroborationSignal;
+  source_diversity: SourceDiversitySignal;
   contradiction: ContradictionSignal;
   framing: FramingSignal;
   confidence: ConfidenceSignal;
   key_claims: string[];
   why_selected: string;
   detail_path: string;
+  score_explanations: ScoreExplanation[];
 }
 
 export interface NewsFeedResponse {

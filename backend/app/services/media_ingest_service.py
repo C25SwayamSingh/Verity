@@ -121,7 +121,7 @@ class MediaIngestService:
             notes.append(f"Upload title: {title.strip()}")
         if source_url.strip():
             notes.append(
-                "Original link stored as metadata only — The Giver does not download or scrape linked videos."
+                "Original link stored as metadata only — Verity does not download or scrape linked videos."
             )
         notes.extend(base.notes)
 

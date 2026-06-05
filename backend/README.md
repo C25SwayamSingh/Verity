@@ -1,4 +1,4 @@
-# The Giver — Backend
+# Verity — Backend
 
 FastAPI service for Phase 1 pasted-text information integrity analysis.
 
@@ -25,7 +25,7 @@ pytest -q
 |----------|---------|-------|
 | `OPENAI_API_KEY` | (empty) | Deterministic heuristics when unset |
 | `OPENAI_MODEL` | `gpt-4o-mini` | |
-| `DATABASE_URL` | `sqlite:///./the_giver.db` | |
+| `DATABASE_URL` | `sqlite:///./verity.db` | |
 | `RATE_LIMIT_ENABLED` | `true` | |
 | `RATE_LIMIT_ANALYZE_REQUESTS` | `5` | Per IP per window |
 | `RATE_LIMIT_ANALYZE_WINDOW_SECONDS` | `3600` | |

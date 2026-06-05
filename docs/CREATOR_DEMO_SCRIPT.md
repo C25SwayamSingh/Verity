@@ -10,13 +10,13 @@
 
 1. Open http://localhost:3000/creators in a clean browser window (zoom 100%, no unrelated tabs).
 2. Skim `DEMO_CREATOR_PROFILES.md` — you will show **Leila Okonkwo** (`creator-003`) and **DataDave** (`creator-004`) for contrast.
-3. Memorize one sentence: *“The Giver measures source alignment, claim support, and framing indicators. It does not determine absolute truth.”* (Also on every creator page.)
+3. Memorize one sentence: *“Verity measures source alignment, claim support, and framing indicators. It does not determine absolute truth.”* (Also on every creator page.)
 
 ---
 
 ## Opening (60 seconds)
 
-> “This is **The Giver** — an **information integrity** tool for people who explain news, policy, or technical topics. It’s not a fake-news label or a score that says someone is a bad creator. It helps show **source transparency**: which claims have **cross-source corroboration**, where we see **contradiction signals** or **low corroboration**, and how **framing indicators** show up across posts. What you’re looking at are **sample integrity profiles** — fictional creators with demo content, not live platform feeds.”
+> “This is **Verity** — an **information integrity** tool for people who explain news, policy, or technical topics. It’s not a fake-news label or a score that says someone is a bad creator. It helps show **source transparency**: which claims have **cross-source corroboration**, where we see **contradiction signals** or **low corroboration**, and how **framing indicators** show up across posts. What you’re looking at are **sample integrity profiles** — fictional creators with demo content, not live platform feeds.”
 
 ---
 

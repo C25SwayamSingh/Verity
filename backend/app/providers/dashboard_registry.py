@@ -10,6 +10,21 @@ _REGISTRY: dict[str, type[DashboardNewsProvider]] = {
 }
 
 
+def available_dashboard_providers() -> list[str]:
+    return sorted(_REGISTRY)
+
+
+def get_dashboard_provider_by_name(name: str) -> DashboardNewsProvider:
+    normalized = (name or "").strip().lower()
+    provider_cls = _REGISTRY.get(normalized)
+    if provider_cls is None:
+        raise ValueError(
+            f"Unknown dashboard provider '{normalized}'. "
+            f"Supported values: {sorted(_REGISTRY)}"
+        )
+    return provider_cls()
+
+
 def get_dashboard_provider(settings) -> DashboardNewsProvider:
     """
     Return the DashboardNewsProvider configured by ``settings.dashboard_news_provider``.
@@ -22,10 +37,10 @@ def get_dashboard_provider(settings) -> DashboardNewsProvider:
     Raises ValueError for unknown provider names so misconfiguration is caught at startup.
     """
     name = settings.dashboard_news_provider.strip().lower()
-    provider_cls = _REGISTRY.get(name)
-    if provider_cls is None:
+    try:
+        return get_dashboard_provider_by_name(name)
+    except ValueError as exc:
         raise ValueError(
             f"Unknown DASHBOARD_NEWS_PROVIDER='{name}'. "
             f"Supported values: {sorted(_REGISTRY)}"
-        )
-    return provider_cls()
+        ) from exc

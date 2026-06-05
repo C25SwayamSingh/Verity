@@ -2,9 +2,9 @@
 
 User-provided **uploaded media** only. No Instagram/TikTok download, scraping, or link-based ingestion.
 
-> **Core ingestion rule (Phase 4C):** The Giver analyzes *analyzable text* — pasted text, article text, a transcript, captions, or source notes — or a transcript generated from uploaded media. It **never** treats a raw social/video URL as content. If you paste only an Instagram/TikTok/YouTube link with no text, the checker returns a clear "transcript or upload required" state and keeps the link as source metadata only. Full news bias/framing analysis runs only for supported news/current-information categories; a neutral/clearer rewrite is still available for other content when there is enough analyzable text.
+> **Core ingestion rule (Phase 4C):** Verity analyzes *analyzable text* — pasted text, article text, a transcript, captions, or source notes — or a transcript generated from uploaded media. It **never** treats a raw social/video URL as content. If you paste only an Instagram/TikTok/YouTube link with no text, the checker returns a clear "transcript or upload required" state and keeps the link as source metadata only. Full news bias/framing analysis runs only for supported news/current-information categories; a neutral/clearer rewrite is still available for other content when there is enough analyzable text.
 >
-> **Article-URL extraction (Phase 4D):** when you share a normal **article** link (a news site or blog), The Giver fetches that page and extracts the main article text, then analyzes the real content (results show a "Source basis" note). This applies to article pages only — **social/video links (Instagram/TikTok/YouTube) are never fetched or downloaded** and still require an uploaded recording or a pasted transcript. Extraction can be tuned/disabled via `ARTICLE_EXTRACTION_*` settings; paywalled or JS-only pages may yield little text and fall back to the "paste text" state.
+> **Article-URL extraction (Phase 4D):** when you share a normal **article** link (a news site or blog), Verity fetches that page and extracts the main article text, then analyzes the real content (results show a "Source basis" note). This applies to article pages only — **social/video links (Instagram/TikTok/YouTube) are never fetched or downloaded** and still require an uploaded recording or a pasted transcript. Extraction can be tuned/disabled via `ARTICLE_EXTRACTION_*` settings; paywalled or JS-only pages may yield little text and fall back to the "paste text" state.
 
 ---
 
@@ -43,7 +43,7 @@ Swap providers via `app/services/transcription/` adapter pattern.
 
 ## Social video workflow (Instagram Reels, etc.)
 
-The Giver **does not**:
+Verity **does not**:
 
 - Download Reels from a pasted link
 - Transcribe TikTok/Instagram by URL

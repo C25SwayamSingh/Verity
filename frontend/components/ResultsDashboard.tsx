@@ -118,7 +118,7 @@ function NeedsMoreInput({ data }: ResultsDashboardProps) {
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-amber-950">
           {ingestion.guidance ??
-            "We found a link, but no transcript or analyzable text was provided. Add a transcript, upload, or source notes so The Giver can analyze the content."}
+            "We found a link, but no transcript or analyzable text was provided. Add a transcript, upload, or source notes so Verity can analyze the content."}
         </p>
       </section>
 
@@ -131,7 +131,7 @@ function NeedsMoreInput({ data }: ResultsDashboardProps) {
           <li>Paste the full article text (for written articles).</li>
         </ul>
         <p className="mt-3 text-xs text-giver-low">
-          The Giver analyzes submitted or generated text. It does not download or scrape social videos.
+          Verity analyzes submitted or generated text. It does not download or scrape social videos.
         </p>
       </section>
 

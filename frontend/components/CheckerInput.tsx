@@ -50,8 +50,8 @@ export default function CheckerInput({
       {showLinkHint && (
         <div className="mb-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
           {linkHint.isSocialVideo
-            ? "That looks like a video link only. The Giver can't watch or download it — attach a screen recording/audio, or paste the transcript, captions, or source notes."
-            : "That looks like an article link. The Giver will try to read the article text from it. If extraction comes back empty, paste the article text, a transcript, or source notes."}
+            ? "That looks like a video link only. Verity can't watch or download it — attach a screen recording/audio, or paste the transcript, captions, or source notes."
+            : "That looks like an article link. Verity will try to read the article text from it. If extraction comes back empty, paste the article text, a transcript, or source notes."}
         </div>
       )}
 

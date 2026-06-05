@@ -27,7 +27,7 @@ except ImportError:  # pragma: no cover
     extract_metadata = None
 
 _USER_AGENT = (
-    "Mozilla/5.0 (compatible; TheGiver/1.0; +https://thegiver.app) "
+    "Mozilla/5.0 (compatible; Verity/1.0; +https://verity.app) "
     "article-text-extractor"
 )
 

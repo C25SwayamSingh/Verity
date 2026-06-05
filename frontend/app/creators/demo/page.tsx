@@ -147,7 +147,7 @@ function DemoPostFormInner() {
         <p className="mt-1 text-sm text-amber-950 leading-relaxed">
           Add <strong>provided source notes</strong>, rough transcripts, captions, or third-party
           key points (e.g. Fofo-style extracts) to a fixture creator&apos;s{" "}
-          <strong>sample integrity profile</strong>. The Giver analyzes{" "}
+          <strong>sample integrity profile</strong>. Verity analyzes{" "}
           <strong>submitted text only</strong> — it does not watch, download, or transcribe
           Instagram/TikTok videos unless you supply a full transcript. Not creator onboarding.
         </p>

@@ -1,7 +1,7 @@
 /** Shared copy and styles for Creator Integrity Dashboard (Phase 3.7). */
 
 export const CREATOR_DISCLAIMER =
-  "The Giver measures source alignment, claim support, and framing indicators. It does not determine absolute truth.";
+  "Verity measures source alignment, claim support, and framing indicators. It does not determine absolute truth.";
 
 export const CREATOR_LIST_INTRO =
   "Sample integrity profiles for information-focused creators. Each report summarizes cross-source corroboration, contradiction signals, and framing patterns from analyzed posts—not a verdict on the creator.";

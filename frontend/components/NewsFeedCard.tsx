@@ -63,6 +63,10 @@ export default function NewsFeedCard({ item }: { item: NewsFeedItem }) {
           <p className="mt-1 text-xs text-giver-low">
             {item.source} · {formatTime(item.published_at)}
           </p>
+          <p className="mt-1 text-[11px] text-giver-slate">
+            Reported by {item.source_count} sources · Independent sources:{" "}
+            {item.independent_source_count}
+          </p>
         </div>
         <div className="shrink-0 text-right">
           <span className={`text-sm font-bold ${confidenceStyle}`}>
@@ -90,6 +94,9 @@ export default function NewsFeedCard({ item }: { item: NewsFeedItem }) {
           >
             {item.framing.label}
           </span>
+          <span className="inline-flex items-center rounded border border-slate-200 bg-white px-2 py-0.5 text-xs font-medium text-giver-slate">
+            {item.source_diversity.label}
+          </span>
           {item.contradiction.present && (
             <span className="inline-flex items-center rounded border border-red-200 bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700">
               {item.contradiction.label}
@@ -108,6 +115,26 @@ export default function NewsFeedCard({ item }: { item: NewsFeedItem }) {
             <span className="font-medium">Caution: </span>
             {item.contradiction.detail}
           </p>
+        )}
+        {item.commonly_reported_details.length > 0 && (
+          <div>
+            <p className="text-xs font-medium text-giver-ink">Commonly reported details</p>
+            <ul className="mt-1 list-disc space-y-0.5 pl-4 text-xs text-giver-slate">
+              {item.commonly_reported_details.slice(0, 3).map((detail, idx) => (
+                <li key={idx}>{detail}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {item.differing_details.length > 0 && (
+          <div>
+            <p className="text-xs font-medium text-giver-warn">Differing details</p>
+            <ul className="mt-1 list-disc space-y-0.5 pl-4 text-xs text-giver-warn">
+              {item.differing_details.slice(0, 3).map((detail, idx) => (
+                <li key={idx}>{detail}</li>
+              ))}
+            </ul>
+          </div>
         )}
         <p className="text-xs text-giver-low">
           <span className="font-medium text-giver-ink">Why this story appears here: </span>

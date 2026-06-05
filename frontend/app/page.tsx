@@ -78,7 +78,7 @@ export default function HomePage() {
           <p className="mt-1 max-w-xl text-sm text-giver-slate">
             Browse today&rsquo;s stories and quickly see how consistently each one is reported:
             cross-source corroboration, contradiction signals, framing indicators, and a neutral
-            summary. Swipe through, save what matters, or open the full analysis.
+            summary. Signals are based on available source overlap, not absolute truth.
           </p>
         </div>
         <Link
@@ -227,7 +227,7 @@ export default function HomePage() {
             </ul>
             <p className="text-giver-low">
               Source mode: <span className="font-mono">{feed.provider_mode}</span>. Data falls back to
-              fixtures if a live source is unavailable.
+              fixtures if live providers are unavailable.
             </p>
           </div>
         </details>

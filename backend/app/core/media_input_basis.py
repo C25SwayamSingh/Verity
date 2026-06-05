@@ -16,7 +16,7 @@ MEDIA_INPUT_BASIS_LABELS: dict[str, str] = {
 
 MEDIA_TRANSPARENCY_NOTE = (
     "Analysis based on transcript generated from uploaded media. "
-    "The Giver did not download, scrape, or verify content from social platforms."
+    "Verity did not download, scrape, or verify content from social platforms."
 )
 
 

@@ -145,7 +145,7 @@ class DashboardLiveProvider(DashboardNewsProvider):
                 url,
                 timeout=self._timeout,
                 follow_redirects=True,
-                headers={"User-Agent": "TheGiver/1.0"},
+                headers={"User-Agent": "Verity/1.0"},
             )
             response.raise_for_status()
             return response.text

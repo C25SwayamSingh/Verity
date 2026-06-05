@@ -1,6 +1,6 @@
-# Social Video Limitations — The Giver
+# Social Video Limitations — Verity
 
-The Giver **does not download, scrape, or auto-transcribe social videos** from a
+Verity **does not download, scrape, or auto-transcribe social videos** from a
 pasted link. This is a deliberate product and legal/platform-risk decision, not a
 missing feature.
 
@@ -20,7 +20,7 @@ fabricating analysis:
 
 > "We found a video link, but no transcript or analyzable text was provided.
 > Upload the video, screen recording, or audio, paste a transcript or captions,
-> or add source notes so The Giver can analyze the actual content. The Giver does
+> or add source notes so Verity can analyze the actual content. Verity does
 > not download or scrape social videos."
 
 In that state:

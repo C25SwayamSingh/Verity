@@ -11,7 +11,7 @@ class AnalyzeRequest(BaseModel):
 
 class HealthResponse(BaseModel):
     status: str = "ok"
-    service: str = "the-giver-api"
+    service: str = "verity-api"
 
 
 class RateLimitError(BaseModel):

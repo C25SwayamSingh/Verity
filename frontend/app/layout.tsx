@@ -3,14 +3,14 @@ import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "The Giver — Information Integrity",
+  title: "Verity — Information Integrity",
   description: "Cross-source corroboration and framing analysis for pasted news text.",
   manifest: "/manifest.webmanifest",
-  applicationName: "The Giver",
+  applicationName: "Verity",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "The Giver",
+    title: "Verity",
   },
   icons: {
     icon: "/icon.svg",
@@ -36,7 +36,7 @@ export default function RootLayout({
           <div className="mx-auto max-w-4xl px-4 py-4">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-xl font-semibold text-giver-ink">The Giver</h1>
+                <h1 className="text-xl font-semibold text-giver-ink">Verity</h1>
                 <p className="text-sm text-giver-slate">Information integrity</p>
               </div>
               <nav className="flex gap-4 text-sm font-medium">

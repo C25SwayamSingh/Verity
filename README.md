@@ -1,13 +1,13 @@
-# The Giver
+# Verity
 
-**The Giver** is a news and information integrity platform. Phase 1 (Core Checker MVP) lets users paste article or news text, run analysis, and receive structured results: summary, key takeaways, extracted claims with types, cross-source corroboration (fixture/mock sources), framing indicators, and a neutral rewrite.
+**Verity** is a news and information integrity platform. Phase 1 (Core Checker MVP) lets users paste article or news text, run analysis, and receive structured results: summary, key takeaways, extracted claims with types, cross-source corroboration (fixture/mock sources), framing indicators, and a neutral rewrite.
 
 This is **not** a “truth checker.” Results use careful language: cross-source corroboration, source alignment, credibility signals, framing indicators, and low corroboration — never absolute true/false verdicts.
 
 ## Repo structure
 
 ```
-/the-giver
+/verity
   /backend   — FastAPI, SQLite, analysis engine
   /frontend  — Next.js App Router UI
 ```
@@ -44,7 +44,7 @@ Open [http://localhost:3000](http://localhost:3000), paste text, choose a catego
 |----------|--------|-------------|
 | `OPENAI_API_KEY` | backend | Optional; enables OpenAI path when set |
 | `OPENAI_MODEL` | backend | Default `gpt-4o-mini` |
-| `DATABASE_URL` | backend | Default `sqlite:///./the_giver.db` |
+| `DATABASE_URL` | backend | Default `sqlite:///./verity.db` |
 | `RATE_LIMIT_ENABLED` | backend | Default `true` |
 | `RATE_LIMIT_ANALYZE_REQUESTS` | backend | Default `5` |
 | `RATE_LIMIT_ANALYZE_WINDOW_SECONDS` | backend | Default `3600` |

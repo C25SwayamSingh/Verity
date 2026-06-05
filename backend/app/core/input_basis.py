@@ -40,19 +40,19 @@ def input_basis_transparency_note(basis: Optional[str]) -> Optional[str]:
     if basis == "third_party_extracted_key_points":
         return (
             "Analysis based on third-party extracted key points (e.g. Fofo-style notes), "
-            "not a verbatim transcript. The Giver did not watch or transcribe the original video."
+            "not a verbatim transcript. Verity did not watch or transcribe the original video."
         )
     if basis == "caption_text":
         return (
             "Analysis based on caption text, not a verbatim transcript. "
-            "The Giver did not watch or transcribe the original video."
+            "Verity did not watch or transcribe the original video."
         )
     if basis == "manual_rough_transcript":
         return (
             "Analysis based on a manual rough transcript, not a verified verbatim transcript. "
-            "The Giver analyzes the submitted text only."
+            "Verity analyzes the submitted text only."
         )
     return (
         "Analysis based on provided source notes, not a verbatim transcript. "
-        "The Giver did not watch or transcribe the original video."
+        "Verity did not watch or transcribe the original video."
     )

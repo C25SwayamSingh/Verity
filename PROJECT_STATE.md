@@ -1,33 +1,51 @@
-# PROJECT_STATE.md — The Giver
+# PROJECT_STATE.md — Verity
 
-> Checkpoint for Cursor agents. Last updated: 2026-06-04. Phase 1–2 complete. Phase 3 complete. Phase 4A media upload MVP complete. Phase 4C ingestion correction complete (URL-only links no longer analyzed as content). Phase 4D article-URL text extraction complete. **Phase 5 News Integrity Feed + provider architecture complete** (home page is now a swipeable news feed with integrity signals; `/v1/news/feed` + `/v1/news/scoring`; optional GDELT provider; central scoring module; checker moved to `/check`). 156 backend tests green; frontend build clean (8 routes).
+> Checkpoint for Cursor agents. Last updated: 2026-06-04. Phase 1–2 complete. Phase 3 complete. Phase 4A media upload MVP complete. Phase 4C ingestion correction complete (URL-only links no longer analyzed as content). Phase 4D article-URL text extraction complete. **Phase 5.1 (2.6A) Open Provider Stack + Real Corroboration Engine v1 complete** (story clustering + source-overlap-backed feed signals, provider stack for `/v1/news/feed`, conservative contradiction handling, evidence-backed score explanations). 162 backend tests green; frontend build clean (8 routes).
 
 ---
 
-## 0. Phase 5 — News Integrity Feed + Provider Architecture (LATEST)
+## 0. Phase 5.1 / 2.6A — Open Provider Stack + Real Corroboration Engine v1 (LATEST)
 
 **What changed**
-- **Home page (`/`) is now the News Integrity Feed** — a category-filtered, Tinder-style swipeable card stack of current stories with concise integrity signals. The checker moved to **`/check`** (behavior preserved, including PWA share-target).
-- **New endpoints**: `GET /v1/news/feed?category=<cat>` (feed items with signals) and `GET /v1/news/scoring` (formula + weights + plain-English definitions).
-- **Central scoring module** `backend/app/core/news_scoring.py` — single source of truth for weights, score definitions, and derived signals (cross-source corroboration, contradiction, framing, confidence). `DashboardService` now imports its weights/formula from here (behavior unchanged).
-- **Optional GDELT provider** (`gdelt`) added alongside `fixtures` (default) and `live` (RSS). Open, key-free, falls back to fixtures on any failure.
-- **Provider strategy documented**: fixtures/RSS/GDELT available now; NewsAPI/GNews/Google Fact Check are optional + key-gated; Reuters/AP treated as licensed; Ground News not depended on. Optional keys (`NEWSAPI_API_KEY`, `GNEWS_API_KEY`, `GOOGLE_FACTCHECK_API_KEY`) default empty and never crash the app.
+- Added `StoryClusterService` (`backend/app/services/story_cluster_service.py`) to cluster similar articles into story clusters using normalized headline/detail token overlap + category match + time-window proximity.
+- `NewsFeedService` now uses a provider stack (`NEWS_FEED_PROVIDER_STACK`, default `fixtures`) and clusters merged provider articles before building feed cards.
+- Feed cards are now cluster-backed with: `source_count`, `independent_source_count`, `commonly_reported_details`, `differing_details`, cluster article refs, and evidence-backed corroboration/source-diversity/confidence signals.
+- `news_scoring.py` updated so corroboration/diversity/confidence can use cluster evidence (`source_overlap_score`, independent source counts) while keeping the same transparent formula.
+- Added conservative contradiction behavior: only explicit contradiction warnings are surfaced; weak overlap alone does not invent contradictions.
+- Added docs: `docs/CORROBORATION_ENGINE.md`; updated `docs/SCORING_METHOD.md` and `docs/NEWS_PROVIDER_STRATEGY.md`.
 
-**Provider architecture**: one `DashboardNewsProvider` interface; `DashboardService` scores/sorts/limits + falls back to fixtures; `NewsFeedService` wraps it and adds signals (no network calls of its own). See `docs/NEWS_PROVIDER_STRATEGY.md`.
+**Provider architecture now**
+- Dashboard path remains single-provider (`DASHBOARD_NEWS_PROVIDER`) with fixture fallback.
+- Feed path is provider-stack based (`NEWS_FEED_PROVIDER_STACK`) and optional by provider.
+- Core/open providers remain: fixtures, key-free curated RSS (`live`), key-free GDELT (`gdelt`).
+- Optional key-based providers remain non-core and non-required.
 
-**Scoring**: formula unchanged (audited + kept) — `0.35*importance + 0.30*credibility/corroboration + 0.20*relevance + 0.10*freshness + 0.05*source_diversity`. Derived non-weighted signals: corroboration (`strong/moderate/limited/single_source`), contradiction (present/absent), framing (`neutral/mixed/notable`), confidence (`high/medium/low`). Full definitions in `docs/SCORING_METHOD.md`. No "truth score" anywhere.
+**Scoring now**
+- Formula unchanged: `0.35*importance + 0.30*credibility/corroboration + 0.20*relevance + 0.10*freshness + 0.05*source_diversity`.
+- In cluster mode:
+  - `credibility_score` is informed by source overlap + independent source coverage.
+  - `source_diversity_score` is informed by independent source count.
+  - `confidence_signal` is overlap-aware and penalizes contradiction + single-source clusters.
+  - score explanations explicitly mention evidence/source overlap.
 
-**Social URL-only behavior**: unchanged and still enforced — a bare social/video link returns `needs_more_input` with guidance; no fabricated summary/claims/rewrite; link kept as metadata only. See `docs/SOCIAL_VIDEO_LIMITATIONS.md`.
+**Social URL-only behavior**
+- Unchanged and still enforced (metadata-only, needs-more-input, no fabricated analysis).
 
-**Tests/build**: 156 backend tests green (+26: `test_news_feed.py`, `test_gdelt_provider.py`); frontend build clean, 8 routes (`/`, `/check`, `/results/[id]`, `/dashboard`, `/dashboard/[id]`, `/creators`, `/creators/[id]`, `/creators/demo`).
+**Tests/build**
+- 162 backend tests green (added clustering tests).
+- Frontend build + lint clean, routes unchanged (`/`, `/check`, `/dashboard`, `/dashboard/[id]`, `/creators`, `/creators/[id]`, `/results/[id]`, `/creators/demo`).
 
-**Remaining limitations**: live/GDELT items use fixed defaults for importance/relevance/diversity (no real corroboration clustering yet); saved-stories list in the feed is client-side only (not persisted); no NewsAPI/AP/Reuters integration (key-gated/licensed, documented for later).
+**Remaining limitations**
+- Clustering is lexical/token-based (no embedding model yet).
+- Contradiction signals depend on explicit differing-detail warnings in source records.
+- Feed saved-list remains client-side only.
+- No paid/licensed APIs required or integrated.
 
 ---
 
 ## 1. Product name and purpose
 
-**The Giver** — a news and information integrity platform.  
+**Verity** — a news and information integrity platform.  
 Users paste article or transcript text; the engine returns a structured integrity report: summary, key takeaways, typed claims with cross-source corroboration, framing indicators, and a neutral rewrite.  
 Language is deliberately non-verdictive ("low corroboration", "notable framing") — never "true/false."
 
@@ -95,7 +113,7 @@ Language is deliberately non-verdictive ("low corroboration", "notable framing")
 - **Social/video URLs are never fetched** — `social_video_url` skips extraction entirely and still requires an upload or transcript (no download/scrape). ✓
 - Settings: `ARTICLE_EXTRACTION_ENABLED` (default true), `ARTICLE_EXTRACTION_TIMEOUT_SECONDS` (10), `ARTICLE_EXTRACTION_MAX_BYTES` (3 MB), `ARTICLE_EXTRACTION_MIN_CHARS` (250). Degrades gracefully if trafilatura is absent. ✓
 - New deps: `trafilatura`, `lxml_html_clean`. ✓
-- Frontend: results page shows a sky "Source basis" banner with the extraction note + link; `CheckerInput` hint for article links now says The Giver will try to read the article text. ✓
+- Frontend: results page shows a sky "Source basis" banner with the extraction note + link; `CheckerInput` hint for article links now says Verity will try to read the article text. ✓
 - **Tests:** +6 in `test_article_extraction.py` (stubbed extractor for wiring + injected fetcher for parsing, no network); 130 total green. **Frontend build:** passed. ✓
 - **Limitation:** extraction quality depends on the page; some paywalled/JS-only pages yield little text → falls back to "paste text" state. Social videos unchanged.
 
@@ -359,13 +377,16 @@ When `False`:
 - `dashboard_gdelt_provider.py` — open GDELT 2.0 DOC API provider (key-free); per-category query; network seam `_fetch_raw` is patched in tests; raises `DashboardProviderError` on failure
 - `dashboard_registry.py` — `get_dashboard_provider(settings)` factory; maps env var (`fixtures`/`live`/`gdelt`) to provider class
 - `app/core/news_scoring.py` — central scoring weights, definitions, and derived signals (used by `DashboardService` + `NewsFeedService`)
-- `app/services/news_feed_service.py` — wraps `DashboardService`, adds feed signals; backs `/v1/news/feed` + `/v1/news/scoring`
+- `app/services/story_cluster_service.py` — clusters related articles and computes source-overlap-backed cluster signals
+- `app/services/news_feed_service.py` — provider-stack feed aggregator + cluster->feed mapping; backs `/v1/news/feed` + `/v1/news/scoring`
 
 **Flow (list)**: `main.py` → `DashboardService.get_top_articles(category)` → `provider.fetch(category)` → score + sort → top 5. Falls back to fixtures on `DashboardProviderError` / `NotImplementedError`.
 
 **Flow (detail)**: `main.py` → `DashboardService.get_article_by_id(id)` → `provider.fetch_by_id(id)` → falls back to fixtures if primary provider raises or returns None → 404 if not found.
 
-**Live provider** (`DashboardLiveProvider`, Phase 2.7): fetches public RSS feeds via `httpx`, parses with `feedparser`. Estimates `credibility_score` from source name, `freshness_score` from publication age. Fixed defaults for `importance` / `relevance` / `source_diversity` until a scoring model is added.
+**Live provider** (`DashboardLiveProvider`, Phase 2.7): fetches public RSS feeds via `httpx`, parses with `feedparser`. Estimates `credibility_score` from source name, `freshness_score` from publication age.
+
+**Feed clustering flow (Phase 2.6A)**: `main.py` → `NewsFeedService.get_feed(category)` → fetch from `NEWS_FEED_PROVIDER_STACK` providers → dedupe/normalize → `StoryClusterService.cluster_articles(...)` → evidence-backed cluster signals and score explanations.
 
 **To enable live**: set `DASHBOARD_NEWS_PROVIDER=live` in `.env` and restart. No endpoint, schema, scoring, or frontend changes required. Falls back to fixtures automatically on any network/parse failure.
 
@@ -375,12 +396,14 @@ When `False`:
 |----------|---------|---------|-------|
 | `OPENAI_API_KEY` | backend | `""` | Deterministic heuristics when empty |
 | `OPENAI_MODEL` | backend | `gpt-4o-mini` | |
-| `DATABASE_URL` | backend | `sqlite:///./the_giver.db` | |
+| `DATABASE_URL` | backend | `sqlite:///./verity.db` | |
 | `RATE_LIMIT_ENABLED` | backend | `true` | Set `false` to disable |
 | `RATE_LIMIT_ANALYZE_REQUESTS` | backend | `5` | Per IP per window |
 | `RATE_LIMIT_ANALYZE_WINDOW_SECONDS` | backend | `3600` | |
 | `CORS_ORIGINS` | backend | `http://localhost:3000` | Comma-separated list |
 | `DASHBOARD_NEWS_PROVIDER` | backend | `fixtures` | `fixtures` (JSON), `live` (RSS, no key), or `gdelt` (open GDELT, no key) |
+| `NEWS_FEED_PROVIDER_STACK` | backend | `fixtures` | Comma-separated provider stack for `/v1/news/feed` (e.g. `fixtures,live,gdelt`) |
+| `NEWS_FEED_MAX_ARTICLES_PER_PROVIDER` | backend | `20` | Per-provider cap used by feed clustering |
 | `NEWSAPI_API_KEY` | backend | `""` | Optional; provider not built yet. Empty is safe. |
 | `GNEWS_API_KEY` | backend | `""` | Optional; provider not built yet. Empty is safe. |
 | `GOOGLE_FACTCHECK_API_KEY` | backend | `""` | Optional; provider not built yet. Empty is safe. |
@@ -438,7 +461,8 @@ pytest -q
 #   tests/test_media_upload.py          — media upload, transcription mock, analysis pipeline (6 total)
 #   tests/test_news_feed.py             — feed endpoint, normalized item schema, signals, scoring explanations, fallback, no-key startup
 #   tests/test_gdelt_provider.py        — GDELT normalization, domain credibility, fallback (network mocked)
-# Total: 156 tests
+#   tests/test_story_clustering.py      — clustering behavior, source counts, corroboration and contradiction conservatism
+# Total: 162 tests
 ```
 
 Run with `RATE_LIMIT_ENABLED=false pytest -q` to avoid rate-limit interference across API tests.
@@ -470,7 +494,7 @@ No frontend test suite exists yet.
 - **Video upload needs ffmpeg** when `TRANSCRIPTION_PROVIDER` is not `mock`
 - **No batch media upload** — single file per request
 - **Uploaded video files not retained** — transcript + analysis stored in SQLite
-- **No video ingestion** — `input_basis` labels what was pasted; The Giver does not watch/transcribe Reels unless user supplies a full transcript or upload
+- **No video ingestion** — `input_basis` labels what was pasted; Verity does not watch/transcribe Reels unless user supplies a full transcript or upload
 - **Outreach pack is documentation only** — no PDF export, share links, or CRM integration for creator outreach
 
 ---
